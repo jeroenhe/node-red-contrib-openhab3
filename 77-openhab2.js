@@ -349,7 +349,103 @@ module.exports = function(RED) {
 	}
 	//
 	RED.nodes.registerType("openhab2-in", OpenHABIn);
-	
+
+	/**
+	* ====== openhab2-in ========================
+	* Handles incoming openhab2 events, injecting 
+	* json into node-red flows
+	* ===========================================
+	*/
+	function OpenHABIn2(config) {
+		RED.nodes.createNode(this, config);
+		this.name = config.name;
+		var node = this;
+		var openhabController = RED.nodes.getNode(config.controller);
+		var itemName = config.itemname;
+		
+		if ( itemName != undefined ) itemName = itemName.trim();
+		
+		//node.log('OpenHABIn, config: ' + JSON.stringify(config));
+
+		
+		this.refreshNodeStatus = function() {
+			var currentState = node.context().get("currentState");
+			
+		    if ( currentState == null )
+		        node.status({fill:"yellow", shape: "ring", text: "state: " + currentState});		    	
+		    else if ( currentState == "ON" || currentState == "CLOSED" )
+		        node.status({fill:"green", shape: "dot", text: "state: " + currentState});
+		    else if ( currentState == "OFF" || currentState == "OPEN" )
+		        node.status({fill:"green", shape: "ring", text: "state: " + currentState});
+		    else
+		        node.status({fill:"blue", shape: "ring", text: "state: " + currentState});
+		};
+		
+		this.processStateEvent = function(event) {
+			
+			var currentState = node.context().get("currentState");
+			
+			if ( (event.state != currentState) && (event.state != "null") )
+			{
+				// update node's context variable
+				currentState = event.state;
+				node.context().set("currentState", currentState);
+				
+				// update node's visual status
+				node.refreshNodeStatus();
+				
+			    // inject the state in the node-red flow
+			    var msgid = RED.util.generateId();
+	            node.send([{_msgid:msgid, payload: currentState, item: itemName, event: "StateEvent"}, null]);
+				
+			}			
+		};
+		
+		this.processRawEvent = function(event) {
+		    // inject the state in the node-red flow
+		    var msgid = RED.util.generateId();
+            node.send([null, {_msgid:msgid, payload: event, item: itemName, event: "RawEvent"}]);
+			
+		};
+		
+		node.context().set("currentState", "?");
+		openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
+		openhabController.addListener(itemName + '/StateEvent', node.processStateEvent);
+		
+		//actively get the item's current value and node.send it down the chain.
+		var item = (config.itemname && (config.itemname.length != 0)) ? config.itemname : msg.item;
+
+		openhabController.control(item, null, null,
+			function(body){
+				// no body expected for a command or update
+				node.status({fill:"green", shape: "dot", text: " "});
+				msg.payload_in = msg.payload;
+				msg.payload = JSON.parse(body);
+				node.send(msg);
+			},
+			function(err) {
+				node.status({fill:"red", shape: "ring", text: err});
+				node.warn(err);
+			}
+		);
+
+		node.refreshNodeStatus();
+
+		/* ===== Node-Red events ===== */
+		this.on("input", function(msg) {
+			if (msg != null) {
+				
+			};
+		});
+		this.on("close", function() {
+			node.log('close');
+			openhabController.removeListener(itemName + '/StateEvent', node.processStateEvent);
+			openhabController.removeListener(itemName + '/RawEvent', node.processRawEvent);
+		});
+		
+	}
+	//
+	RED.nodes.registerType("openhab2-in2", OpenHABIn2);  
 	
 	/**
 	* ====== openhab2-monitor ===================

@@ -68,6 +68,22 @@
     </div>
 </script>
 
+<script type="text/x-red" data-template-name="openhab2-in2">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-controller"><i class="fa fa-globe"></i> Controller</label>
+        <input type="text" id="node-input-controller">
+    </div>
+    <div class="form-row">
+        <label for="node-input-itemname"><i class="fa fa-crosshairs"></i> ItemName</label>
+    	<select id="node-input-itemname" name="node-input-itemname" style="width: 250px;">
+    	</select>
+    </div>
+</script>
+
 <script type="text/x-red" data-template-name="openhab2-get">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -151,6 +167,37 @@
 
 <script type="text/x-red" data-help-name="openhab2-in">
     <p>Listens to state changes of a selected openHAB Item.</p>
+	<p></p>
+	<b>Configuration</b>
+    <ul>
+        <li><b>Name :</b> Optionally specify a name</li>
+        <li><b>Controller :</b> Select the openHAB controller</li>
+        <li><b>Item :</b>Select the Item to monitor</li>
+   	 </ul>
+	<p></p>
+
+	<b>Messages injected in NodeRED flows (2 channels)</b>
+    <ul>
+        <li>Channel 1 :
+			<ul>
+        		<li><code>msg.item</code> : the item's itemname (not label)</li>
+        		<li><code>msg.topic</code> : "StateEvent"</li>
+        		<li><code>msg.payload</code> : the new state of the selected item</li>
+  	 		</ul>
+		</li>
+        <li>Channel 2 :
+			<ul>
+        		<li><code>msg.item</code> : the item's itemname (not label)</li>
+        		<li><code>msg.topic</code> : "RawEvent"</li>
+        		<li><code>msg.payload</code> : raw (unprocessed) event for the selected item</li>
+  	 		</ul>
+		</li>
+
+   	 </ul>
+</script>
+
+<script type="text/x-red" data-help-name="openhab2-in2">
+    <p>Listens to state changes of a selected openHAB Item and actively gets state value at startup.</p>
 	<p></p>
 	<b>Configuration</b>
     <ul>
@@ -358,6 +405,28 @@
 
 <script type="text/javascript">
     RED.nodes.registerType('openhab2-in',{
+        category: 'home automation',
+        color: '#00cc00',
+        defaults: {
+            name:      {value:""},
+		    controller:  {value:"", type:"openhab2-controller", required:true},
+		    itemname:  {value:"", required:true},
+        },
+        inputs: 0,
+        outputs: 2,
+        icon: "node-red-contrib-openhab2.png",
+        label: function() {
+
+            return(this.name||this.itemname||"openhab2 in");
+        },
+        oneditprepare: function() {
+        	openhabEditPrepare(this, false);
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('openhab2-in2',{
         category: 'home automation',
         color: '#00cc00',
         defaults: {
