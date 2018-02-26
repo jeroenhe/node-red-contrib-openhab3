@@ -367,6 +367,10 @@ module.exports = function (RED) {
 		var node = this;
 		var openhabController = RED.nodes.getNode(config.controller);
 		var itemName = config.itemname;
+		var initialstate = config.initialstate;
+		var onlywhenchanged = config.onlywhenchanged;
+		var changedfrom = config.changedfrom;
+		var changedto = config.changedto;
 
 		if (itemName != undefined) {
 			itemName = itemName.trim();
@@ -432,9 +436,12 @@ module.exports = function (RED) {
 			if (newState != "null") {
 
 				//ignore GroupItemStateChangedEvent(s) alltogether
-				if (eventType == "ItemStateChangedEvent" ||
-					eventType == "ItemStateEvent" ) {
+				if ((eventType == "ItemStateChangedEvent" && config.onlywhenchanged) ||
+					(eventType == "ItemStateEvent" && !config.onlywhenchanged)) {
 					
+					//if (changedfrom != undefined && changedto != undefined) {
+					//	if (oldValue == changedfrom && newState == changedto) {
+
 					// update node's context variable
 					node.context().set("currentState", newState);
 
@@ -442,14 +449,20 @@ module.exports = function (RED) {
 					node.refreshNodeStatus();
 
 					// inject the state in the node-red flow
-					node.send([null, {
-						_msgid: msgid,
-						payload: newState,
-						item: itemName,
-						event: eventType,
-						oldValue: oldValue
-					}]);
+					node.log("send state " + newState + " with eventType " + eventType);
+					var msg = {};
+					//create new message to inject
+					msg._msgid = msgid;
+					msg.item = itemName;
+					msg.event = eventType;
+					msg.payload = newState;
+					msg.oldValue = oldValue;
+					node.send(msg);
+				} else {
+				 	node.log("Ignored eventType " + eventType);
 				}
+			} else {
+				node.log("newState == null");
 			}
 		};
 
@@ -492,14 +505,17 @@ module.exports = function (RED) {
 					node.warn(err);
 				}
 			);
-
 			//Start listening to events
-			//openhabController.addListener(itemName + '/StateEvent', node.processStateEvent);
 			openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
 		}
 
-		//Wait 5 seconds after startup before fetcching initial value
-		setTimeout(getInitial, 5000);
+		if (config.initialstate) {
+			//Wait 5 seconds after startup before fetching initial value
+			setTimeout(getInitial, 5000);
+		} else {
+			//Start listening to events
+			openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
+		}
 
 		/* ===== Node-Red events ===== */
 		this.on("input", function (msg) {

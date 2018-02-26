@@ -83,10 +83,25 @@
     	</select>
     </div>
     <div class="form-row">
-        <label for="node-input-itemname"><i class="fa fa-crosshairs"></i> Only when changed</label>
-        <input type="checkbox" id="node-input-onlywhenchanged" style="display: inline-block; width: auto; vertical-align: top;">
-    	</select>
+        <label for="node-input-initialstate"><i class="fa fa-crosshairs"></i> Send initial state at node startup</label>
+        <input type="checkbox" id="node-input-initialstate" style="display: inline-block; width: auto; vertical-align: top;">
+        </input>
     </div>
+    <div class="form-row">
+        <label for="node-input-onlywhenchanged"><i class="fa fa-crosshairs"></i> Only when changed</label>
+        <input type="checkbox" id="node-input-onlywhenchanged" style="display: inline-block; width: auto; vertical-align: top;">
+        </input>
+    </div>
+    <div class="form-row">
+        <label for="node-input-changedfrom"><i class="fa fa-tag"></i> Changed from (oldValue)</label>
+        <input type="text" id="node-input-changedfrom" placeholder="Changed from">
+    </div>
+    <div class="form-row">
+        <label for="node-input-changedto"><i class="fa fa-tag"></i> Changed to (value)</label>
+        <input type="text" id="node-input-changedto" placeholder="Changed to">
+    </div>
+
+
 </script>
 
 <script type="text/x-red" data-template-name="openhab2-get">
@@ -209,7 +224,10 @@
         <li><b>Name :</b> Optionally specify a name</li>
         <li><b>Controller :</b> Select the openHAB controller</li>
         <li><b>Item :</b>Select the Item to monitor</li>
-        <li><b>Only when changed :</b>Only send output when state changes</li>
+        <li><b>Initial state :</b>Send message at node startup</li>
+        <li><b>When changed :</b>Send message when state changes</li>
+        <li><b>Changed from (optional) :</b>Old value</li>
+        <li><b>Changed to (optional) :</b>New value</li>
    	 </ul>
 	<p></p>
 
@@ -217,9 +235,10 @@
     <ul>
         <li>Channel 1 :
 			<ul>
-        		<li><code>msg.item</code> : the item's itemname (not label)</li>
-        		<li><code>msg.topic</code> : "StateEvent"</li>
+        		<li><code>msg.item</code> : the item's itemname (not the label)</li>
+        		<li><code>msg.event</code> : InitialStateEvent | ItemStateEvent | ItemStateChangedEvent</li>
                 <li><code>msg.payload</code> : the current state of the selected item</li>
+                <li><code>msg.oldValue</code> : the previous state of the selected item</li>
   	 		</ul>
 		</li>
    	 </ul>
@@ -429,9 +448,12 @@
         color: '#00cc00',
         defaults: {
             name:      {value:""},
-		    controller:  {value:"", type:"openhab2-controller", required:true},
-            itemname:  {value:"", required:true},
+		    controller:  {value:"", type:"openhab2-controller", required: true},
+            itemname:  {value:"", required: true},
+            initialstate: {value: true},
             onlywhenchanged: {value: false},
+            changedfrom: {value:"", required: false},
+            changedto: {value:"", required: false},
         },
         inputs: 0,
         outputs: 1,
