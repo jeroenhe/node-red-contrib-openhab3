@@ -83,21 +83,26 @@
     	</select>
     </div>
     <div class="form-row">
-        <label for="node-input-initialstate"><i class="fa fa-crosshairs"></i> Send initial state at node startup</label>
+        <label for="node-input-initialstate"><i class="fa fa-crosshairs"></i> Send initial</label>
         <input type="checkbox" id="node-input-initialstate" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
     </div>
     <div class="form-row">
-        <label for="node-input-onlywhenchanged"><i class="fa fa-crosshairs"></i> Only when changed</label>
-        <input type="checkbox" id="node-input-onlywhenchanged" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-whenupdated"><i class="fa fa-crosshairs"></i> Send updated</label>
+        <input type="checkbox" id="node-input-whenupdated" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
     </div>
     <div class="form-row">
-        <label for="node-input-changedfrom"><i class="fa fa-tag"></i> Changed from (oldValue)</label>
+        <label for="node-input-whenchanged"><i class="fa fa-crosshairs"></i> Send changed</label>
+        <input type="checkbox" id="node-input-whenchanged" style="display: inline-block; width: auto; vertical-align: top;">
+        </input>
+    </div>
+    <div class="form-row node-whenchanged">
+        <label for="node-input-changedfrom"><i class="fa fa-tag"></i> From (oldValue)</label>
         <input type="text" id="node-input-changedfrom" placeholder="Changed from">
     </div>
-    <div class="form-row">
-        <label for="node-input-changedto"><i class="fa fa-tag"></i> Changed to (value)</label>
+    <div class="form-row node-whenchanged">
+        <label for="node-input-changedto"><i class="fa fa-tag"></i> To (value)</label>
         <input type="text" id="node-input-changedto" placeholder="Changed to">
     </div>
 
@@ -224,10 +229,11 @@
         <li><b>Name :</b> Optionally specify a name</li>
         <li><b>Controller :</b> Select the openHAB controller</li>
         <li><b>Item :</b>Select the Item to monitor</li>
-        <li><b>Initial state :</b>Send message at node startup</li>
-        <li><b>When changed :</b>Send message when state changes</li>
-        <li><b>Changed from (optional) :</b>Old value</li>
-        <li><b>Changed to (optional) :</b>New value</li>
+        <li><b>Send initial :</b>Send message at node startup (InitialStateEvent)</li>
+        <li><b>When updated :</b>Send message when node state updates (ItemStateEvent)</li>
+        <li><b>When changed :</b>Send message when node state changes (ItemStateChangedEvent)</li>
+        <li><b>From :</b>Old state value. Ignored when left empty.</li>
+        <li><b>To :</b>New state value. Ignored when left empty.</li>
    	 </ul>
 	<p></p>
 
@@ -450,8 +456,9 @@
             name:      {value:""},
 		    controller:  {value:"", type:"openhab2-controller", required: true},
             itemname:  {value:"", required: true},
-            initialstate: {value: true},
-            onlywhenchanged: {value: false},
+            initialstate: {value: false},
+            whenupdated: {value: true},
+            whenchanged: {value: false},
             changedfrom: {value:"", required: false},
             changedto: {value:"", required: false},
         },
@@ -462,7 +469,21 @@
             return(this.name||this.itemname||"openhab2 in2");
         },
         oneditprepare: function() {
-        	openhabEditPrepare(this, false);
+            openhabEditPrepare(this, false);
+            $("#node-input-whenchanged").change(function() {
+                if ($(this).is(":checked")) {
+                    $(".node-whenchanged").show();
+                } else {
+                    $(".node-whenchanged").hide();
+                    $('#node-input-changedfrom').val('');
+                    $('#node-input-changedto').val('');
+                }
+            });
+            if (this.whenchanged === "true" || this.whenchanged === true) {
+                $("#node-input-whenchanged").prop("checked",true);
+            } else {
+                $("#node-input-whenchanged").prop("checked",false);
+            }
         }
     });
 </script>

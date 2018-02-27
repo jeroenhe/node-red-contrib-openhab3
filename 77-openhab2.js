@@ -19,6 +19,7 @@
 */
 var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
+var OH_NULL = "NULL";
 
 function getConnectionString(config) {
 	var url;
@@ -331,7 +332,6 @@ module.exports = function (RED) {
 				item: itemName,
 				event: "RawEvent"
 			}]);
-
 		};
 
 		node.context().set("currentState", "?");
@@ -381,7 +381,7 @@ module.exports = function (RED) {
 		this.refreshNodeStatus = function () {
 			var currentState = node.context().get("currentState");
 
-			if (currentState == null || currentState == undefined || currentState == "?") {
+			if (currentState == null || currentState == undefined || (currentState != null && currentState.trim().length == 0) || (currentState != null && currentState.toUpperCase() == OH_NULL)) {
 				node.status({
 					fill: "gray",
 					shape: "ring",
@@ -396,30 +396,6 @@ module.exports = function (RED) {
 			}
 		};
 
-		// this.processStateEvent = function (event) {
-
-		// 	var currentState = node.context().get("currentState");
-
-		// 	if ((event.state != currentState) && (event.state != "null")) {
-		// 		// update node's context variable
-		// 		currentState = event.state;
-		// 		node.context().set("currentState", currentState);
-
-		// 		// update node's visual status
-		// 		node.refreshNodeStatus();
-
-		// 		// inject the state in the node-red flow
-		// 		var msgid = RED.util.generateId();
-		// 		node.send([{
-		// 			_msgid: msgid,
-		// 			payload: currentState,
-		// 			item: itemName,
-		// 			event: "StateEvent"
-		// 		}, null]);
-
-		// 	}
-		// };
-
 		this.processRawEvent = function (event) {
 			/* 	event: message
 				data: {"topic":"smarthome/items/NachtelijkGasVerbruik/statechanged","payload":"{\"type\":\"Decimal\",\"value\":\"4144.781\",\"oldType\":\"Decimal\",\"oldValue\":\"4144.588\"}","type":"ItemStateChangedEvent"}
@@ -432,24 +408,18 @@ module.exports = function (RED) {
 
 			var currentState = node.context().get("currentState");
 			
-			//only process state values not equal to null
-			if (newState != "null") {
+			//only process state values not equal to NULL
+			if (newState.toUpperCase() != OH_NULL) {
 
-				//ignore GroupItemStateChangedEvent(s) alltogether
-				if ((eventType == "ItemStateChangedEvent" && config.onlywhenchanged) ||
-					(eventType == "ItemStateEvent" && !config.onlywhenchanged)) {
-					
-					//if (changedfrom != undefined && changedto != undefined) {
-					//	if (oldValue == changedfrom && newState == changedto) {
+				// update node's context variable
+				node.context().set("currentState", newState);
 
-					// update node's context variable
-					node.context().set("currentState", newState);
+				// update node's visual status
+				node.refreshNodeStatus();
 
-					// update node's visual status
-					node.refreshNodeStatus();
-
+				//Use helper function to determine iof we should send the new state
+				if (evalSendMessage(config, eventType, oldValue, newState)) {
 					// inject the state in the node-red flow
-					node.log("send state " + newState + " with eventType " + eventType);
 					var msg = {};
 					//create new message to inject
 					msg._msgid = msgid;
@@ -458,17 +428,48 @@ module.exports = function (RED) {
 					msg.payload = newState;
 					msg.oldValue = oldValue;
 					node.send(msg);
-				} else {
-				 	node.log("Ignored eventType " + eventType);
 				}
 			} else {
-				node.log("newState == null");
+				node.log("Not processing null state for item " + itemName + " and eventType" + eventType);
 			}
 		};
 
 		//start with an unitialized state
-		node.context().set("currentState", "?");
+		node.context().set("currentState", "");
 		node.refreshNodeStatus();
+
+		function evalSendMessage(config, eventType, oldValue, newState) {
+			if (config == null || eventType == null || newState == null) {
+				return false;
+			}
+			var initialstate = config.initialstate;
+			var onlywhenchanged = config.onlywhenchanged;
+			var changedfrom = config.changedfrom;
+			var changedto = config.changedto;
+
+			// node.log(	"Evaluating eventType " + eventType + "\n" +
+			// 			"whenupdated=" + config.whenupdated + "\n" +
+			// 			"whenchanged=" + config.whenchanged + "\n" +
+			// 			"changedfrom=" + config.changedfrom + "\n" +
+			// 			"changedto=" + config.changedto + "\n" +
+			// 			"oldValue=" + oldValue + "\n" +
+			// 			"newState=" + newState
+			// 		);
+
+			if (eventType == "ItemStateChangedEvent" 
+				&& config.whenchanged 
+				&& (changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || oldValue.toUpperCase() == changedfrom.toUpperCase())
+				&& (changedto == null || changedto == undefined || changedto.trim().length == 0 || newState.toUpperCase() == changedto.toUpperCase())) {
+				//node.log("evalSendMessage: true for ItemStateChangedEvent");
+				return true;
+			} else if (eventType == "ItemStateEvent" && config.whenupdated)
+			{
+				//node.log("evalSendMessage: true for ItemStateEvent");
+				return true;
+			}
+			//node.log("evalSendMessage: false");
+			return false;
+		}
 
 		function getInitial() {
 			//Actively get the initial item state
@@ -485,7 +486,6 @@ module.exports = function (RED) {
 					msg.event = "InitialStateEvent";
 					msg.payload = currentState;
 					msg.oldValue = null;
-					//node.log("Received body: '" + body + "'");
 
 					// update node's context variable
 					node.context().set("currentState", currentState);
@@ -493,8 +493,10 @@ module.exports = function (RED) {
 					// update node's visual status
 					node.refreshNodeStatus();
 
-					// inject the state in the node-red flow
-					node.send(msg);
+					if (config.initialstate) {
+						// inject the state in the node-red flow
+						node.send(msg);
+					}
 				},
 				function (err) {
 					node.status({
@@ -509,13 +511,8 @@ module.exports = function (RED) {
 			openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
 		}
 
-		if (config.initialstate) {
-			//Wait 5 seconds after startup before fetching initial value
-			setTimeout(getInitial, 5000);
-		} else {
-			//Start listening to events
-			openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
-		}
+		//Wait 1 seconds after startup before fetching initial value
+		setTimeout(getInitial, 1000);
 
 		/* ===== Node-Red events ===== */
 		this.on("input", function (msg) {

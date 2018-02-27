@@ -48,26 +48,24 @@ Channel 2:
 
 ##### - openhab2-in2
 
-Listens to state changes of a selected openHAB Item and actively gets state value at startup.
+Listens to state changes of a selected openHAB Item and allows you to configure on what specific event a message should be send, and under which conditions.
 
 *Configuration:*
 - Name : Optionally specify a name
 - Controller : Select the openHAB controller
 - Item : Select the Item to monitor
-- Changed : Only send a message when the state changes
+- Send initial state at node startup (will set msg.event to "InitialStateEvent") 
+- Only when Changed : Only send a message when the state changes (eventtype == "ItemStateChangedEvent") when set to true, otherwise only sends state updates (eventtype == "ItemStateEvent")
+- (Optional, when 'Only when Changed' is checked) Changed from: the old (previous) state. Ignored when left empty.
+- (Optional, when 'Only when Changed' is checked) Changed to: the new state where it changed to. Ignored when left empty.
 
-*Messages injected in NodeRED flows (2 channels):*
+*Messages injected in NodeRED flows (1 channel):*
 
 Channel 1:
 - <kbd>msg.item</kbd> : the item's itemname (not label)
-- <kbd>msg.topic</kbd> : "StateEvent"
+- <kbd>msg.event</kbd> : "InitialStateEvent" | "ItemStateEvent" | "ItemStateChangedEvent"
 - <kbd>msg.payload</kbd> : the new state of the selected item
-
-Channel 2:
-- <kbd>msg.item</kbd> : the item's itemname (not label)
-- <kbd>msg.topic</kbd> : "RawEvent"
-- <kbd>msg.payload</kbd> :  raw (unprocessed) event for the selected item
-
+- <kbd>msg.oldValue</kbd> : the previous value (state) of the item (when 'Only when Changed' is checked), otherwise null
 
 ##### - openhab2-monitor
 
