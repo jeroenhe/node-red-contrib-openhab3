@@ -128,12 +128,3 @@ The input message with addition of :
 - <kbd>msg.payload</kbd> : the item object (name, label, state, ...)
 - <kbd>msg.payload_in</kbd> : copy of incoming message's payload
 
-
-## TODO
-
-* Add openhab2-in2 node that:
-    * Copies openhab2-in behavior ('Listens to state changes of a selected openHAB Item.')
-    * Has an option (checkbox, boolean) to only node.send when an item changes (changes from (specified) X to Y, and event type is ItemStateChangedEvent)
-    * Has an option to periodically (specifyable) (re-)send the latest state.
-    * Fills msg.payload with the new state of the selected item
-    * Sends the state when the node is started
