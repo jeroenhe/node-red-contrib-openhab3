@@ -424,6 +424,7 @@ module.exports = function (RED) {
 					//create new message to inject
 					msg._msgid = msgid;
 					msg.item = itemName;
+					msg.topic = "StateEvent";
 					msg.event = eventType;
 					msg.payload = newState;
 					msg.oldValue = oldValue;
@@ -483,6 +484,7 @@ module.exports = function (RED) {
 					//create new message to inject
 					msg._msgid = msgid;
 					msg.item = itemName;
+					msg.topic = "StateEvent";
 					msg.event = "InitialStateEvent";
 					msg.payload = currentState;
 					msg.oldValue = null;

@@ -63,6 +63,7 @@ Listens to state changes of a selected openHAB Item and allows you to configure 
 
 Channel 1:
 - <kbd>msg.item</kbd> : the item's itemname (not label)
+- <kbd>msg.topic</kbd> : "StateEvent"
 - <kbd>msg.event</kbd> : "InitialStateEvent" | "ItemStateEvent" | "ItemStateChangedEvent"
 - <kbd>msg.payload</kbd> : the new state of the selected item
 - <kbd>msg.oldValue</kbd> : the previous value (state) of the item (when 'Only when Changed' is checked), otherwise null
