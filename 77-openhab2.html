@@ -83,6 +83,10 @@
     	</select>
     </div>
     <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> <span data-i18n="common.label.topic"></span></label>
+        <input type="text" id="node-input-topic" data-i18n="[placeholder]common.label.topic">
+    </div>
+    <div class="form-row">
         <label for="node-input-initialstate"><i class="fa fa-crosshairs"></i> Send initial</label>
         <input type="checkbox" id="node-input-initialstate" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
@@ -229,6 +233,7 @@
         <li><b>Name :</b> Optionally specify a name</li>
         <li><b>Controller :</b> Select the openHAB controller</li>
         <li><b>Item :</b>Select the Item to monitor</li>
+        <li><b>Topic :</b> .topic set in messagespan class="property-type">string</span></dt>
         <li><b>Send initial :</b>Send message at node startup (InitialStateEvent)</li>
         <li><b>When updated :</b>Send message when node state updates (ItemStateEvent)</li>
         <li><b>When changed :</b>Send message when node state changes (ItemStateChangedEvent)</li>
@@ -241,7 +246,8 @@
     <ul>
         <li>Channel 1 :
 			<ul>
-        		<li><code>msg.item</code> : the item's itemname (not the label)</li>
+                <li><code>msg.item</code> : the item's itemname (not the label)</li>
+                <li><code>msg.topic</code> : the item's topic as specified</li>
         		<li><code>msg.event</code> : InitialStateEvent | ItemStateEvent | ItemStateChangedEvent</li>
                 <li><code>msg.payload</code> : the current state of the selected item</li>
                 <li><code>msg.oldValue</code> : the previous state of the selected item</li>
@@ -456,6 +462,7 @@
             name:      {value:""},
 		    controller:  {value:"", type:"openhab2-controller", required: true},
             itemname:  {value:"", required: true},
+            topic:     {value:"", required: false},
             initialstate: {value: false},
             whenupdated: {value: true},
             whenchanged: {value: false},

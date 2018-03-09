@@ -367,6 +367,7 @@ module.exports = function (RED) {
 		var node = this;
 		var openhabController = RED.nodes.getNode(config.controller);
 		var itemName = config.itemname;
+		var topic = config.topic;
 		var initialstate = config.initialstate;
 		var onlywhenchanged = config.onlywhenchanged;
 		var changedfrom = config.changedfrom;
@@ -424,7 +425,7 @@ module.exports = function (RED) {
 					//create new message to inject
 					msg._msgid = msgid;
 					msg.item = itemName;
-					msg.topic = "StateEvent";
+					msg.topic = topic;
 					msg.event = eventType;
 					msg.payload = newState;
 					msg.oldValue = oldValue;
@@ -484,7 +485,7 @@ module.exports = function (RED) {
 					//create new message to inject
 					msg._msgid = msgid;
 					msg.item = itemName;
-					msg.topic = "StateEvent";
+					msg.topic = topic;
 					msg.event = "InitialStateEvent";
 					msg.payload = currentState;
 					msg.oldValue = null;
