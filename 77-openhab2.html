@@ -168,6 +168,35 @@
     </div>
 </script>
 
+<script type="text/x-red" data-template-name="openhab2-out2">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-controller"><i class="fa fa-globe"></i> Controller</label>
+        <input type="text" id="node-input-controller">
+    </div>
+    <div class="form-row">
+        <label for="node-input-itemname"><i class="fa fa-crosshairs"></i> ItemName</label>
+    	<select id="node-input-itemname" name="node-input-itemname" style="width: 250px;">
+    	</select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
+    	<select id="node-input-topic" name="node-input-topic" style="width: 250px;">
+			<option value=""></option>
+			<option value="ItemCommand">ItemCommand</option>
+			<option value="ItemUpdate">ItemUpdate</option>
+    	</select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-onlywhenchanged"><i class="fa fa-crosshairs"></i> Only when changed</label>
+        <input type="checkbox" id="node-input-onlywhenchanged" style="display: inline-block; width: auto; vertical-align: top;">
+        </input>
+    </div>
+</script>
+
 <script type="text/x-red" data-template-name="openhab2-events">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -336,6 +365,29 @@
         <li><code>msg.payload</code> optionally the fixed command or update value to send to the selected item</li>
    	 </ul>
 </script>
+
+<script type="text/x-red" data-help-name="openhab2-out2">
+    <p>Sends commands or state updates to a selected openHAB Item. You can choose to only write the state value if it differs from the actual state.</p>
+    <p>E.g. "ON", "OFF", "REFRESH", ... </p>
+	<p></p>
+	<b>Configuration</b>
+    <ul>
+        <li><b>Name :</b> Optionally specify a name</li>
+        <li><b>Controller :</b> Select the openHAB controller</li>
+        <li><b>Item :</b> Optionally select the Item to address. If specified, it overrides the item specified in the incoming message.</li>
+        <li><b>Topic :</b> Optionally select "ItemCommand" or "ItemUpdate". If specified, it overrides the topic specified in the incoming message.</li>
+        <li><b>Payload :</b> Optionally specify the command or update value to send to the selected item. If specified, it overrides the value specified in the incoming message.</li>
+        <li><b>Only when changed :</b> Optionally check this if you want to write the value if it changed in comparison to the actual value.</li>
+   	 </ul>
+	<p></p>
+	<b>Messages accepted by NodeRED flows</b>
+    <ul>
+        <li><code>msg.item</code> optionally the Item to address</li>
+        <li><code>msg.topic</code> optionally "ItemCommand", "ItemUpdate"</li>
+        <li><code>msg.payload</code> optionally the fixed command or update value to send to the selected item</li>
+   	 </ul>
+</script>
+
 
 <script type="text/x-red" data-help-name="openhab2-events">
     <p>Watches the event bus.</p>
@@ -547,6 +599,30 @@
 		    itemname:  {value:"", required:false},
 		    topic: {value:"", required:false},
 		    payload:  {value:"", required:false}
+		},
+        inputs: 1,
+        outputs: 0,
+        icon: "node-red-contrib-openhab2.png",
+        label: function() {
+            return(this.name||this.itemname||"openhab2 out");
+        },
+        oneditprepare: function() {
+        	openhabEditPrepare(this, true);
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('openhab2-out2',{
+        category: 'home automation',
+        color: '#00cc00',
+        defaults: {
+            name:      {value:""},
+		    controller:  {value:"", type:"openhab2-controller", required:true},
+		    itemname:  {value:"", required:false},
+		    topic: {value:"", required:false},
+            payload:  {value:"", required:false},
+            onlywhenchanged: {value: false},
 		},
         inputs: 1,
         outputs: 0,

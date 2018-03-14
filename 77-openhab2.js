@@ -693,6 +693,104 @@ module.exports = function (RED) {
 	RED.nodes.registerType("openhab2-out", OpenHABOut);
 
 	/**
+	 * ====== openhab2-out2 ===================
+	 * Sends outgoing commands or update from
+	 * messages received via node-red flows
+	 * It allows to save the state when it differs
+	 * from the latest.
+	 * =======================================
+	 */
+	function OpenHABOut(config) {
+		RED.nodes.createNode(this, config);
+		this.name = config.name;
+		var openhabController = RED.nodes.getNode(config.controller);
+		var node = this;
+
+		//node.log('new OpenHABOut, config: ' + JSON.stringify(config));
+
+		function saveValue(item, topic, payload) {
+			openhabController.control(item, topic, payload,
+				function (body) {
+					// no body expected for a command or update
+					node.status({
+						fill: "green",
+						shape: "dot",
+						text: "status ('" + payload + "') written"
+					});
+				},
+				function (err) {
+					node.status({
+						fill: "red",
+						shape: "ring",
+						text: err
+					});
+					node.warn(String(err));
+				}
+			);
+		}
+
+		// handle incoming node-red message
+		this.on("input", function (msg) {
+
+			// if a item/topic/payload is specified in the node's configuration, it overrides the item/topic/payload specified in the message
+			var item = (config.itemname && (config.itemname.length != 0)) ? config.itemname : msg.item;
+			var topic = (config.topic && (config.topic.length != 0)) ? config.topic : msg.topic;
+			var payload = (config.payload && (config.payload.length != 0)) ? config.payload : msg.payload;
+			var onlywhenchanged = config.onlywhenchanged;
+
+			if (payload != undefined) {
+				// execute the appropriate http POST to send the command to openHAB
+				// and update the node's status according to the http response
+
+				if (onlywhenchanged) {
+					//Actively get the initial item state
+					openhabController.control(item, null, null,
+						function (body) {
+							//gather variables
+							var currentState = JSON.parse(body).state;
+
+							if (currentState != undefined && currentState != null && currentState.toUpperCase() != payload.toUpperCase()) {
+								saveValue(item, topic, payload);
+							} else {
+								node.status({
+									fill: "gray",
+									shape: "ring",
+									text: "status unchanged ('" + currentState + "')"
+								});
+							}
+						},
+						function (err) {
+							node.status({
+								fill: "red",
+								shape: "ring",
+								text: err
+							});
+							node.warn(err);
+						}
+					);
+				} else {
+					saveValue(item, topic, payload);
+				}
+
+			} else {
+				// no payload specified !
+				node.status({
+					fill: "red",
+					shape: "ring",
+					text: "no payload specified"
+				});
+				node.warn('onInput: no payload specified');
+			}
+
+		});
+		this.on("close", function () {
+			node.log('close');
+		});
+	}
+	//
+	RED.nodes.registerType("openhab2-out2", OpenHABOut);
+
+	/**
 	 * ====== openhab2-get ===================
 	 * Gets the item data when
 	 * messages received via node-red flows
