@@ -700,7 +700,7 @@ module.exports = function (RED) {
 	 * from the latest.
 	 * =======================================
 	 */
-	function OpenHABOut(config) {
+	function OpenHABOut2(config) {
 		RED.nodes.createNode(this, config);
 		this.name = config.name;
 		var openhabController = RED.nodes.getNode(config.controller);
@@ -788,7 +788,7 @@ module.exports = function (RED) {
 		});
 	}
 	//
-	RED.nodes.registerType("openhab2-out2", OpenHABOut);
+	RED.nodes.registerType("openhab2-out2", OpenHABOut2);
 
 	/**
 	 * ====== openhab2-get ===================

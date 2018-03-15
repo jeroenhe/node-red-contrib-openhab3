@@ -191,6 +191,10 @@
     	</select>
     </div>
     <div class="form-row">
+        <label for="node-input-payload"><i class="fa fa-envelope"></i> Payload</label>
+        <input type="text" id="node-input-payload" placeholder="Payload">
+    </div>
+    <div class="form-row">
         <label for="node-input-onlywhenchanged"><i class="fa fa-crosshairs"></i> Only when changed</label>
         <input type="checkbox" id="node-input-onlywhenchanged" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
@@ -368,7 +372,6 @@
 
 <script type="text/x-red" data-help-name="openhab2-out2">
     <p>Sends commands or state updates to a selected openHAB Item. You can choose to only write the state value if it differs from the actual state.</p>
-    <p>E.g. "ON", "OFF", "REFRESH", ... </p>
 	<p></p>
 	<b>Configuration</b>
     <ul>
@@ -628,7 +631,7 @@
         outputs: 0,
         icon: "node-red-contrib-openhab2.png",
         label: function() {
-            return(this.name||this.itemname||"openhab2 out");
+            return(this.name||this.itemname||"openhab2 out2");
         },
         oneditprepare: function() {
         	openhabEditPrepare(this, true);
