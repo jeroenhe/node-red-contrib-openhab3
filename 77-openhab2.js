@@ -755,7 +755,7 @@ module.exports = function (RED) {
 								node.status({
 									fill: "gray",
 									shape: "ring",
-									text: "status unchanged ('" + currentState + "')"
+									text: "status unchanged (already '" + currentState + "')"
 								});
 							}
 						},
