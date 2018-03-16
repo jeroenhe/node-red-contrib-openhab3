@@ -382,7 +382,7 @@ module.exports = function (RED) {
 		this.refreshNodeStatus = function () {
 			var currentState = node.context().get("currentState");
 
-			if (currentState == null || currentState == undefined || (currentState != null && currentState.trim().length == 0) || (currentState != null && currentState.toUpperCase() == OH_NULL)) {
+			if (currentState == null || currentState == undefined || (currentState != null && currentState != undefined && currentState.trim().length == 0) || (currentState != null && currentState != undefined && currentState.toUpperCase() == OH_NULL)) {
 				node.status({
 					fill: "gray",
 					shape: "ring",
@@ -410,7 +410,7 @@ module.exports = function (RED) {
 			var currentState = node.context().get("currentState");
 			
 			//only process state values not equal to NULL
-			if (newState.toUpperCase() != OH_NULL) {
+			if (newState != null && newState != undefined && newState.toUpperCase() != OH_NULL) {
 
 				// update node's context variable
 				node.context().set("currentState", newState);
@@ -460,8 +460,8 @@ module.exports = function (RED) {
 
 			if (eventType == "ItemStateChangedEvent" 
 				&& config.whenchanged 
-				&& (changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || oldValue.toUpperCase() == changedfrom.toUpperCase())
-				&& (changedto == null || changedto == undefined || changedto.trim().length == 0 || newState.toUpperCase() == changedto.toUpperCase())) {
+				&& (changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || (oldValue != null && oldValue != undefined && oldValue.toUpperCase() == changedfrom.toUpperCase()))
+				&& (changedto == null || changedto == undefined || changedto.trim().length == 0 || (newState != null && newState != undefined && newState.toUpperCase() == changedto.toUpperCase()))) {
 				//node.log("evalSendMessage: true for ItemStateChangedEvent");
 				return true;
 			} else if (eventType == "ItemStateEvent" && config.whenupdated)
