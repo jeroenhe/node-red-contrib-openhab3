@@ -269,8 +269,8 @@
         <li><b>Topic :</b> .topic set in messagespan class="property-type">string</span></dt>
         <li><b>Send initial :</b>Send message at node startup (InitialStateEvent)</li>
         <li><b>When updated :</b>Send message when node state updates (ItemStateEvent)</li>
-        <li><b>When changed :</b>Send message when node state changes (ItemStateChangedEvent)</li>
-        <li><b>From :</b>Old state value. Ignored when left empty.</li>
+        <li><b>When changed :</b>Send message when node state changes or a command is received (ItemStateChangedEvent or ItemCommandEvent)</li>
+        <li><b>From :</b>Old state value. Ignored when left empty. Leave empty for reacting to ItemCommandEvent types.</li>
         <li><b>To :</b>New state value. Ignored when left empty.</li>
    	 </ul>
 	<p></p>

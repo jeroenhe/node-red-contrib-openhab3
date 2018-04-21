@@ -458,7 +458,7 @@ module.exports = function (RED) {
 			// 			"newState=" + newState
 			// 		);
 
-			if (eventType == "ItemStateChangedEvent" 
+			if ((eventType == "ItemStateChangedEvent" || eventType == "ItemCommandEvent") 
 				&& config.whenchanged 
 				&& (changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || (oldValue != null && oldValue != undefined && oldValue.toUpperCase() == changedfrom.toUpperCase()))
 				&& (changedto == null || changedto == undefined || changedto.trim().length == 0 || (newState != null && newState != undefined && newState.toUpperCase() == changedto.toUpperCase()))) {
