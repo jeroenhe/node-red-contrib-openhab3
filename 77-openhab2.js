@@ -79,7 +79,7 @@ module.exports = function (RED) {
 
 		// this controller node handles all communication with the configured openhab server
 		function getStateOfItems(config) {
-			node.log("getStateOfItems : config = " + JSON.stringify(config));
+			//node.log("getStateOfItems : config = " + JSON.stringify(config));
 
 			var url = getConnectionString(config) + "/rest/items";
 			request.get(url, function (error, response, body) {
