@@ -749,7 +749,7 @@ module.exports = function (RED) {
 							//gather variables
 							var currentState = JSON.parse(body).state;
 
-							if (currentState != undefined && currentState != null && currentState.toUpperCase() != payload.toUpperCase()) {
+							if (currentState != undefined && currentState != null && payload != undefined && payload != null && currentState.toUpperCase() != payload.toUpperCase()) {
 								saveValue(item, topic, payload);
 							} else {
 								node.status({
