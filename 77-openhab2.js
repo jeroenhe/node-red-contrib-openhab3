@@ -75,7 +75,7 @@ module.exports = function (RED) {
 
 		var node = this;
 
-		node.log("OpenHABControllerNode config: " + JSON.stringify(config));
+		//node.log("OpenHABControllerNode config: " + JSON.stringify(config));
 
 		// this controller node handles all communication with the configured openhab server
 		function getStateOfItems(config) {
