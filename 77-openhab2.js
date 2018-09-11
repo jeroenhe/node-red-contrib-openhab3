@@ -20,6 +20,7 @@
 var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
 var OH_NULL = "NULL";
+var oh_itemslist_cached = null;
 
 function getConnectionString(config) {
 	var url;
@@ -74,11 +75,9 @@ module.exports = function (RED) {
 
 		var node = this;
 
-		node.log(JSON.stringify(config));
+		node.log("OpenHABControllerNode config: " + JSON.stringify(config));
 
 		// this controller node handles all communication with the configured openhab server
-
-
 		function getStateOfItems(config) {
 			node.log("getStateOfItems : config = " + JSON.stringify(config));
 
@@ -167,11 +166,9 @@ module.exports = function (RED) {
 				node.warn('ERROR ' + JSON.stringify(err));
 				node.emit('CommunicationError', JSON.stringify(err));
 
-
 				if (err.status) {
 					if ((err.status == 503) || (err.status == "503") || (err.status == 404) || (err.status == "404"))
 						// the EventSource object has given up retrying ... retry reconnecting after 10 seconds
-
 						node.es.close();
 					delete node.es;
 
@@ -190,7 +187,7 @@ module.exports = function (RED) {
 		}
 
 		//startEventSource();
-		// give the system few seconds 
+		// give the system a few seconds 
 		setTimeout(function () {
 			startEventSource();
 		}, 5000);
@@ -223,7 +220,6 @@ module.exports = function (RED) {
 					okCb(body);
 				}
 			});
-
 		};
 
 		this.on("close", function () {
@@ -238,18 +234,23 @@ module.exports = function (RED) {
 	// start a web service for enabling the node configuration ui to query for available openHAB items
 
 	RED.httpNode.get("/openhab2/items", function (req, res, next) {
-		var config = req.query;
-		var url = getConnectionString(config) + '/rest/items';
-		request.get(url, function (error, response, body) {
-			if (error) {
-				res.send("request error '" + JSON.stringify(error) + "' on '" + url + "'");
-			} else if (response.statusCode != 200) {
-				res.send("response error '" + JSON.stringify(response) + "' on '" + url + "'");
-			} else {
-				res.send(body);
-			}
-		});
-
+		if (oh_itemslist_cached == null) {
+			var config = req.query;
+			var url = getConnectionString(config) + '/rest/items';
+			request.get(url, function (error, response, body) {
+				if (error) {
+					res.send("request error '" + JSON.stringify(error) + "' on '" + url + "'");
+					return;
+				} else if (response.statusCode != 200) {
+					res.send("response error '" + JSON.stringify(response) + "' on '" + url + "'");
+					return;
+				} else {
+					oh_itemslist_cached = body;
+				}
+			});
+		}
+		node.log("Returning cache items list for OH2");
+		return res.send(oh_itemslist_cached);
 	});
 
 	/**
@@ -277,25 +278,25 @@ module.exports = function (RED) {
 				node.status({
 					fill: "yellow",
 					shape: "ring",
-					text: "state:" + currentState
+					text: "state: " + currentState
 				});
 			else if (currentState == "ON" || currentState == "OPEN")
 				node.status({
 					fill: "green",
 					shape: "dot",
-					text: "state:" + currentState
+					text: "state: " + currentState
 				});
 			else if (currentState == "OFF" || currentState == "CLOSED")
 				node.status({
 					fill: "green",
 					shape: "ring",
-					text: "state:" + currentState
+					text: "state: " + currentState
 				});
 			else
 				node.status({
 					fill: "blue",
 					shape: "ring",
-					text: "state:" + currentState
+					text: "state: " + currentState
 				});
 		};
 
