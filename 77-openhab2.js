@@ -249,7 +249,6 @@ module.exports = function (RED) {
 				}
 			});
 		}
-		node.log("Returning cache items list for OH2");
 		return res.send(oh_itemslist_cached);
 	});
 
