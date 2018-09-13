@@ -234,6 +234,10 @@ module.exports = function (RED) {
 	// start a web service for enabling the node configuration ui to query for available openHAB items
 
 	RED.httpNode.get("/openhab2/items", function (req, res, next) {
+		//Very dirty but effective way to renew the items list approximately one in 10 times
+		if (Math.floor(Math.random() * 10) == 0) {
+			oh_itemslist_cached = null;
+		}
 		if (oh_itemslist_cached == null) {
 			var config = req.query;
 			var url = getConnectionString(config) + '/rest/items';
