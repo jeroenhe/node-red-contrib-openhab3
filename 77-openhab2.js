@@ -17,6 +17,14 @@
   limitations under the License.
   
 */
+
+var Rollbar = require('rollbar');
+var rollbar = new Rollbar({
+	accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+	captureUncaught: true,
+	captureUnhandledRejections: true
+});
+
 var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
 var OH_NULL = "NULL";
@@ -116,6 +124,9 @@ module.exports = function (RED) {
 		}
 
 		function startEventSource() {
+
+			// record a generic message and send it to Rollbar
+			rollbar.log("startEventSource()");
 
 			// register for all item events
 
@@ -844,6 +855,87 @@ module.exports = function (RED) {
 	}
 	//
 	RED.nodes.registerType("openhab2-get", OpenHABGet);
+
+	/**
+	 * ====== openhab2-get2 ===================
+	 * Gets the item data when
+	 * messages received via node-red flows
+	 * =======================================
+	 */
+	function OpenHABGet(config) {
+		RED.nodes.createNode(this, config);
+		this.name = config.name;
+		var topic = config.topic;
+		var openhabController = RED.nodes.getNode(config.controller);
+		var node = this;
+
+		this.refreshNodeStatus = function () {
+			var currentState = node.context().get("currentState");
+
+			if (currentState == null || currentState == undefined || (currentState != null && currentState != undefined && currentState.trim().length == 0) || (currentState != null && currentState != undefined && currentState.toUpperCase() == OH_NULL)) {
+				node.status({
+					fill: "gray",
+					shape: "ring",
+					text: "state: " + currentState
+				});
+			} else {
+				node.status({
+					fill: "green",
+					shape: "dot",
+					text: "state: " + currentState
+				});
+			}
+		};
+
+		// handle incoming node-red message
+		this.on("input", function (msg) {
+
+			var item = (config.itemname && (config.itemname.length != 0)) ? config.itemname : msg.item;
+
+			openhabController.control(item, null, null,
+				function (body) {
+					// no body expected for a command or update
+					node.status({
+						fill: "green",
+						shape: "dot",
+						text: " "
+					});
+
+					var currentState = JSON.parse(body).state;
+
+					//update msg
+					msg.item = item;
+					msg.topic = topic;
+					msg.event = "ActualValue";
+					msg.payload = currentState;
+					msg.oldValue = null;
+
+					// update node's context variable
+					node.context().set("currentState", currentState);
+
+					// update node's visual status
+					node.refreshNodeStatus();
+
+					msg.payload_in = msg.payload;
+					msg.payload = currentState
+					node.send(msg);
+				},
+				function (err) {
+					node.status({
+						fill: "red",
+						shape: "ring",
+						text: err
+					});
+					node.warn(err);
+				}
+			);
+		});
+		this.on("close", function () {
+			node.log('close');
+		});
+	}
+	//
+	RED.nodes.registerType("openhab2-get2", OpenHABGet);
 
 	/**
 	 * ====== openhab2-events ===================

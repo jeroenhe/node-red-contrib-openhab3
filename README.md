@@ -10,6 +10,10 @@ $ cd ~/.node-red
 $ npm install node-red-contrib-openhab2
 ```
 
+## Prerequisites
+
+*  Install rollbar into Node-RED: `npm install --save rollbar`
+
 ## Nodes
 
 ##### - openhab2-controller
