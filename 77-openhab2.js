@@ -371,9 +371,9 @@ module.exports = function (RED) {
 	RED.nodes.registerType("openhab2-in", OpenHABIn);
 
 	/**
-	 * ====== openhab2-in ========================
+	 * ====== openhab2-in2 ========================
 	 * Handles incoming openhab2 events, injecting 
-	 * json into node-red flows
+	 * json into node-red flows, but with extra features
 	 * ===========================================
 	 */
 	function OpenHABIn2(config) {
@@ -387,12 +387,15 @@ module.exports = function (RED) {
 		var onlywhenchanged = config.onlywhenchanged;
 		var changedfrom = config.changedfrom;
 		var changedto = config.changedto;
+		var keepsending = config.keepsending;
+		var keepsending_payload = config.keepsendingpayload;
+		var keepsending_seconds = config.keepsendingseconds;
 
 		if (itemName != undefined) {
 			itemName = itemName.trim();
 		}
 
-		//node.log('OpenHABIn, config: ' + JSON.stringify(config));
+		node.log('OpenHABIn2, config: ' + JSON.stringify(config));
 
 		this.refreshNodeStatus = function () {
 			var currentState = node.context().get("currentState");
@@ -412,39 +415,41 @@ module.exports = function (RED) {
 			}
 		};
 
+		var runner = null;
+
 		this.processRawEvent = function (event) {
 			/* 	event: message
 				data: {"topic":"smarthome/items/NachtelijkGasVerbruik/statechanged","payload":"{\"type\":\"Decimal\",\"value\":\"4144.781\",\"oldType\":\"Decimal\",\"oldValue\":\"4144.588\"}","type":"ItemStateChangedEvent"}
 			*/
 			// inject the state in the node-red flow
-			var msgid = RED.util.generateId();
 			var eventType = event.type;
 			var newState = event.payload.value;
 			var oldValue = event.payload.oldValue;
-
-			var currentState = node.context().get("currentState");
 			
 			//only process state values not equal to NULL
 			if (newState != null && newState != undefined && newState.toUpperCase() != OH_NULL) {
 
-				// update node's context variable
+				// update node's context variable && update node's visual status
 				node.context().set("currentState", newState);
-
-				// update node's visual status
 				node.refreshNodeStatus();
 
-				//Use helper function to determine iof we should send the new state
+				var repeatEnabled = evalRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds);
+				if (!repeatEnabled && runner != null) {
+					clearInterval(runner);
+				}
+
+				// Use helper function to determine if we should send the new state
 				if (evalSendMessage(config, eventType, oldValue, newState)) {
-					// inject the state in the node-red flow
-					var msg = {};
-					//create new message to inject
-					msg._msgid = msgid;
-					msg.item = itemName;
-					msg.topic = topic;
-					msg.event = eventType;
-					msg.payload = newState;
-					msg.oldValue = oldValue;
-					node.send(msg);
+					sendMessage(itemName, topic, eventType, newState, oldValue, "0");
+
+					// Prepare for repeating message
+					if (repeatEnabled) { 
+						keepsending_ms = parseInt(keepsending_seconds) * 1000;
+						runner = setInterval(
+							function(){ sendMessage(itemName, topic, eventType, newState, oldValue, "1"); }, 
+							keepsending_ms
+						);
+					}
 				}
 			} else {
 				node.log("Not processing null state for item " + itemName + " and eventType" + eventType);
@@ -455,7 +460,36 @@ module.exports = function (RED) {
 		node.context().set("currentState", "");
 		node.refreshNodeStatus();
 
-		function evalSendMessage(config, eventType, oldValue, newState) {
+		function sendMessage(itemName, topic, eventType, newState, oldValue, repeat) {
+			// inject the state in the node-red flow
+			var msg = {};
+			//create new message to inject
+			msg._msgid = RED.util.generateId();
+			msg.item = itemName;
+			msg.topic = topic;
+			msg.event = eventType;
+			msg.payload = newState;
+			msg.oldValue = oldValue;
+			msg.repeat = repeat;
+			node.send(msg);			
+		}
+
+		function evalRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds) {
+			if (config == null || newState == null) {
+				return false;
+			}
+			if (keepsending != null && keepsending != undefined && keepsending && 
+				newState != null && newState != undefined && 
+				keepsending_payload != null && keepsending_payload != undefined &&
+				keepsending_seconds != null && keepsending_seconds != undefined &&
+				newState.toUpperCase() == keepsending_payload.toUpperCase()) 
+			{ 
+				return true;
+			}
+			return false;
+		}
+
+		function evalSendMessage(config, eventType, oldValue, newState, repeat) {
 			if (config == null || eventType == null || newState == null) {
 				return false;
 			}
@@ -463,15 +497,6 @@ module.exports = function (RED) {
 			var onlywhenchanged = config.onlywhenchanged;
 			var changedfrom = config.changedfrom;
 			var changedto = config.changedto;
-
-			// node.log(	"Evaluating eventType " + eventType + "\n" +
-			// 			"whenupdated=" + config.whenupdated + "\n" +
-			// 			"whenchanged=" + config.whenchanged + "\n" +
-			// 			"changedfrom=" + config.changedfrom + "\n" +
-			// 			"changedto=" + config.changedto + "\n" +
-			// 			"oldValue=" + oldValue + "\n" +
-			// 			"newState=" + newState
-			// 		);
 
 			if ((eventType == "ItemStateChangedEvent" || eventType == "ItemCommandEvent") 
 				&& config.whenchanged 
