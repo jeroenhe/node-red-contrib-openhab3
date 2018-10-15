@@ -443,7 +443,7 @@ module.exports = function (RED) {
 					sendMessage(itemName, topic, eventType, newState, oldValue, "0");
 
 					// Prepare for repeating message
-					if (repeatEnabled) { 
+					if (repeatEnabled && runner == null) { 
 						keepsending_ms = parseInt(keepsending_seconds) * 1000;
 						runner = setInterval(
 							function(){ sendMessage(itemName, topic, eventType, newState, oldValue, "1"); }, 
