@@ -395,7 +395,7 @@ module.exports = function (RED) {
 			itemName = itemName.trim();
 		}
 
-		node.log('OpenHABIn2, config: ' + JSON.stringify(config));
+		//node.log('OpenHABIn2, config: ' + JSON.stringify(config));
 
 		this.refreshNodeStatus = function () {
 			var currentState = node.context().get("currentState");
@@ -887,7 +887,7 @@ module.exports = function (RED) {
 	 * messages received via node-red flows
 	 * =======================================
 	 */
-	function OpenHABGet(config) {
+	function OpenHABGet2(config) {
 		RED.nodes.createNode(this, config);
 		this.name = config.name;
 		var topic = config.topic;
@@ -960,7 +960,7 @@ module.exports = function (RED) {
 		});
 	}
 	//
-	RED.nodes.registerType("openhab2-get2", OpenHABGet);
+	RED.nodes.registerType("openhab2-get2", OpenHABGet2);
 
 	/**
 	 * ====== openhab2-events ===================
