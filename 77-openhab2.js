@@ -409,12 +409,10 @@ module.exports = function (RED) {
 				});
 			} else {
 				statusText = "state: " + currentState;
-				if (keepsending && runner != null) {
+				if (keepsending && runner == null) {
+					statusText += " (repeat enabled, but inactive)";
+				} else if (runner != null) {
 					statusText += " (repeating " + keepsending_payload + " every " + keepsending_seconds + " seconds)";
-				} else if (keepsending && runner == null) {
-					statusText += " (repeating enabled, but inactive)";
-				} else {
-					statusText += " (no repeat)"; 
 				}
 				node.status({
 					fill: "green",
@@ -438,11 +436,11 @@ module.exports = function (RED) {
 
 				// update node's context variable && update node's visual status
 				node.context().set("currentState", newState);
-				node.refreshNodeStatus();
 
-				var repeatEnabled = evalRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds);
-				if (!repeatEnabled && runner != null) {
+				var doRepeat = evalDoRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds);
+				if (!doRepeat) {
 					clearInterval(runner);
+					runner = null;
 				}
 
 				// Use helper function to determine if we should send the new state
@@ -450,14 +448,21 @@ module.exports = function (RED) {
 					sendMessage(itemName, topic, eventType, newState, oldValue, "0");
 
 					// Prepare for repeating message
-					if (repeatEnabled && runner == null) { 
-						keepsending_ms = parseInt(keepsending_seconds) * 1000;
-						runner = setInterval(
-							function(){ sendMessage(itemName, topic, eventType, newState, oldValue, "1"); }, 
-							keepsending_ms
-						);
+					if (doRepeat) {
+						if (runner == null) { 
+							keepsending_ms = parseInt(keepsending_seconds) * 1000;
+							runner = setInterval(
+								function(){ sendMessage(itemName, topic, eventType, newState, oldValue, "1"); }, 
+									keepsending_ms
+							);
+						}
+					} else {
+						//node.log("Repeat inactive or not matching new state for " + itemName);
+						clearInterval(runner);
+						runner = null;
 					}
 				}
+				node.refreshNodeStatus();
 			} else {
 				node.log("Not processing null state for item " + itemName + " and eventType" + eventType);
 			}
@@ -481,7 +486,8 @@ module.exports = function (RED) {
 			node.send(msg);			
 		}
 
-		function evalRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds) {
+		// Evaluate whether repeat is (config wise) enabled an is applicable given the current node state
+		function evalDoRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds) {
 			if (config == null || newState == null) {
 				return false;
 			}
