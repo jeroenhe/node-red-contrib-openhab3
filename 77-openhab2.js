@@ -380,6 +380,7 @@ module.exports = function (RED) {
 		RED.nodes.createNode(this, config);
 		this.name = config.name;
 		var node = this;
+		var runner = null;
 		var openhabController = RED.nodes.getNode(config.controller);
 		var itemName = config.itemname;
 		var topic = config.topic;
@@ -407,15 +408,21 @@ module.exports = function (RED) {
 					text: "state: " + currentState
 				});
 			} else {
+				statusText = "state: " + currentState;
+				if (keepsending && runner != null) {
+					statusText += " (repeating " + keepsending_payload + " every " + keepsending_seconds + " seconds)";
+				} else if (keepsending && runner == null) {
+					statusText += " (repeating enabled, but inactive)";
+				} else {
+					statusText += " (no repeat)"; 
+				}
 				node.status({
 					fill: "green",
 					shape: "dot",
-					text: "state: " + currentState
+					text: statusText
 				});
 			}
 		};
-
-		var runner = null;
 
 		this.processRawEvent = function (event) {
 			/* 	event: message
