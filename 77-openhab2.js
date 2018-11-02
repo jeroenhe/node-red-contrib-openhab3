@@ -18,13 +18,6 @@
   
 */
 
-var Rollbar = require('rollbar');
-var rollbar = new Rollbar({
-	accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
-	captureUncaught: true,
-	captureUnhandledRejections: true
-});
-
 var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
 var OH_NULL = "NULL";
@@ -124,9 +117,6 @@ module.exports = function (RED) {
 		}
 
 		function startEventSource() {
-
-			// record a generic message and send it to Rollbar
-			rollbar.log("startEventSource()");
 
 			// register for all item events
 
