@@ -1,18 +1,16 @@
 # node-red-contrib-openhab2
 ## Description
 
-Nodes facilitating the automation of *openHAB* ( <http://www.openhab.org> ) items with Node-RED ( <http://nodered.org> ).
+Nodes facilitating the automation of *openHAB* ( <http://www.openhab.org> ) items with Node-RED ( <http://nodered.org> ). This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions I find useful.
 
 ## Installation
 
-```
-$ cd ~/.node-red
-$ npm install node-red-contrib-openhab2
-```
+Add `node-red-contrib-openhab2` inside node-red' `packages.json` so it contains:
+  `"node-red-contrib-openhab2": "git://github.com/jeroenhendricksen/node-red-contrib-openhab2.git",`
 
-## Prerequisites
+Then perform an `npm install` for the node-red-contrib-openhab2 to be installed.
 
-*  Install rollbar into Node-RED: `npm install --save rollbar`
+Remember to first remove the official [node-red-contrib-openhab2](https://flows.nodered.org/node/node-red-contrib-openhab2) package if you have it installed
 
 ## Nodes
 
