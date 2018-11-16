@@ -3,14 +3,18 @@
 
 Nodes facilitating the automation of *openHAB* ( <http://www.openhab.org> ) items with Node-RED ( <http://nodered.org> ). This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions I find useful.
 
+![OpenHAB2 Node-RED nodes](images/openhab2_nodes.png)
+
 ## Installation
 
-Add `node-red-contrib-openhab2` inside node-red' `packages.json` so it contains:
-  `"node-red-contrib-openhab2": "git://github.com/jeroenhendricksen/node-red-contrib-openhab2.git",`
+_Note:  first remove the official [node-red-contrib-openhab2](https://flows.nodered.org/node/node-red-contrib-openhab2) package if you have it installed, otherwise they will collide_
 
-Then perform an `npm install` for the node-red-contrib-openhab2 to be installed.
+Add the following row inside the `dependencies` entry inside node-red' `packages.json` (`data/` folder) in a syntactically correct way:
 
-Remember to first remove the official [node-red-contrib-openhab2](https://flows.nodered.org/node/node-red-contrib-openhab2) package if you have it installed
+    "node-red-contrib-openhab2": "git://github.com/jeroenhendricksen/node-red-contrib-openhab2.git"
+
+Then perform an `npm install` from the directory where the packages.json resides, using the same user as node-red is running under (to prevent file permission problems). Then restart nodered for the changes to take effect.
+
 
 ## Nodes
 
