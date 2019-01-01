@@ -18,10 +18,12 @@
   
 */
 
+const NodeCache = require("node-cache");
 var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
+
 var OH_NULL = "NULL";
-var oh_itemslist_cached = null;
+
 
 function getConnectionString(config) {
 	var url;
@@ -110,10 +112,8 @@ module.exports = function (RED) {
 							state: item.state
 						});
 					});
-
 				}
 			});
-
 		}
 
 		function startEventSource() {
@@ -233,28 +233,21 @@ module.exports = function (RED) {
 	RED.nodes.registerType("openhab2-controller", OpenHABControllerNode);
 
 	// start a web service for enabling the node configuration ui to query for available openHAB items
+	RED.httpNode.get("/openhab2/items",function(req, res, next) {
+		var config = req.query;
+		var url = getConnectionString(config) + '/rest/items';
+		request.get(url, function(error, response, body) {
+			if ( error ) {
+				res.send("request error '" + JSON.stringify(error) + "' on '" + url + "'");
+			}
+			else if ( response.statusCode != 200 ) {
+				res.send("response error '" + JSON.stringify(response) + "' on '" + url + "'");
+			}
+			else {
+				res.send(body);
+			}
+		});
 
-	RED.httpNode.get("/openhab2/items", function (req, res, next) {
-		//Very dirty but effective way to renew the items list approximately one in 10 times
-		if (Math.floor(Math.random() * 10) == 0) {
-			oh_itemslist_cached = null;
-		}
-		if (oh_itemslist_cached == null) {
-			var config = req.query;
-			var url = getConnectionString(config) + '/rest/items';
-			request.get(url, function (error, response, body) {
-				if (error) {
-					res.send("request error '" + JSON.stringify(error) + "' on '" + url + "'");
-					return;
-				} else if (response.statusCode != 200) {
-					res.send("response error '" + JSON.stringify(response) + "' on '" + url + "'");
-					return;
-				} else {
-					oh_itemslist_cached = body;
-				}
-			});
-		}
-		return res.send(oh_itemslist_cached);
 	});
 
 	/**
@@ -324,7 +317,6 @@ module.exports = function (RED) {
 					item: itemName,
 					event: "StateEvent"
 				}, null]);
-
 			}
 		};
 
@@ -420,7 +412,7 @@ module.exports = function (RED) {
 			var eventType = event.type;
 			var newState = event.payload.value;
 			var oldValue = event.payload.oldValue;
-			
+
 			//only process state values not equal to NULL
 			if (newState != null && newState != undefined && newState.toUpperCase() != OH_NULL) {
 
@@ -439,11 +431,13 @@ module.exports = function (RED) {
 
 					// Prepare for repeating message
 					if (doRepeat) {
-						if (runner == null) { 
+						if (runner == null) {
 							keepsending_ms = parseInt(keepsending_seconds) * 1000;
 							runner = setInterval(
-								function(){ sendMessage(itemName, topic, eventType, newState, oldValue, "1"); }, 
-									keepsending_ms
+								function () {
+									sendMessage(itemName, topic, eventType, newState, oldValue, "1");
+								},
+								keepsending_ms
 							);
 						}
 					} else {
@@ -473,7 +467,7 @@ module.exports = function (RED) {
 			msg.payload = newState;
 			msg.oldValue = oldValue;
 			msg.repeat = repeat;
-			node.send(msg);			
+			node.send(msg);
 		}
 
 		// Evaluate whether repeat is (config wise) enabled an is applicable given the current node state
@@ -481,12 +475,11 @@ module.exports = function (RED) {
 			if (config == null || newState == null) {
 				return false;
 			}
-			if (keepsending != null && keepsending != undefined && keepsending && 
-				newState != null && newState != undefined && 
+			if (keepsending != null && keepsending != undefined && keepsending &&
+				newState != null && newState != undefined &&
 				keepsending_payload != null && keepsending_payload != undefined &&
 				keepsending_seconds != null && keepsending_seconds != undefined &&
-				newState.toUpperCase() == keepsending_payload.toUpperCase()) 
-			{ 
+				newState.toUpperCase() == keepsending_payload.toUpperCase()) {
 				return true;
 			}
 			return false;
@@ -501,14 +494,13 @@ module.exports = function (RED) {
 			var changedfrom = config.changedfrom;
 			var changedto = config.changedto;
 
-			if ((eventType == "ItemStateChangedEvent" || eventType == "ItemCommandEvent") 
-				&& config.whenchanged 
-				&& (changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || (oldValue != null && oldValue != undefined && oldValue.toUpperCase() == changedfrom.toUpperCase()))
-				&& (changedto == null || changedto == undefined || changedto.trim().length == 0 || (newState != null && newState != undefined && newState.toUpperCase() == changedto.toUpperCase()))) {
+			if ((eventType == "ItemStateChangedEvent" || eventType == "ItemCommandEvent") &&
+				config.whenchanged &&
+				(changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || (oldValue != null && oldValue != undefined && oldValue.toUpperCase() == changedfrom.toUpperCase())) &&
+				(changedto == null || changedto == undefined || changedto.trim().length == 0 || (newState != null && newState != undefined && newState.toUpperCase() == changedto.toUpperCase()))) {
 				//node.log("evalSendMessage: true for ItemStateChangedEvent");
 				return true;
-			} else if (eventType == "ItemStateEvent" && config.whenupdated)
-			{
+			} else if (eventType == "ItemStateEvent" && config.whenupdated) {
 				//node.log("evalSendMessage: true for ItemStateEvent");
 				return true;
 			}
