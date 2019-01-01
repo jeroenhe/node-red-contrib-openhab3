@@ -18,7 +18,6 @@
   
 */
 
-const NodeCache = require("node-cache");
 var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
 
