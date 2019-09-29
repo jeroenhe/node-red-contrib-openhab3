@@ -446,8 +446,6 @@ module.exports = function (RED) {
 					}
 				}
 				node.refreshNodeStatus();
-			} else {
-				node.log("Not processing null state for item " + itemName + " and eventType" + eventType);
 			}
 		};
 
