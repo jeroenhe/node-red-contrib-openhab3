@@ -365,10 +365,6 @@ module.exports = function (RED) {
 		var openhabController = RED.nodes.getNode(config.controller);
 		var itemName = config.itemname;
 		var topic = config.topic;
-		var initialstate = config.initialstate;
-		var onlywhenchanged = config.onlywhenchanged;
-		var changedfrom = config.changedfrom;
-		var changedto = config.changedto;
 		var keepsending = config.keepsending;
 		var keepsending_payload = config.keepsendingpayload;
 		var keepsending_seconds = config.keepsendingseconds;
@@ -390,11 +386,6 @@ module.exports = function (RED) {
 				});
 			} else {
 				statusText = "state: " + currentState;
-				if (keepsending && runner == null) {
-					statusText += " (repeat enabled, but inactive)";
-				} else if (runner != null) {
-					statusText += " (repeating " + keepsending_payload + " every " + keepsending_seconds + " seconds)";
-				}
 				node.status({
 					fill: "green",
 					shape: "dot",
@@ -418,32 +409,9 @@ module.exports = function (RED) {
 				// update node's context variable && update node's visual status
 				node.context().set("currentState", newState);
 
-				var doRepeat = evalDoRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds);
-				if (!doRepeat) {
-					clearInterval(runner);
-					runner = null;
-				}
-
 				// Use helper function to determine if we should send the new state
 				if (evalSendMessage(config, eventType, oldValue, newState)) {
-					sendMessage(itemName, topic, eventType, newState, oldValue, "0");
-
-					// Prepare for repeating message
-					if (doRepeat) {
-						if (runner == null) {
-							keepsending_ms = parseInt(keepsending_seconds) * 1000;
-							runner = setInterval(
-								function () {
-									sendMessage(itemName, topic, eventType, newState, oldValue, "1");
-								},
-								keepsending_ms
-							);
-						}
-					} else {
-						//node.log("Repeat inactive or not matching new state for " + itemName);
-						clearInterval(runner);
-						runner = null;
-					}
+					sendMessage(itemName, topic, eventType, newState, oldValue);
 				}
 				node.refreshNodeStatus();
 			}
@@ -453,7 +421,7 @@ module.exports = function (RED) {
 		node.context().set("currentState", "");
 		node.refreshNodeStatus();
 
-		function sendMessage(itemName, topic, eventType, newState, oldValue, repeat) {
+		function sendMessage(itemName, topic, eventType, newState, oldValue) {
 			// inject the state in the node-red flow
 			var msg = {};
 			//create new message to inject
@@ -463,31 +431,13 @@ module.exports = function (RED) {
 			msg.event = eventType;
 			msg.payload = newState;
 			msg.oldValue = oldValue;
-			msg.repeat = repeat;
 			node.send(msg);
 		}
 
-		// Evaluate whether repeat is (config wise) enabled an is applicable given the current node state
-		function evalDoRepeat(config, newState, keepsending, keepsending_payload, keepsending_seconds) {
-			if (config == null || newState == null) {
-				return false;
-			}
-			if (keepsending != null && keepsending != undefined && keepsending &&
-				newState != null && newState != undefined &&
-				keepsending_payload != null && keepsending_payload != undefined &&
-				keepsending_seconds != null && keepsending_seconds != undefined &&
-				newState.toUpperCase() == keepsending_payload.toUpperCase()) {
-				return true;
-			}
-			return false;
-		}
-
-		function evalSendMessage(config, eventType, oldValue, newState, repeat) {
+		function evalSendMessage(config, eventType, oldValue, newState) {
 			if (config == null || eventType == null || newState == null) {
 				return false;
 			}
-			var initialstate = config.initialstate;
-			var onlywhenchanged = config.onlywhenchanged;
 			var changedfrom = config.changedfrom;
 			var changedto = config.changedto;
 

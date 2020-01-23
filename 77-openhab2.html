@@ -109,20 +109,6 @@
         <label for="node-input-changedto"><i class="fa fa-tag"></i> To (value)</label>
         <input type="text" id="node-input-changedto" placeholder="Changed to">
     </div>
-    <div class="form-row">
-        <label for="node-input-keepsending"><i class="fa fa-repeat"></i> Repeat sending</label>
-        <input type="checkbox" id="node-input-keepsending" style="display: inline-block; width: auto; vertical-align: top;">
-        </input>
-    </div>
-    <div class="form-row node-keepsending" style="display: block;">
-        <span data-i18n="node-red:inject.every">every</span>
-        <span class="ui-spinner ui-widget ui-widget-content ui-corner-all"><input id="node-input-keepsendingseconds" /></span>
-        <select style="width:100px" id="inject-time-interval-units">
-            <option value="s" data-i18n="node-red:inject.seconds">seconds</option>
-        </select><br>
-        <span>when payload equals</span>
-        <input type="text" id="node-input-keepsendingpayload" style="width:100px" placeholder="payload">
-    </div>
 </script>
 
 <script type="text/x-red" data-template-name="openhab2-get">
@@ -304,7 +290,6 @@
         <li><b>When changed :</b>Send message when node state changes or a command is received (ItemStateChangedEvent or ItemCommandEvent)</li>
         <li><b>From :</b>Old state value. Ignored when left empty. Leave empty for reacting to ItemCommandEvent types.</li>
         <li><b>To :</b>New state value. Ignored when left empty.</li>
-        <li><b>Repeat sending :</b>Repeat sending msg for a specific payload.</li>
    	 </ul>
 	<p></p>
 
@@ -470,7 +455,7 @@
 			port: {value:8080,	required:false /*,	validate:RED.validators.number() */},
 			path: {value:"",	required:false},
 		    username: {value:"", required:false},
-		    password:  {value:"", required:false}
+		    password: {value:"", required:false}
 		},
 		label: function() {
 			return this.name;
