@@ -52,22 +52,6 @@
 
 </script>
 
-<script type="text/x-red" data-template-name="openhab2-in">
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-    <div class="form-row">
-        <label for="node-input-controller"><i class="fa fa-globe"></i> Controller</label>
-        <input type="text" id="node-input-controller">
-    </div>
-    <div class="form-row">
-        <label for="node-input-itemname"><i class="fa fa-crosshairs"></i> ItemName</label>
-    	<select id="node-input-itemname" name="node-input-itemname" style="width: 250px;">
-    	</select>
-    </div>
-</script>
-
 <script type="text/x-red" data-template-name="openhab2-in2">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -111,22 +95,6 @@
     </div>
 </script>
 
-<script type="text/x-red" data-template-name="openhab2-get">
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-    <div class="form-row">
-        <label for="node-input-controller"><i class="fa fa-globe"></i> Controller</label>
-        <input type="text" id="node-input-controller">
-    </div>
-    <div class="form-row">
-        <label for="node-input-itemname"><i class="fa fa-crosshairs"></i> ItemName</label>
-    	<select id="node-input-itemname" name="node-input-itemname" style="width: 250px;">
-    	</select>
-    </div>
-</script>
-
 <script type="text/x-red" data-template-name="openhab2-get2">
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -155,34 +123,6 @@
     <div class="form-row">
         <label for="node-input-controller"><i class="fa fa-globe"></i> Controller</label>
         <input type="text" id="node-input-controller">
-    </div>
-</script>
-
-<script type="text/x-red" data-template-name="openhab2-out">
-    <div class="form-row">
-        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
-    </div>
-    <div class="form-row">
-        <label for="node-input-controller"><i class="fa fa-globe"></i> Controller</label>
-        <input type="text" id="node-input-controller">
-    </div>
-    <div class="form-row">
-        <label for="node-input-itemname"><i class="fa fa-crosshairs"></i> ItemName</label>
-    	<select id="node-input-itemname" name="node-input-itemname" style="width: 250px;">
-    	</select>
-    </div>
-    <div class="form-row">
-        <label for="node-input-topic"><i class="fa fa-tasks"></i> Topic</label>
-    	<select id="node-input-topic" name="node-input-topic" style="width: 250px;">
-			<option value=""></option>
-			<option value="ItemCommand">ItemCommand</option>
-			<option value="ItemUpdate">ItemUpdate</option>
-    	</select>
-    </div>
-    <div class="form-row">
-        <label for="node-input-payload"><i class="fa fa-envelope"></i> Payload</label>
-        <input type="text" id="node-input-payload" placeholder="Payload">
     </div>
 </script>
 
@@ -245,37 +185,6 @@
    	 </ul>
 </script>
 
-<script type="text/x-red" data-help-name="openhab2-in">
-    <p>Listens to state changes of a selected openHAB Item.</p>
-	<p></p>
-	<b>Configuration</b>
-    <ul>
-        <li><b>Name :</b> Optionally specify a name</li>
-        <li><b>Controller :</b> Select the openHAB controller</li>
-        <li><b>Item :</b>Select the Item to monitor</li>
-   	 </ul>
-	<p></p>
-
-	<b>Messages injected in NodeRED flows (2 channels)</b>
-    <ul>
-        <li>Channel 1 :
-			<ul>
-        		<li><code>msg.item</code> : the item's itemname (not label)</li>
-        		<li><code>msg.topic</code> : "StateEvent"</li>
-        		<li><code>msg.payload</code> : the new state of the selected item</li>
-  	 		</ul>
-		</li>
-        <li>Channel 2 :
-			<ul>
-        		<li><code>msg.item</code> : the item's itemname (not label)</li>
-        		<li><code>msg.topic</code> : "RawEvent"</li>
-        		<li><code>msg.payload</code> : raw (unprocessed) event for the selected item</li>
-  	 		</ul>
-		</li>
-
-   	 </ul>
-</script>
-
 <script type="text/x-red" data-help-name="openhab2-in2">
     <p>Listens to state changes of a selected openHAB Item and actively gets state value at startup.</p>
 	<p></p>
@@ -305,25 +214,6 @@
   	 		</ul>
 		</li>
    	 </ul>
-</script>
-
-<script type="text/x-red" data-help-name="openhab2-get">
-    <p>Gets an openHAB Item on an input message.</p>
-	<p></p>
-	<b>Configuration</b>
-    <ul>
-        <li><b>Name :</b> Optionally specify a name</li>
-        <li><b>Controller :</b> Select the openHAB controller</li>
-        <li><b>Item :</b> Optionally select the Item to address. If specified, it overrides the item specified in the incoming message.</li>
-    </ul>
-	<p></p>
-
-	<b>Messages injected in NodeRED flows (1 channel)</b>
-	The input message with addition of :
-    <ul>
-        <li><code>msg.payload</code> : the item object (name, label, state, ...)</li>
-        <li><code>msg.payload_in</code> : copy of incoming message's payload</li>
-  	</ul>
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-get2">
@@ -387,28 +277,6 @@
 
    	 </ul>
 
-</script>
-
-
-<script type="text/x-red" data-help-name="openhab2-out">
-    <p>Sends commands or state updates to a selected openHAB Item.</p>
-    <p>E.g. "ON", "OFF", "REFRESH", ... </p>
-	<p></p>
-	<b>Configuration</b>
-    <ul>
-        <li><b>Name :</b> Optionally specify a name</li>
-        <li><b>Controller :</b> Select the openHAB controller</li>
-        <li><b>Item :</b> Optionally select the Item to address. If specified, it overrides the item specified in the incoming message.</li>
-        <li><b>Topic :</b> Optionally select "ItemCommand" or "ItemUpdate". If specified, it overrides the topic specified in the incoming message.</li>
-        <li><b>Payload :</b> Optionally specify the command or update value to send to the selected item. If specified, it overrides the value specified in the incoming message.</li>
-   	 </ul>
-	<p></p>
-	<b>Messages accepted by NodeRED flows</b>
-    <ul>
-        <li><code>msg.item</code> optionally the Item to address</li>
-        <li><code>msg.topic</code> optionally "ItemCommand", "ItemUpdate"</li>
-        <li><code>msg.payload</code> optionally the fixed command or update value to send to the selected item</li>
-   	 </ul>
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-out2">
@@ -529,28 +397,6 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('openhab2-in',{
-        category: 'home automation',
-        color: '#00cc00',
-        defaults: {
-            name:      {value:""},
-		    controller:  {value:"", type:"openhab2-controller", required:true},
-		    itemname:  {value:"", required:true},
-        },
-        inputs: 0,
-        outputs: 2,
-        icon: "node-red-contrib-openhab2.png",
-        label: function() {
-
-            return(this.name||this.itemname||"openhab2 in");
-        },
-        oneditprepare: function() {
-        	openhabEditPrepare(this, false);
-        }
-    });
-</script>
-
-<script type="text/javascript">
     RED.nodes.registerType('openhab2-in2',{
         category: 'home automation',
         color: '#00cc00',
@@ -609,28 +455,6 @@
 </script>
 
 <script type="text/javascript">
-    RED.nodes.registerType('openhab2-get',{
-        category: 'home automation',
-        color: '#00cc00',
-        defaults: {
-            name:      {value:""},
-		    controller:  {value:"", type:"openhab2-controller", required:true},
-		    itemname:  {value:"", required:false},
-        },
-        inputs: 1,
-        outputs: 1,
-        icon: "node-red-contrib-openhab2.png",
-        label: function() {
-
-            return(this.name||this.itemname||"openhab2 get");
-        },
-        oneditprepare: function() {
-        	openhabEditPrepare(this, true);
-        }
-    });
-</script>
-
-<script type="text/javascript">
     RED.nodes.registerType('openhab2-get2',{
         category: 'home automation',
         color: '#00cc00',
@@ -669,29 +493,6 @@
             return(this.name||"openhab2 monitor");
         },
         oneditprepare: function() {
-        }
-    });
-</script>
-
-<script type="text/javascript">
-    RED.nodes.registerType('openhab2-out',{
-        category: 'home automation',
-        color: '#00cc00',
-        defaults: {
-            name:      {value:""},
-		    controller:  {value:"", type:"openhab2-controller", required:true},
-		    itemname:  {value:"", required:false},
-		    topic: {value:"", required:false},
-		    payload:  {value:"", required:false}
-		},
-        inputs: 1,
-        outputs: 0,
-        icon: "node-red-contrib-openhab2.png",
-        label: function() {
-            return(this.name||this.itemname||"openhab2 out");
-        },
-        oneditprepare: function() {
-        	openhabEditPrepare(this, true);
         }
     });
 </script>
@@ -741,4 +542,3 @@
         }
     });
 </script>
-
