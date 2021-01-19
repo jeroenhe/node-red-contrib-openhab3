@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-openhab2",
-  "version": "1.1.6",
+  "version": "1.2.0",
   "description": "OpenHAB home automation for node-red, forked from Peter De Mangelaere <peter.demangelaere@gmail.com>",
   "dependencies": {
     "request": "latest",
