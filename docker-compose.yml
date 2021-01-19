@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  nodered:
+    build: ./nodered
+    networks: [ "nodered" ]
+    ports:
+      - "1880:1880"
+    volumes:
+      - type: bind
+        source: ./
+        target: /node-red-contrib-openhab2
+    
+  openhab:
+    image: openhab/openhab:2.5.10-debian
+    networks: [ "nodered" ]
+    ports:
+      - "8080:8080"
+    volumes:
+      - type: bind
+        source: ./test/openhab/conf/items
+        target: /openhab/conf/items
+      - type: volume
+        source: openhab-userdata
+        target: /openhab/userdata
+      - type: volume
+        source: openhab-addons
+        target: /openhab/addons
+    environment:
+      - CRYPTO_POLICY=unlimited
+      - USER_ID=9001
+      - GROUP_ID=9001
+
+volumes:
+  nodered:
+  openhab-conf:
+  openhab-userdata:
+  openhab-addons:
+
+networks:
+  nodered:

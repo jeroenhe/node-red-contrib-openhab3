@@ -4,7 +4,8 @@
   "description": "OpenHAB home automation for node-red, forked from Peter De Mangelaere <peter.demangelaere@gmail.com>",
   "dependencies": {
     "request": "latest",
-    "@joeybaker/eventsource": "latest"
+    "@joeybaker/eventsource": "latest",
+    "bootstrap-multiselect": "^0.9.15"
   },
   "author": "Jeroen Hendricksen",
   "keywords": [

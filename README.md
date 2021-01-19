@@ -15,123 +15,25 @@ Add the following row inside the `dependencies` entry inside node-red' `packages
 
 Then perform an `npm install` from the directory where the packages.json resides, using the same user as node-red is running under (to prevent file permission problems). Then restart nodered for the changes to take effect.
 
-
 ## Nodes
 
-##### - openhab2-controller
+See [77-openhab2.html] for info on nodes.
 
-Configuration node for communication with an openHAB controller.
+## Testing
 
-*Configuration:*
-- Name : Specify a name for the configuration node
-- Protocol : "http" or "https"
-- Host : Specify the hostname or ip address
-- Port : (Optionally) Specify the ip port
-- Path : (Optionally) Specify the additional base path
-- Username : (Optionally) Specify the username to authenticate
-- Password : (Optionally) Specify the password to authenticate
+Docker is used to test this plugin in a clean Node-RED and OpenHAB environment.
+The openhab2 plugin is installed into Node-RED before the service is started (inside the container).
+Prerequisites for running this test environment are docker and docker-compose.
 
-##### - openhab2-in
+    # Start by running Node-RED and OpenHAB
+    ./run.sh
 
-Listens to state changes of a selected openHAB Item.
+After a little while, you can visit:
 
-*Configuration:*
-- Name : Optionally specify a name
-- Controller : Select the openHAB controller
-- Item : Select the Item to monitor
+- [Node-RED](http://localhost:1880)
+- [Openhab](http://localhost:8080)
 
-*Messages injected in NodeRED flows (2 channels):*
+And optionally you can import [flow.json](test/nodered/flow.json) into Node-RED for (manual) testing purposes.
 
-Channel 1:
-- <kbd>msg.item</kbd> : the item's itemname (not label)
-- <kbd>msg.topic</kbd> : "StateEvent"
-- <kbd>msg.payload</kbd> : the new state of the selected item
-
-Channel 2:
-- <kbd>msg.item</kbd> : the item's itemname (not label)
-- <kbd>msg.topic</kbd> : "RawEvent"
-- <kbd>msg.payload</kbd> :  raw (unprocessed) event for the selected item
-
-##### - openhab2-in2
-
-Listens to state changes of a selected openHAB Item and allows you to configure on what specific event a message should be send, and under which conditions.
-
-*Configuration:*
-- Name : Optionally specify a name
-- Controller : Select the openHAB controller
-- Item : Select the Item to monitor
-- Send initial state at node startup (will set msg.event to "InitialStateEvent") 
-- Only when Changed : Only send a message when the state changes (eventtype == "ItemStateChangedEvent") when set to true, otherwise only sends state updates (eventtype == "ItemStateEvent")
-- (Optional, when 'Only when Changed' is checked) Changed from: the old (previous) state. Ignored when left empty.
-- (Optional, when 'Only when Changed' is checked) Changed to: the new state where it changed to. Ignored when left empty.
-
-*Messages injected in NodeRED flows (1 channel):*
-
-Channel 1:
-- <kbd>msg.item</kbd> : the item's itemname (not label)
-- <kbd>msg.topic</kbd> : "StateEvent"
-- <kbd>msg.event</kbd> : "InitialStateEvent" | "ItemStateEvent" | "ItemStateChangedEvent"
-- <kbd>msg.payload</kbd> : the new state of the selected item
-- <kbd>msg.oldValue</kbd> : the previous value (state) of the item (when 'Only when Changed' is checked), otherwise null
-
-##### - openhab2-monitor
-
-Monitors the openhab2-controller node.
-
-*Configuration:*
-- Name : Optionally specify a name
-- Controller : Select the openHAB controller
-
-*Messages injected in NodeRED flows (3 channels):*
-
-Channel 1:
-- <kbd>msg.topic</kbd> : "ConnectionStatus"
-- <kbd>msg.payload</kbd> : connection status ('ON' or 'OFF')
-
-Channel 2:
-- <kbd>msg.topic</kbd> : "ConnectionError"
-- <kbd>msg.payload</kbd> : error message
-
-Channel 3:
-- <kbd>msg.topic</kbd> : "RawEvent"
-- <kbd>msg.payload</kbd> :  raw (unprocessed) event for all items
-
-##### - openhab2-out
-
-Sends commands or state updates to a selected openHAB Item.
-E.g. "ON", "OFF", "REFRESH", ... 
-
-*Configuration:*
-- Name : Optionally specify a name
-- Controller : Select the openHAB controller
-- Item :  Optionally select the Item to address. If specified, it overrides the item specified in the incoming message.
-- Topic : Optionally select "ItemCommand" or "ItemUpdate". If specified, it overrides the topic specified in the incoming message. 
-- Payload : Optionally specify the command or update value to send to the selected item. If specified, it overrides the payload specified in the incoming message.
-
-
-*Messages accepted by NodeRED flows:*
-
-- <kbd>msg.item</kbd> : optionally the Item to address
-- <kbd>msg.topic</kbd> :  optionally "ItemCommand", "ItemUpdate"
-- <kbd>msg.payload</kbd> : optionally the fixed command or update value to send to the selected item
-
-##### - openhab2-get
-
-Gets an openHAB Item on an input message.
-
-*Configuration:*
-- Name : Optionally specify a name
-- Controller : Select the openHAB controller
-- Item : Optionally select the Item to get. If specified, it overrides the item specified in the incoming message.
-
-*Messages accepted by NodeRED flows:*
-
-- <kbd>msg.item</kbd> : optionally the Item to address
-
-*Messages injected in NodeRED flows (1 channel):*
-
-Channel 1:
-The input message with addition of :
-- <kbd>msg.payload</kbd> : the item object (name, label, state, ...)
-- <kbd>msg.payload_in</kbd> : copy of incoming message's payload
-
+    # To reset the test-setup from scratch (this also removes volumes):
+    ./clean.sh

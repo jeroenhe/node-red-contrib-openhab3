@@ -1,0 +1,6 @@
+Group GTest "Test"
+
+Contact TestContact "Contact" (GTest)
+Dimmer TestDimmer "Dimmer" (GTest)
+Switch TestSwitch "Schakelaar" (GTest)
+String TestString "String" (GTest)
