@@ -1,0 +1,4 @@
+nodered/
+test/
+*.sh
+docker-compose.yml
