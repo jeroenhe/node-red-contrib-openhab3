@@ -140,7 +140,7 @@ module.exports = function (RED) {
 
             // register for all item events
             var eventsource_url = config.ohversion == "v3" ? "/rest/events?topics=openhab/items" : "/rest/events?topics=smarthome/items";
-            node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
+            //node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(getConnectionString(config) + eventsource_url, {});
 
             // handle the 'onopen' event
