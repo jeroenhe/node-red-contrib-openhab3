@@ -1,4 +1,7 @@
+.github/
+.vscode/
 nodered/
+openhab3/
 test/
 *.sh
 docker-compose.yml
