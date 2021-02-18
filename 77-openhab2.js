@@ -22,6 +22,8 @@ var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
 
 var OH_NULL = "NULL";
+var V2_EVENTSOURCE_URL_PART = "smarthome";
+var V3_EVENTSOURCE_URL_PART = "openhab";
 
 
 function getConnectionString(config) {
@@ -137,11 +139,11 @@ module.exports = function (RED) {
         function startEventSource() {
 
             // register for all item events
-
-            node.es = new EventSource(getConnectionString(config) + "/rest/events?topics=smarthome/items", {});
+            var eventsource_url = config.ohversion == "v3" ? "/rest/events?topics=openhab/items" : "/rest/events?topics=smarthome/items";
+            node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
+            node.es = new EventSource(getConnectionString(config) + eventsource_url, {});
 
             // handle the 'onopen' event
-
             node.es.onopen = function (event) {
 
                 // get the current state of all items
@@ -149,7 +151,6 @@ module.exports = function (RED) {
             };
 
             // handle the 'onmessage' event
-
             node.es.onmessage = function (msg) {
                 //node.log(msg.data);
                 try {
@@ -157,7 +158,9 @@ module.exports = function (RED) {
                     msg = JSON.parse(msg.data);
                     msg.payload = JSON.parse(msg.payload);
 
-                    const itemStart = ("smarthome/items/").length;
+                    var url = config.ohversion === "v3" ? V3_EVENTSOURCE_URL_PART + "/items/" : V2_EVENTSOURCE_URL_PART + "/items/";
+                    node.log('config.ohversion: ' + config.ohversion + ' url: ' + url);
+                    const itemStart = (url).length;
                     var item = msg.topic.substring(itemStart, msg.topic.indexOf('/', itemStart));
 
                     node.emit(item + "/RawEvent", msg);
@@ -177,7 +180,6 @@ module.exports = function (RED) {
             };
 
             // handle the 'onerror' event
-
             node.es.onerror = function (err) {
                 if (err.type && (JSON.stringify(err.type) === '{}'))
                     return; // ignore
@@ -216,18 +218,22 @@ module.exports = function (RED) {
 
             if (topic === "ItemUpdate") {
                 url = getConnectionString(config) + "/rest/items/" + itemname + "/state";
+                headers = {"Content-type":"text/plain"};
                 method = request.put;
             } else if (topic === "ItemCommand") {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
+                headers = {"Content-type":"text/plain"};
                 method = request.post;
             } else {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
+                headers = {};
                 method = request.get;
             }
 
             method({
                 url: url,
-                body: String(payload)
+                body: String(payload),
+                headers: headers
             }, function (error, response, body) {
                 if (error) {
                     node.emit('CommunicationError', error);
@@ -728,7 +734,9 @@ module.exports = function (RED) {
             }
 
             // register for all item events
-            node.es = new EventSource(getConnectionString(openhabController.getConfig()) + "/rest/events?topics=smarthome/*/*", {});
+            var eventsource_url = config.ohversion == "v3" ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*" : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
+            node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
+            node.es = new EventSource(getConnectionString(openhabController.getConfig()) + eventsource_url, {});
 
             node.status({
                 fill: "green",

@@ -1,0 +1,12 @@
+According to https://tldrlegal.com/license/apache-license-2.0-%28apache-2.0%29, I need to:
+
+- [x] Include Copyright [LICENSE](LICENSE)
+- [x] Include License [LICENSE](LICENSE)
+- [x] State changes (see below)
+- [x] Include NOTICE (this file) when you distribute. Not sure whether forking on GitHub is 
+  the same as distributing, but the NOTICE is here anyway.
+
+*Changes*
+
+- Work with OpenHAB v1/v2 *and* v3
+- Nodes were postfixed with a `2` to prevent collision with the original module.

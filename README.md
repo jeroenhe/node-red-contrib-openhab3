@@ -1,4 +1,5 @@
 # node-red-contrib-openhab2
+
 ## Description
 
 Nodes facilitating the automation of *openHAB* ( <http://www.openhab.org> ) items with Node-RED ( <http://nodered.org> ). This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions I find useful.
@@ -9,11 +10,20 @@ Nodes facilitating the automation of *openHAB* ( <http://www.openhab.org> ) item
 
 _Note:  first remove the official [node-red-contrib-openhab2](https://flows.nodered.org/node/node-red-contrib-openhab2) package if you have it installed, otherwise they will collide_
 
-Add the following row inside the `dependencies` entry inside node-red' `packages.json` (`data/` folder) in a syntactically correct way:
+1. First enter the container (as nodered user):
 
-    "node-red-contrib-openhab2": "git://github.com/jeroenhendricksen/node-red-contrib-openhab2.git"
+    export COMPOSE_PROJECT_NAME=nodered-test
+    docker-compose exec nodered /bin/bash
 
-Then perform an `npm install` from the directory where the packages.json resides, using the same user as node-red is running under (to prevent file permission problems). Then restart nodered for the changes to take effect.
+1. Go to the `/data` folder inside the container (`cd /data`)
+1. Add the following row inside the `dependencies` entry inside node-red' `packages.json` (`data/` folder) in a syntactically correct way:
+
+    "node-red-contrib-openhab2": "https://github.com/jeroenhendricksen/node-red-contrib-openhab2.git"
+
+1. Perform an `npm install`.
+1. Restart nodered for the changes to take effect.
+
+Please note that this installation instruction is different from the (somewhat hidden) installation method used under `Testing` below.
 
 ## Nodes
 
@@ -33,7 +43,13 @@ After a little while, you can visit:
 - [Node-RED](http://localhost:1880)
 - [Openhab](http://localhost:8080)
 
-And optionally you can import [flow.json](test/nodered/flow.json) into Node-RED for (manual) testing purposes.
+OpenHAB may require some mandatory configuration before it starts working.
+For NodeRED, you can import [flow.json](test/nodered/flow.json) into Node-RED for (manual) testing purposes.
+
+You can verify the server sides event connections:
+
+- [OpenHAB 2](http://localhost:8080/rest/events?topics=smarthome/items)
+- [OpenHAB 3](http://localhost:8081/rest/events?topics=openhab/items)
 
     # To reset the test-setup from scratch (this also removes volumes):
     ./clean.sh

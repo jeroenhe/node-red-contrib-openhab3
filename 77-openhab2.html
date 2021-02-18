@@ -49,6 +49,13 @@
         <label for="node-config-input-password"><i class="fa fa-user-secret"></i> Password</label>
         <input type="password" id="node-config-input-password">
     </div>
+    <div class="form-row">
+        <label for="node-config-input-ohversion"><i class="fa fa-unlock-alt"></i> OpenHAB version</label>
+        <select id="node-config-input-ohversion" name="node-config-input-ohversion" style="width: 250px;">
+            <option value="v2">v1 and v2</option>
+            <option value="v3">v3</option>
+        </select>
+    </div>
 
 </script>
 
@@ -103,32 +110,32 @@
         <input type="text" id="node-input-topic" name="node-input-topic" style="width: 250px;">
     </div>
     <div class="form-row">
-        <label for="node-input-initialstate"><i class="fa fa-crosshairs"></i> Send initial</label>
+        <label for="node-input-initialstate"><i class="fa fa-crosshairs"></i> Send initial<br/>(<code>InitialStateEvent</code>)</label>
         <input type="checkbox" id="node-input-initialstate" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
     </div>
     <div class="form-row">
-        <label for="node-input-whenupdated"><i class="fa fa-crosshairs"></i> Send updated</label>
+        <label for="node-input-whenupdated"><i class="fa fa-crosshairs"></i> Send updated<br/>(<code>ItemStateEvent</code>)</label>
         <input type="checkbox" id="node-input-whenupdated" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
     </div>
     <div class="form-row">
-        <label for="node-input-whencommand"><i class="fa fa-crosshairs"></i> Send command</label>
+        <label for="node-input-whencommand"><i class="fa fa-crosshairs"></i> Send command<br/>(<code>ItemCommandEvent</code>)</label>
         <input type="checkbox" id="node-input-whencommand" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
     </div>
     <div class="form-row">
-        <label for="node-input-whenchanged"><i class="fa fa-crosshairs"></i> Send changed</label>
+        <label for="node-input-whenchanged"><i class="fa fa-crosshairs"></i> Send changed<br/>(<code>ItemStateChangedEvent</code>)</label>
         <input type="checkbox" id="node-input-whenchanged" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
     </div>
     <div class="form-row node-whenchanged">
         <label for="node-input-changedfrom"><i class="fa fa-tag"></i> From (oldValue)</label>
-        <input type="text" id="node-input-changedfrom" placeholder="Changed from">
+        <input type="text" id="node-input-changedfrom" placeholder="<anything>">
     </div>
     <div class="form-row node-whenchanged">
         <label for="node-input-changedto"><i class="fa fa-tag"></i> To (value)</label>
-        <input type="text" id="node-input-changedto" placeholder="Changed to">
+        <input type="text" id="node-input-changedto" placeholder="<anything>">
     </div>
 </script>
 
@@ -283,7 +290,8 @@
         <li><b>Path :</b> (Optionally) Specify the additional base path</li>
         <li><b>Username :</b> (Optionally) Specify the username to authenticate</li>
         <li><b>Password :</b> (Optionally) Specify the password to authenticate</li>
-        </ul>
+        <li><b>OpenHAB version :</b> "v1 and v2" or "v3".</li>
+    </ul>
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-in2">
@@ -425,7 +433,8 @@
             port: {value:8080,required:false /*,	validate:RED.validators.number() */},
             path: {value:"",required:false},
             username: {value:"", required:false},
-            password: {value:"", required:false}
+            password: {value:"", required:false},
+            ohversion: {value:"v2",required:true}
         },
         paletteLabel: "openhab2-controller",
         label: function() {
@@ -436,7 +445,7 @@
 
 
 <script type="text/javascript">
-    // some code chared by openhab2-in and openhab2-out
+    // some code shared by openhab2-in2 and openhab2-out2
     
     function openhabEditPrepare(node, allowEmpty) {
 
@@ -462,7 +471,8 @@
                        port: cntrlConfig.port,
                        path: cntrlConfig.path,
                        username: cntrlConfig.username,
-                       password: cntrlConfig.password
+                       password: cntrlConfig.password,
+                       ohversion: cntrlConfig.ohversion,
                 }
                 //console.log("config = " + JSON.stringify(config));
                 $.getJSON("openhab2/items", config)

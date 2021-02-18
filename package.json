@@ -16,8 +16,7 @@
       "openhab2": "77-openhab2.js"
     }
   },
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/jeroenhendricksen/node-red-contrib-openhab2.git"

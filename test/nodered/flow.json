@@ -20,8 +20,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 160,
-        "y": 120,
+        "x": 120,
+        "y": 100,
         "wires": [
             [
                 "b506df3.12e0b2"
@@ -49,8 +49,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 160,
-        "y": 260,
+        "x": 120,
+        "y": 240,
         "wires": [
             [
                 "3baac046.e74c6"
@@ -67,8 +67,8 @@
         "topic": "ItemUpdate",
         "payload": "",
         "onlywhenchanged": false,
-        "x": 390,
-        "y": 120,
+        "x": 350,
+        "y": 100,
         "wires": []
     },
     {
@@ -81,8 +81,8 @@
         "topic": "ItemCommand",
         "payload": "",
         "onlywhenchanged": false,
-        "x": 400,
-        "y": 260,
+        "x": 360,
+        "y": 240,
         "wires": []
     },
     {
@@ -106,8 +106,8 @@
         "topic": "",
         "payload": "A",
         "payloadType": "str",
-        "x": 170,
-        "y": 300,
+        "x": 130,
+        "y": 280,
         "wires": [
             [
                 "3baac046.e74c6"
@@ -135,8 +135,8 @@
         "topic": "",
         "payload": "B",
         "payloadType": "str",
-        "x": 170,
-        "y": 340,
+        "x": 130,
+        "y": 320,
         "wires": [
             [
                 "3baac046.e74c6"
@@ -164,8 +164,8 @@
         "topic": "",
         "payload": "A",
         "payloadType": "str",
-        "x": 170,
-        "y": 160,
+        "x": 130,
+        "y": 140,
         "wires": [
             [
                 "b506df3.12e0b2"
@@ -193,8 +193,8 @@
         "topic": "",
         "payload": "B",
         "payloadType": "str",
-        "x": 170,
-        "y": 200,
+        "x": 130,
+        "y": 180,
         "wires": [
             [
                 "b506df3.12e0b2"
@@ -215,8 +215,8 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 780,
-        "y": 120,
+        "x": 740,
+        "y": 100,
         "wires": [
             [
                 "1239c2ad.d9683d"
@@ -236,8 +236,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1070,
-        "y": 120,
+        "x": 1030,
+        "y": 100,
         "wires": []
     },
     {
@@ -254,8 +254,8 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 780,
-        "y": 180,
+        "x": 740,
+        "y": 160,
         "wires": [
             [
                 "ce4b8f1e.33b89"
@@ -275,8 +275,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1070,
-        "y": 180,
+        "x": 1030,
+        "y": 160,
         "wires": []
     },
     {
@@ -293,8 +293,8 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 800,
-        "y": 240,
+        "x": 760,
+        "y": 220,
         "wires": [
             [
                 "6383b166.7226"
@@ -314,8 +314,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1090,
-        "y": 240,
+        "x": 1050,
+        "y": 220,
         "wires": []
     },
     {
@@ -332,8 +332,8 @@
         "whenchanged": true,
         "changedfrom": "",
         "changedto": "",
-        "x": 810,
-        "y": 300,
+        "x": 770,
+        "y": 280,
         "wires": [
             [
                 "2f5ab12.049044e"
@@ -353,8 +353,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1100,
-        "y": 300,
+        "x": 1060,
+        "y": 280,
         "wires": []
     },
     {
@@ -363,8 +363,8 @@
         "z": "f6f2187d.f17ca8",
         "name": "",
         "controller": "203623fa.cd824c",
-        "x": 230,
-        "y": 520,
+        "x": 150,
+        "y": 400,
         "wires": [
             [],
             [],
@@ -386,7 +386,418 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 490,
+        "x": 410,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "6ca0e7c3.a05578",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "openhab v2",
+        "info": "",
+        "x": 130,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "2964b23d.36112e",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 580,
+        "wires": [
+            [
+                "5c8a8a9a.cee1f4"
+            ]
+        ]
+    },
+    {
+        "id": "38fb8622.0c1b2a",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 120,
+        "y": 720,
+        "wires": [
+            [
+                "926477ec.982e78"
+            ]
+        ]
+    },
+    {
+        "id": "5c8a8a9a.cee1f4",
+        "type": "openhab2-out2",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemUpdate to TestString",
+        "controller": "badf3377.cd963",
+        "itemname": "TestString",
+        "topic": "ItemUpdate",
+        "payload": "",
+        "onlywhenchanged": false,
+        "x": 350,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "926477ec.982e78",
+        "type": "openhab2-out2",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemCommand to TestString",
+        "controller": "badf3377.cd963",
+        "itemname": "TestString",
+        "topic": "ItemCommand",
+        "payload": "",
+        "onlywhenchanged": false,
+        "x": 360,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "874ca293.bd24c",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "A",
+        "payloadType": "str",
+        "x": 130,
+        "y": 760,
+        "wires": [
+            [
+                "926477ec.982e78"
+            ]
+        ]
+    },
+    {
+        "id": "640408e2.f5aa48",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "B",
+        "payloadType": "str",
+        "x": 130,
+        "y": 800,
+        "wires": [
+            [
+                "926477ec.982e78"
+            ]
+        ]
+    },
+    {
+        "id": "ca7f8652.a43ba8",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "A",
+        "payloadType": "str",
+        "x": 130,
+        "y": 620,
+        "wires": [
+            [
+                "5c8a8a9a.cee1f4"
+            ]
+        ]
+    },
+    {
+        "id": "a7304c12.effb",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "B",
+        "payloadType": "str",
+        "x": 130,
+        "y": 660,
+        "wires": [
+            [
+                "5c8a8a9a.cee1f4"
+            ]
+        ]
+    },
+    {
+        "id": "b998ece.a14a71",
+        "type": "openhab2-in2",
+        "z": "f6f2187d.f17ca8",
+        "name": "InitialStateEvent for TestString",
+        "controller": "badf3377.cd963",
+        "itemname": "TestString",
+        "topic": "",
+        "initialstate": true,
+        "whenupdated": false,
+        "whencommand": false,
+        "whenchanged": false,
+        "changedfrom": "",
+        "changedto": "",
+        "x": 740,
+        "y": 580,
+        "wires": [
+            [
+                "f15fa0bb.fb08c"
+            ]
+        ]
+    },
+    {
+        "id": "f15fa0bb.fb08c",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "InitialStateEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "5af7ab41.08f924",
+        "type": "openhab2-in2",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemStateEvent for TestString",
+        "controller": "badf3377.cd963",
+        "itemname": "TestString",
+        "topic": "",
+        "initialstate": false,
+        "whenupdated": true,
+        "whencommand": false,
+        "whenchanged": false,
+        "changedfrom": "",
+        "changedto": "",
+        "x": 740,
+        "y": 640,
+        "wires": [
+            [
+                "d5e694e.df10768"
+            ]
+        ]
+    },
+    {
+        "id": "d5e694e.df10768",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemStateEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "e52a5d65.223f1",
+        "type": "openhab2-in2",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemCommandEvent for TestString",
+        "controller": "badf3377.cd963",
+        "itemname": "TestString",
+        "topic": "",
+        "initialstate": false,
+        "whenupdated": false,
+        "whencommand": true,
+        "whenchanged": false,
+        "changedfrom": "",
+        "changedto": "",
+        "x": 760,
+        "y": 700,
+        "wires": [
+            [
+                "be3902ac.dc4c"
+            ]
+        ]
+    },
+    {
+        "id": "be3902ac.dc4c",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemCommandEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "af44bfe9.00564",
+        "type": "openhab2-in2",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemStateChangedEvent for TestString",
+        "controller": "badf3377.cd963",
+        "itemname": "TestString",
+        "topic": "",
+        "initialstate": false,
+        "whenupdated": false,
+        "whencommand": false,
+        "whenchanged": true,
+        "changedfrom": "",
+        "changedto": "",
+        "x": 770,
+        "y": 760,
+        "wires": [
+            [
+                "a0bc1963.e29d48"
+            ]
+        ]
+    },
+    {
+        "id": "a0bc1963.e29d48",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "ItemStateChangedEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "46d81492.fa937c",
+        "type": "openhab2-monitor",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "badf3377.cd963",
+        "x": 150,
+        "y": 880,
+        "wires": [
+            [],
+            [],
+            [
+                "30d9d1ae.4a851e"
+            ]
+        ]
+    },
+    {
+        "id": "30d9d1ae.4a851e",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "raw events",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 410,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "5255d249.56031c",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "openhab v3",
+        "info": "",
+        "x": 130,
         "y": 540,
         "wires": []
     },
@@ -399,6 +810,19 @@
         "port": "8080",
         "path": "",
         "username": "",
-        "password": ""
+        "password": "",
+        "ohversion": "v2"
+    },
+    {
+        "id": "badf3377.cd963",
+        "type": "openhab2-controller",
+        "name": "openhab3",
+        "protocol": "http",
+        "host": "openhab3",
+        "port": "8080",
+        "path": "",
+        "username": "",
+        "password": "",
+        "ohversion": "v3"
     }
 ]
