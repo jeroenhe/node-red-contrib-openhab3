@@ -1,4 +1,4 @@
-# node-red-contrib-openhab2
+# node-red-contrib-openhab3
 
 ## Description
 
