@@ -20,16 +20,13 @@ jobs:
   register:
     runs-on: ubuntu-latest
     steps:
-      - run: 'echo "ToDo: Call https://flows.nodered.org/add/node"'
+      - run: 'echo "ToDo: Automate calling https://flows.nodered.org/add/node"'
 
 # Node-RED requires us to announce our updated package via https:
-
+#
 # Automating this is a little difficult, because of the required CSRF token.
-
-# 1. curl -c /tmp/cookies.txt -XGET "https://flows.nodered.org/add/node" > output.html
-# 2. Extract the CSRF token from the output.html, formatted like this: `<input id="add-node-csrf" name="_csrf" type="hidden" value="24eXJQMJ-jzJtlNX_cO01qQGx0IsC313XIEY">`
-# 3. Post:
-#     curl -c /tmp/cookies.txt -XPOST "https://flows.nodered.org/add/node"
-#     -H "Content-Type: application/x-www-form-urlencoded" 
-#     -d "module=node-red-contrib-openhab3&_csrf=TOKEN" 
-# 4. Package is updated
+#
+# 1. `curl -s -c /tmp/cookies.txt -XGET "https://flows.nodered.org/add/node" > output.html`
+# 2. Extract the CSRF token from the output.html, formatted like this: `<input id="add-node-csrf" name="_csrf" type="hidden" value="TOKEN">`
+# 3. Post: `curl -s -c /tmp/cookies.txt -XPOST "https://flows.nodered.org/add/node" -H "Content-Type: application/x-www-form-urlencoded" -H "referer: https://flows.nodered.org/add/node" -H "x-requested-with: XMLHttpRequest" -d "module=node-red-contrib-openhab3&_csrf=TOKEN" > result.txt`
+# 4. Package should be updated, but it isn't.

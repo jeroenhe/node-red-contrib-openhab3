@@ -16,6 +16,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.1 | Update nodes picture in this README |
 | 1.3.0 | Renamed all nodes to be unique from the original package |
 
 ## Nodes
