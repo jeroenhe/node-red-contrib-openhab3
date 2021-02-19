@@ -1,3 +1,6 @@
+[![Publish NPM package](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/
+workflows/npm-publish.yml/badge.svg?branch=master)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml)
+
 # node-red-contrib-openhab3
 
 ## Description
