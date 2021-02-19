@@ -21,7 +21,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 120,
-        "y": 100,
+        "y": 120,
         "wires": [
             [
                 "b506df3.12e0b2"
@@ -50,7 +50,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 120,
-        "y": 240,
+        "y": 260,
         "wires": [
             [
                 "3baac046.e74c6"
@@ -68,7 +68,7 @@
         "payload": "",
         "onlywhenchanged": false,
         "x": 350,
-        "y": 100,
+        "y": 120,
         "wires": []
     },
     {
@@ -82,7 +82,7 @@
         "payload": "",
         "onlywhenchanged": false,
         "x": 360,
-        "y": 240,
+        "y": 260,
         "wires": []
     },
     {
@@ -107,7 +107,7 @@
         "payload": "A",
         "payloadType": "str",
         "x": 130,
-        "y": 280,
+        "y": 300,
         "wires": [
             [
                 "3baac046.e74c6"
@@ -136,7 +136,7 @@
         "payload": "B",
         "payloadType": "str",
         "x": 130,
-        "y": 320,
+        "y": 340,
         "wires": [
             [
                 "3baac046.e74c6"
@@ -165,7 +165,7 @@
         "payload": "A",
         "payloadType": "str",
         "x": 130,
-        "y": 140,
+        "y": 160,
         "wires": [
             [
                 "b506df3.12e0b2"
@@ -194,7 +194,7 @@
         "payload": "B",
         "payloadType": "str",
         "x": 130,
-        "y": 180,
+        "y": 200,
         "wires": [
             [
                 "b506df3.12e0b2"
@@ -216,7 +216,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 740,
-        "y": 100,
+        "y": 120,
         "wires": [
             [
                 "1239c2ad.d9683d"
@@ -227,7 +227,7 @@
         "id": "1239c2ad.d9683d",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "InitialStateEvent",
+        "name": "v2 InitialStateEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -236,8 +236,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1030,
-        "y": 100,
+        "x": 1040,
+        "y": 120,
         "wires": []
     },
     {
@@ -255,7 +255,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 740,
-        "y": 160,
+        "y": 180,
         "wires": [
             [
                 "ce4b8f1e.33b89"
@@ -266,7 +266,7 @@
         "id": "ce4b8f1e.33b89",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "ItemStateEvent",
+        "name": "v2 ItemStateEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -275,8 +275,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1030,
-        "y": 160,
+        "x": 1040,
+        "y": 180,
         "wires": []
     },
     {
@@ -294,7 +294,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 760,
-        "y": 220,
+        "y": 240,
         "wires": [
             [
                 "6383b166.7226"
@@ -305,7 +305,7 @@
         "id": "6383b166.7226",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "ItemCommandEvent",
+        "name": "v2 ItemCommandEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -314,8 +314,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1050,
-        "y": 220,
+        "x": 1060,
+        "y": 240,
         "wires": []
     },
     {
@@ -333,7 +333,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 770,
-        "y": 280,
+        "y": 300,
         "wires": [
             [
                 "2f5ab12.049044e"
@@ -344,7 +344,7 @@
         "id": "2f5ab12.049044e",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "ItemStateChangedEvent",
+        "name": "v2 ItemStateChangedEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -353,31 +353,15 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1060,
-        "y": 280,
+        "x": 1070,
+        "y": 300,
         "wires": []
-    },
-    {
-        "id": "c16e7ba6.16ca08",
-        "type": "openhab2-monitor",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "controller": "203623fa.cd824c",
-        "x": 150,
-        "y": 400,
-        "wires": [
-            [],
-            [],
-            [
-                "ab1109ac.3975b8"
-            ]
-        ]
     },
     {
         "id": "ab1109ac.3975b8",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "raw events",
+        "name": "v2 raw events",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -386,7 +370,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 410,
+        "x": 420,
         "y": 420,
         "wires": []
     },
@@ -397,7 +381,7 @@
         "name": "openhab v2",
         "info": "",
         "x": 130,
-        "y": 60,
+        "y": 80,
         "wires": []
     },
     {
@@ -422,7 +406,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 120,
-        "y": 580,
+        "y": 600,
         "wires": [
             [
                 "5c8a8a9a.cee1f4"
@@ -451,7 +435,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 120,
-        "y": 720,
+        "y": 740,
         "wires": [
             [
                 "926477ec.982e78"
@@ -469,7 +453,7 @@
         "payload": "",
         "onlywhenchanged": false,
         "x": 350,
-        "y": 580,
+        "y": 600,
         "wires": []
     },
     {
@@ -483,7 +467,7 @@
         "payload": "",
         "onlywhenchanged": false,
         "x": 360,
-        "y": 720,
+        "y": 740,
         "wires": []
     },
     {
@@ -508,7 +492,7 @@
         "payload": "A",
         "payloadType": "str",
         "x": 130,
-        "y": 760,
+        "y": 780,
         "wires": [
             [
                 "926477ec.982e78"
@@ -537,7 +521,7 @@
         "payload": "B",
         "payloadType": "str",
         "x": 130,
-        "y": 800,
+        "y": 820,
         "wires": [
             [
                 "926477ec.982e78"
@@ -566,7 +550,7 @@
         "payload": "A",
         "payloadType": "str",
         "x": 130,
-        "y": 620,
+        "y": 640,
         "wires": [
             [
                 "5c8a8a9a.cee1f4"
@@ -595,7 +579,7 @@
         "payload": "B",
         "payloadType": "str",
         "x": 130,
-        "y": 660,
+        "y": 680,
         "wires": [
             [
                 "5c8a8a9a.cee1f4"
@@ -617,7 +601,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 740,
-        "y": 580,
+        "y": 600,
         "wires": [
             [
                 "f15fa0bb.fb08c"
@@ -628,7 +612,7 @@
         "id": "f15fa0bb.fb08c",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "InitialStateEvent",
+        "name": "v3 InitialStateEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -637,8 +621,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1030,
-        "y": 580,
+        "x": 1040,
+        "y": 600,
         "wires": []
     },
     {
@@ -656,7 +640,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 740,
-        "y": 640,
+        "y": 660,
         "wires": [
             [
                 "d5e694e.df10768"
@@ -667,7 +651,7 @@
         "id": "d5e694e.df10768",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "ItemStateEvent",
+        "name": "v3 ItemStateEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -676,8 +660,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1030,
-        "y": 640,
+        "x": 1040,
+        "y": 660,
         "wires": []
     },
     {
@@ -695,7 +679,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 760,
-        "y": 700,
+        "y": 720,
         "wires": [
             [
                 "be3902ac.dc4c"
@@ -706,7 +690,7 @@
         "id": "be3902ac.dc4c",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "ItemCommandEvent",
+        "name": "v3 ItemCommandEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -715,8 +699,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1050,
-        "y": 700,
+        "x": 1060,
+        "y": 720,
         "wires": []
     },
     {
@@ -734,7 +718,7 @@
         "changedfrom": "",
         "changedto": "",
         "x": 770,
-        "y": 760,
+        "y": 780,
         "wires": [
             [
                 "a0bc1963.e29d48"
@@ -745,7 +729,7 @@
         "id": "a0bc1963.e29d48",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "ItemStateChangedEvent",
+        "name": "v3 ItemStateChangedEvent",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -754,18 +738,18 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1060,
-        "y": 760,
+        "x": 1070,
+        "y": 780,
         "wires": []
     },
     {
         "id": "46d81492.fa937c",
-        "type": "openhab2-monitor",
+        "type": "openhab2-monitor2",
         "z": "f6f2187d.f17ca8",
         "name": "",
         "controller": "badf3377.cd963",
         "x": 150,
-        "y": 880,
+        "y": 900,
         "wires": [
             [],
             [],
@@ -778,7 +762,7 @@
         "id": "30d9d1ae.4a851e",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "raw events",
+        "name": "v3 raw events",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -787,7 +771,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 410,
+        "x": 420,
         "y": 900,
         "wires": []
     },
@@ -798,15 +782,219 @@
         "name": "openhab v3",
         "info": "",
         "x": 130,
-        "y": 540,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "c16e7ba6.16ca08",
+        "type": "openhab2-monitor2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "203623fa.cd824c",
+        "x": 150,
+        "y": 420,
+        "wires": [
+            [],
+            [],
+            [
+                "ab1109ac.3975b8"
+            ]
+        ]
+    },
+    {
+        "id": "92e3fafc.a09ae8",
+        "type": "openhab2-events2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "203623fa.cd824c",
+        "itemname": "",
+        "x": 150,
+        "y": 480,
+        "wires": [
+            [
+                "2ebad8da.fea748"
+            ]
+        ]
+    },
+    {
+        "id": "2ebad8da.fea748",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v2 events",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "de33569f.0b1098",
+        "type": "openhab2-events2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "badf3377.cd963",
+        "itemname": "",
+        "x": 150,
+        "y": 960,
+        "wires": [
+            [
+                "5856e706.3713a8"
+            ]
+        ]
+    },
+    {
+        "id": "5856e706.3713a8",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v3 events",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "236e9a28.a7c776",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "get",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 690,
+        "y": 860,
+        "wires": [
+            [
+                "40e1111d.ef734"
+            ]
+        ]
+    },
+    {
+        "id": "40e1111d.ef734",
+        "type": "openhab2-get2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "badf3377.cd963",
+        "itemname": "TestString",
+        "topic": "",
+        "x": 860,
+        "y": 860,
+        "wires": [
+            [
+                "e82da57f.9b71c8"
+            ]
+        ]
+    },
+    {
+        "id": "e82da57f.9b71c8",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v3 get TestString",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "f1a11a46.082718",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "get",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 690,
+        "y": 380,
+        "wires": [
+            [
+                "14a50f87.e6bab"
+            ]
+        ]
+    },
+    {
+        "id": "14a50f87.e6bab",
+        "type": "openhab2-get2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "203623fa.cd824c",
+        "itemname": "TestString",
+        "topic": "",
+        "x": 860,
+        "y": 380,
+        "wires": [
+            [
+                "c0dbdc4b.fe9a3"
+            ]
+        ]
+    },
+    {
+        "id": "c0dbdc4b.fe9a3",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v2 get TestString",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1050,
+        "y": 380,
         "wires": []
     },
     {
         "id": "203623fa.cd824c",
-        "type": "openhab2-controller",
-        "name": "openhab",
+        "type": "openhab2-controller2",
+        "name": "openhab2",
         "protocol": "http",
-        "host": "openhab",
+        "host": "openhab2",
         "port": "8080",
         "path": "",
         "username": "",
@@ -815,7 +1003,7 @@
     },
     {
         "id": "badf3377.cd963",
-        "type": "openhab2-controller",
+        "type": "openhab2-controller2",
         "name": "openhab3",
         "protocol": "http",
         "host": "openhab3",

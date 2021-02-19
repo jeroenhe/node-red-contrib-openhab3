@@ -9,11 +9,9 @@ services:
     volumes:
       - type: bind
         source: ./
-        target: /node-red-contrib-openhab2
-        read_only: true
-  
-  # This is openhab2
-  openhab:
+        target: /node-red-contrib-openhab3
+
+  openhab2:
     image: openhab/openhab:2.5.10-debian
     networks: [ "nodered" ]
     ports:
@@ -23,10 +21,10 @@ services:
         source: ./test/openhab/conf/items
         target: /openhab/conf/items
       - type: volume
-        source: openhab-userdata
+        source: openhab2-userdata
         target: /openhab/userdata
       - type: volume
-        source: openhab-addons
+        source: openhab2-addons
         target: /openhab/addons
     environment:
       - CRYPTO_POLICY=unlimited
@@ -55,8 +53,8 @@ services:
 
 volumes:
   nodered:
-  openhab-addons:
-  openhab-userdata:
+  openhab2-addons:
+  openhab2-userdata:
   openhab3-addons:
   openhab3-userdata:
 

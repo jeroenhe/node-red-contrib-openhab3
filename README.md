@@ -1,11 +1,10 @@
-[![Publish NPM package](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/
-workflows/npm-publish.yml/badge.svg?branch=master)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml)
+[![Publish NPM package](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml/badge.svg?branch=master)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml) ![NPM downloads](https://img.shields.io/npm/dm/node-red-contrib-openhab3)
 
 # node-red-contrib-openhab3
 
 ## Description
 
-Nodes facilitating the automation of *openHAB* ( <http://www.openhab.org> ) items with Node-RED ( <http://nodered.org> ). This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions I find useful.
+Nodes facilitating the automation of [OpenHAB](https://www.openhab.org) items with Node-RED. This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions I find useful.
 
 ![OpenHAB Node-RED nodes](images/openhab_nodes.png)
 
@@ -13,9 +12,15 @@ Nodes facilitating the automation of *openHAB* ( <http://www.openhab.org> ) item
 
 Install this package `node-red-contrib-openhab3` via the `Manage palette` menu of your Node-RED instance.
 
+## Changes
+
+| Version | Description |
+| --------------- | --------------- |
+| 1.3.0 | Renamed all nodes to be unique from the original package |
+
 ## Nodes
 
-See [77-openhab2.html](77-openhab2.html) for info on the provided nodes. This is best viewed from Node-RED, per node.
+See [77-openhab2.html](77-openhab2.html) for info on the provided nodes. This is best viewed from Node-RED, adding a node and viewing its corresponding Help page.
 
 ## Testing the plugin
 

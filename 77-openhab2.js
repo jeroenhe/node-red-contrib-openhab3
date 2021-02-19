@@ -71,17 +71,17 @@ function trimString(string, length) {
 module.exports = function (RED) {
 
     /**
-    * ====== httpAdmin ================
-    * Enable controller route to static files
-    * ===========================================
-    */
-    RED.httpAdmin.get('/static/*', function(req, res) {
+     * ====== httpAdmin ================
+     * Enable controller route to static files
+     * ===========================================
+     */
+    RED.httpAdmin.get('/static/*', function (req, res) {
         var options = {
-          root: __dirname + '/static/',
-          dotfiles: 'deny'
+            root: __dirname + '/static/',
+            dotfiles: 'deny'
         };
         res.sendFile(req.params[0], options);
-      });
+    });
 
     /**
      * ====== openhab2-controller ================
@@ -159,7 +159,7 @@ module.exports = function (RED) {
                     msg.payload = JSON.parse(msg.payload);
 
                     var url = config.ohversion === "v3" ? V3_EVENTSOURCE_URL_PART + "/items/" : V2_EVENTSOURCE_URL_PART + "/items/";
-                    node.log('config.ohversion: ' + config.ohversion + ' url: ' + url);
+                    //node.log('config.ohversion: ' + config.ohversion + ' url: ' + url);
                     const itemStart = (url).length;
                     var item = msg.topic.substring(itemStart, msg.topic.indexOf('/', itemStart));
 
@@ -218,11 +218,15 @@ module.exports = function (RED) {
 
             if (topic === "ItemUpdate") {
                 url = getConnectionString(config) + "/rest/items/" + itemname + "/state";
-                headers = {"Content-type":"text/plain"};
+                headers = {
+                    "Content-type": "text/plain"
+                };
                 method = request.put;
             } else if (topic === "ItemCommand") {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
-                headers = {"Content-type":"text/plain"};
+                headers = {
+                    "Content-type": "text/plain"
+                };
                 method = request.post;
             } else {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
@@ -254,7 +258,7 @@ module.exports = function (RED) {
         });
 
     }
-    RED.nodes.registerType("openhab2-controller", OpenHABControllerNode);
+    RED.nodes.registerType("openhab2-controller2", OpenHABControllerNode);
 
     // start a web service for enabling the node configuration ui to query for available openHAB items
     RED.httpNode.get("/openhab2/items", function (req, res, next) {
@@ -399,7 +403,8 @@ module.exports = function (RED) {
                     // update node's visual status
                     node.refreshNodeStatus();
 
-                    if (config.initialstate) {
+                    // only send the state when it is not OH_NULL
+                    if (config.initialstate && currentState != null && currentState != undefined && currentState.toUpperCase() != OH_NULL) {
                         // inject the state in the node-red flow
                         node.send(msg);
                     }
@@ -413,6 +418,7 @@ module.exports = function (RED) {
                     node.warn(err);
                 }
             );
+
             //Start listening to events
             openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
         }
@@ -438,7 +444,7 @@ module.exports = function (RED) {
     /**
      * ====== openhab2-monitor ===================
      * Monitors connection status and errors of
-     * the associated openhab2-controller
+     * the associated openhab2-controller2
      * ===========================================
      */
     function OpenHABMonitor(config) {
@@ -529,7 +535,7 @@ module.exports = function (RED) {
 
     }
     //
-    RED.nodes.registerType("openhab2-monitor", OpenHABMonitor);
+    RED.nodes.registerType("openhab2-monitor2", OpenHABMonitor);
 
     /**
      * ====== openhab2-out2 ===================
@@ -685,6 +691,7 @@ module.exports = function (RED) {
                     msg.item = item;
                     msg.topic = topic;
                     msg.event = "ActualValue";
+                    msg.payload_in = msg.payload;
                     msg.payload = currentState;
                     msg.oldValue = null;
 
@@ -693,8 +700,6 @@ module.exports = function (RED) {
 
                     // update node's visual status
                     node.refreshNodeStatus();
-
-                    msg.payload_in = msg.payload;
                     msg.payload = currentState
                     node.send(msg);
                 },
@@ -716,8 +721,8 @@ module.exports = function (RED) {
     RED.nodes.registerType("openhab2-get2", OpenHABGet2);
 
     /**
-     * ====== openhab2-events ===================
-     * monitors opnHAB events
+     * ====== openhab2-events2 ===============
+     * monitors openHAB events
      * =======================================
      */
     function OpenHABEvents(config) {
@@ -735,7 +740,7 @@ module.exports = function (RED) {
 
             // register for all item events
             var eventsource_url = config.ohversion == "v3" ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*" : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
-            node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
+            //node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(getConnectionString(openhabController.getConfig()) + eventsource_url, {});
 
             node.status({
@@ -831,5 +836,5 @@ module.exports = function (RED) {
 
     }
     //
-    RED.nodes.registerType("openhab2-events", OpenHABEvents);
+    RED.nodes.registerType("openhab2-events2", OpenHABEvents);
 }
