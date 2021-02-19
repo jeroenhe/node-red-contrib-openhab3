@@ -4,9 +4,7 @@
 
 ## Description
 
-Nodes facilitating the automation of [OpenHAB](https://www.openhab.org) items with Node-RED. This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions I find useful.
-
-![OpenHAB Node-RED nodes](images/openhab_nodes.png)
+Nodes facilitating the automation of [OpenHAB](https://www.openhab.org) items with Node-RED. This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions and changes I find useful. This plugin is useful if you want to add rules using the power of Node-RED, instead of the OpenHAB built-in rules.
 
 ## Installation
 
@@ -16,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.2 | Remove (useless) nodes picture; Update README |
 | 1.3.1 | Update nodes picture in this README |
 | 1.3.0 | Renamed all nodes to be unique from the original package |
 
