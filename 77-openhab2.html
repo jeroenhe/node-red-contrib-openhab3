@@ -125,7 +125,7 @@
         </input>
     </div>
     <div class="form-row">
-        <label for="node-input-whenchanged"><i class="fa fa-crosshairs"></i> Send changed<br/>(<code>ItemStateChangedEvent</code>)</label>
+        <label for="node-input-whenchanged"><i class="fa fa-crosshairs"></i> Send changed<br/>(<code>ItemStateChangedEvent</code> or <code>GroupItemStateChangedEvent</code>)</label>
         <input type="checkbox" id="node-input-whenchanged" style="display: inline-block; width: auto; vertical-align: top;">
         </input>
     </div>
@@ -306,7 +306,7 @@
         <li><b>Send initial :</b>Send message at node startup (type 'InitialStateEvent')</li>
         <li><b>When updated :</b>Send message when node state updates (type 'ItemStateEvent')</li>
         <li><b>When command :</b>Send message when node state receives a command (type 'ItemCommandEvent')</li>
-        <li><b>When changed :</b>Send message when node state changes (type 'ItemStateChangedEvent')</li>
+        <li><b>When changed :</b>Send message when node state changes (type 'ItemStateChangedEvent' or 'GroupItemStateChangedEvent')</li>
         <li><b>From :</b>Old state value. Ignored when left empty. Leave empty for reacting to ItemCommandEvent types.</li>
         <li><b>To :</b>New state value. Ignored when left empty.</li>
         </ul>
@@ -318,7 +318,7 @@
             <ul>
                 <li><code>msg.item</code> : the item's itemname (not the label)</li>
                 <li><code>msg.topic</code> : the item's topic as specified</li>
-                <li><code>msg.event</code> : InitialStateEvent | ItemStateEvent | ItemCommandEvent | ItemStateChangedEvent</li>
+                <li><code>msg.event</code> : InitialStateEvent | ItemStateEvent | ItemCommandEvent | ItemStateChangedEvent | GroupItemStateChangedEvent</li>
                 <li><code>msg.payload</code> : the current state of the selected item</li>
                 <li><code>msg.oldValue</code> : the previous state of the selected item</li>
                </ul>

@@ -1,6 +1,11 @@
 Group GTest "Test"
 
+Group:Number:AVG            GTemperatures  "All Room Temperatures [%.1f °C]" // e.g. "21.3 °C"
+
 Contact TestContact "Contact" (GTest)
 Dimmer TestDimmer "Dimmer" (GTest)
 Switch TestSwitch "Schakelaar" (GTest)
 String TestString "String" (GTest)
+
+Number TestTemperature1 "Room 1 temperature [%.1f °C]" (GTemperatures)
+Number TestTemperature2 "Room 2 temperature [%.1f °C]" (GTemperatures)

@@ -316,9 +316,6 @@ module.exports = function (RED) {
         };
 
         this.processRawEvent = function (event) {
-            /* 	event: message
-                data: {"topic":"smarthome/items/NachtelijkGasVerbruik/statechanged","payload":"{\"type\":\"Decimal\",\"value\":\"4144.781\",\"oldType\":\"Decimal\",\"oldValue\":\"4144.588\"}","type":"ItemStateChangedEvent"}
-            */
             // inject the state in the node-red flow
             var eventType = event.type;
             var newState = event.payload.value;
@@ -367,7 +364,7 @@ module.exports = function (RED) {
             var changedfrom = config.changedfrom;
             var changedto = config.changedto;
 
-            if ((eventType == "ItemStateChangedEvent") && config.whenchanged &&
+            if ((eventType == "ItemStateChangedEvent" || eventType == "GroupItemStateChangedEvent") && config.whenchanged &&
                 (changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || (oldValue != null && oldValue != undefined && oldValue.toUpperCase() == changedfrom.toUpperCase())) &&
                 (changedto == null || changedto == undefined || changedto.trim().length == 0 || (newState != null && newState != undefined && newState.toUpperCase() == changedto.toUpperCase()))) {
                 return true;
