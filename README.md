@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.4 | Upgrade this module to be built and tested with Node.js v12 |
 | 1.3.3 | Add support for GroupItemStateChangedEvent event |
 | 1.3.2 | Remove (useless) nodes picture; Update README |
 | 1.3.1 | Update nodes picture in this README |

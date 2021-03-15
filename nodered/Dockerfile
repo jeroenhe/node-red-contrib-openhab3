@@ -1,4 +1,5 @@
-FROM nodered/node-red
+# Test with (current) latest Node-RED version on Node.js v12
+FROM nodered/node-red:1.2.9-12
 
 USER root
 COPY docker-entrypoint.sh /
