@@ -91,18 +91,17 @@ module.exports = function (RED) {
      */
     function OpenHABControllerNode(config) {
         RED.nodes.createNode(this, config);
+        var node = this;
 
         this.getConfig = function () {
             return config;
         }
 
-        var node = this;
-
-        //node.log("OpenHABControllerNode config: " + JSON.stringify(config));
+        // node.log("OpenHABControllerNode config: " + JSON.stringify(config));
 
         // this controller node handles all communication with the configured openhab server
         function getStateOfItems(config) {
-            //node.log("getStateOfItems : config = " + JSON.stringify(config));
+            // node.log("getStateOfItems : config = " + JSON.stringify(config));
 
             var url = getConnectionString(config) + "/rest/items";
             request.get(url, function (error, response, body) {
@@ -140,7 +139,8 @@ module.exports = function (RED) {
 
             // register for all item events
             var eventsource_url = config.ohversion == "v3" ? "/rest/events?topics=openhab/items" : "/rest/events?topics=smarthome/items";
-            //node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
+
+            // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(getConnectionString(config) + eventsource_url, {});
 
             // handle the 'onopen' event
@@ -152,14 +152,17 @@ module.exports = function (RED) {
 
             // handle the 'onmessage' event
             node.es.onmessage = function (msg) {
-                //node.log(msg.data);
+                // node.log(msg.data);
                 try {
                     // update the node status with the Item's new state
                     msg = JSON.parse(msg.data);
                     msg.payload = JSON.parse(msg.payload);
 
-                    var url = config.ohversion === "v3" ? V3_EVENTSOURCE_URL_PART + "/items/" : V2_EVENTSOURCE_URL_PART + "/items/";
-                    //node.log('config.ohversion: ' + config.ohversion + ' url: ' + url);
+                    var url = V2_EVENTSOURCE_URL_PART + "/items/";
+                    if (config.ohversion === "v3") {
+                        url = V3_EVENTSOURCE_URL_PART + "/items/";
+                    }
+                    // node.log('config.ohversion: ' + config.ohversion + ' url: ' + url);
                     const itemStart = (url).length;
                     var item = msg.topic.substring(itemStart, msg.topic.indexOf('/', itemStart));
 
@@ -294,7 +297,7 @@ module.exports = function (RED) {
             itemName = itemName.trim();
         }
 
-        //node.log('OpenHABIn2, config: ' + JSON.stringify(config));
+        // node.log('OpenHABIn2, config: ' + JSON.stringify(config));
 
         this.refreshNodeStatus = function () {
             var currentState = node.context().get("currentState");
@@ -373,7 +376,7 @@ module.exports = function (RED) {
             } else if (eventType == "ItemStateEvent" && config.whenupdated) {
                 return true;
             }
-            //node.log("evalSendMessage: false");
+            // node.log("evalSendMessage: false");
             return false;
         }
 
@@ -435,7 +438,7 @@ module.exports = function (RED) {
         });
 
     }
-    //
+    
     RED.nodes.registerType("openhab2-in2", OpenHABIn2);
 
     /**
@@ -459,13 +462,11 @@ module.exports = function (RED) {
                 shape: (commStatus == "ON") ? "dot" : "ring",
                 text: (commError.length != 0) ? commError : commStatus
             });
-
         };
 
         this.processCommStatus = function (status) {
 
             // update node's context variable
-
             node.context().set("CommunicationStatus", status);
             if (status == "ON")
                 node.context().set("CommunicationError", "");
@@ -531,24 +532,24 @@ module.exports = function (RED) {
         });
 
     }
-    //
+    
     RED.nodes.registerType("openhab2-monitor2", OpenHABMonitor);
 
     /**
      * ====== openhab2-out2 ===================
      * Sends outgoing commands or update from
      * messages received via node-red flows
-     * It allows to conditionally ave the state
+     * It allows to conditionally save the state
      * only when it differs from the actual state.
      * =======================================
      */
     function OpenHABOut2(config) {
         RED.nodes.createNode(this, config);
         this.name = config.name;
-        var openhabController = RED.nodes.getNode(config.controller);
         var node = this;
+        var openhabController = RED.nodes.getNode(config.controller);
 
-        //node.log('new OpenHABOut, config: ' + JSON.stringify(config));
+        // node.log('new OpenHABOut, config: ' + JSON.stringify(config));
 
         function saveValue(item, topic, payload) {
             openhabController.control(item, topic, payload,
@@ -634,7 +635,7 @@ module.exports = function (RED) {
             node.log('close');
         });
     }
-    //
+    
     RED.nodes.registerType("openhab2-out2", OpenHABOut2);
 
     /**
@@ -646,9 +647,9 @@ module.exports = function (RED) {
     function OpenHABGet2(config) {
         RED.nodes.createNode(this, config);
         this.name = config.name;
-        var topic = config.topic;
-        var openhabController = RED.nodes.getNode(config.controller);
         var node = this;
+        var topic = config.topic;
+        var openhabController = RED.nodes.getNode(config.controller);        
 
         this.refreshNodeStatus = function () {
             var currentState = node.context().get("currentState");
@@ -714,7 +715,7 @@ module.exports = function (RED) {
             node.log('close');
         });
     }
-    //
+    
     RED.nodes.registerType("openhab2-get2", OpenHABGet2);
 
     /**
@@ -723,22 +724,24 @@ module.exports = function (RED) {
      * =======================================
      */
     function OpenHABEvents(config) {
+        
         RED.nodes.createNode(this, config);
         this.name = config.name;
-        var openhabController = RED.nodes.getNode(config.controller);
         var node = this;
+        var openhabController = RED.nodes.getNode(config.controller);
+        if (openhabController == null) {
+            node.error("Invalid controller");
+            return;
+        }
+        var config2 = openhabController.getConfig()
+        // node.log("OpenHABEvents config: " + JSON.stringify(config2));
 
         function startEventSource() {
 
-            if (openhabController == null) {
-                node.error("Invalid controller");
-                return;
-            }
-
             // register for all item events
-            var eventsource_url = config.ohversion == "v3" ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*" : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
-            //node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
-            node.es = new EventSource(getConnectionString(openhabController.getConfig()) + eventsource_url, {});
+            var eventsource_url = config2.ohversion == "v3" ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*" : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
+            // node.log('config.ohversion: ' + config2.ohversion + ' eventsource_url: ' + eventsource_url);
+            node.es = new EventSource(getConnectionString(config2) + eventsource_url, {});
 
             node.status({
                 fill: "green",
@@ -757,7 +760,7 @@ module.exports = function (RED) {
 
             // handle the 'onmessage' event
             node.es.onmessage = function (msg) {
-                //node.log(msg.data);
+                // node.log(msg.data);
                 try {
                     // update the node status with the Item's new state
                     msg = JSON.parse(msg.data);
@@ -792,7 +795,6 @@ module.exports = function (RED) {
                 if (err.status) {
                     if ((err.status == 503) || (err.status == "503") || (err.status == 404) || (err.status == "404"))
                         // the EventSource object has given up retrying ... retry reconnecting after 10 seconds
-
                         node.es.close();
                     delete node.es;
 
@@ -814,8 +816,7 @@ module.exports = function (RED) {
 
         }
 
-        //startEventSource();
-        // give the system few seconds 
+        // give the system a few seconds
         setTimeout(function () {
             startEventSource();
         }, 5000);
@@ -832,6 +833,6 @@ module.exports = function (RED) {
         });
 
     }
-    //
+
     RED.nodes.registerType("openhab2-events2", OpenHABEvents);
 }
