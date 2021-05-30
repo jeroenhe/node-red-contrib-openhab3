@@ -56,6 +56,10 @@
             <option value="v3">v3</option>
         </select>
     </div>
+    <div class="form-row node-token">
+        <label for="node-config-input-token"><i class="fa fa-user-secret"></i> OAuth2 Bearer token</label>
+        <input type="password" id="node-config-input-token">
+    </div>
 
 </script>
 
@@ -288,9 +292,10 @@
         <li><b>Host :</b> Specify the hostname or ip address</li>
         <li><b>Port :</b> (Optionally) Specify the ip port</li>
         <li><b>Path :</b> (Optionally) Specify the additional base path</li>
-        <li><b>Username :</b> (Optionally) Specify the username to authenticate</li>
+        <li><b>Username :</b> (Optionally) Specify the username to authenticate. This is for authenticating to an reverse proxy, not for authenticating with OpenHAB itself, as OpenHAB <a href="https://www.openhab.org/docs/installation/security.html#authentication-and-access-control" target="_blank"><i>does not (yet) support restricting access through HTTP(S) for certain users - there is no authentication in place, nor is there a limitation of functionality or information that different users can access.</i></a></li>
         <li><b>Password :</b> (Optionally) Specify the password to authenticate</li>
         <li><b>OpenHAB version :</b> "v1 and v2" or "v3".</li>
+        <li><b>OAuth2 Bearer token :</b> An OAuth2 token created in OpenHAB 3, according to the <a href="https://www.openhab.org/docs/configuration/apitokens.html" target="_blank">documentation</a>, with the important note that the token should be filled in NOT for the <code>Username</code> or <code>Password</code> field, but only the <code>OAuth2 Bearer token</code> field. A token looks like this: <code>oh.nodered.CgpQImIqacvFxVPC46JUHonnrPJANXaXDhskg7xN0nfaXAW8VSzB5nqighewykwYjf6FCFsGMxR3m4vzidQ</code></li>
     </ul>
 </script>
 
@@ -430,15 +435,25 @@
             name: {value:"",required:true},
             protocol: {value:"http",required:true},
             host: {value:"localhost",required:true},
-            port: {value:8080,required:false /*,	validate:RED.validators.number() */},
+            port: {value:8080,required:false, validate:RED.validators.number() },
             path: {value:"",required:false},
             username: {value:"", required:false},
             password: {value:"", required:false},
-            ohversion: {value:"v2",required:true}
+            ohversion: {value:"v2",required:true},
+            token: {value:"", required:false}
         },
         paletteLabel: "openhab2-controller2",
         label: function() {
             return this.name;
+        },
+        oneditprepare: function() {
+            $("#node-config-input-ohversion").change(function() {
+                if ($("#node-config-input-ohversion").val() == "v3") {
+                    $(".node-token").show();
+                } else {
+                    $(".node-token").hide();
+                }
+            });
         }
     });
 </script>
@@ -473,9 +488,10 @@
                        username: cntrlConfig.username,
                        password: cntrlConfig.password,
                        ohversion: cntrlConfig.ohversion,
+                       token: cntrlConfig.token,
                 }
                 //console.log("config = " + JSON.stringify(config));
-                $.getJSON("openhab2/items", config)
+                $.getJSON("/openhab2/items", config)
                   .done( function(data) {
 
                      itemSelectionEl.children().remove();

@@ -36,13 +36,13 @@ function getConnectionString(config) {
 
     url += "://";
 
-    if ((config.username != undefined) && (config.username.trim().length != 0)) {
-        url += encodeURIComponent(config.username.trim());
-
-        if ((config.password != undefined) && (config.password.length != 0)) {
+    // Only set username and password inside the url when BOTH username and
+    // password are provided and non-empty.
+    if ((config.username != undefined) && (config.username.trim().length != 0) && 
+        (config.password != undefined) && (config.password.length != 0)) {
+            url += encodeURIComponent(config.username.trim());
             url += ":" + encodeURIComponent(config.password);
-        }
-        url += "@";
+            url += "@";
     }
     url += config.host;
 
@@ -58,7 +58,6 @@ function getConnectionString(config) {
 
         url += "/" + path;
     }
-
     return url;
 }
 
@@ -66,6 +65,16 @@ function trimString(string, length) {
     return string.length > length ?
         string.substring(0, length - 3) + "..." :
         string;
+}
+
+function getAuthenticationHeader(config) {
+    var options = {};
+    if (config != undefined && config.token != undefined && config.token.length != 0) {
+        options.headers = {
+            Authorization: 'Bearer ' + config.token
+        }
+    }
+    return options;
 }
 
 module.exports = function (RED) {
@@ -104,7 +113,8 @@ module.exports = function (RED) {
             // node.log("getStateOfItems : config = " + JSON.stringify(config));
 
             var url = getConnectionString(config) + "/rest/items";
-            request.get(url, function (error, response, body) {
+            var options = getAuthenticationHeader(config)
+            request.get(url, options, function (error, response, body) {
                 // handle communication errors
                 if (error) {
                     node.warn("request error '" + trimString(JSON.stringify(response), 50) + "' on '" + url + "'");
@@ -267,7 +277,8 @@ module.exports = function (RED) {
     RED.httpNode.get("/openhab2/items", function (req, res, next) {
         var config = req.query;
         var url = getConnectionString(config) + '/rest/items';
-        request.get(url, function (error, response, body) {
+        var options = getAuthenticationHeader(config);
+        request.get(url, options, function (error, response, body) {
             if (error) {
                 res.send("request error '" + trimString(JSON.stringify(error), 50) + "' on '" + url + "'");
             } else if (response.statusCode != 200) {
