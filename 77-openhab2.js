@@ -77,6 +77,10 @@ function getAuthenticationHeader(config) {
     return options;
 }
 
+function shouldSendState(state) {
+    return state != null && state != undefined && state.toUpperCase() != OH_NULL;
+}
+
 module.exports = function (RED) {
 
     /**
@@ -287,7 +291,6 @@ module.exports = function (RED) {
                 res.send(body);
             }
         });
-
     });
 
     /**
@@ -301,12 +304,12 @@ module.exports = function (RED) {
         this.name = config.name;
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
+        if (openhabController == null) {
+            node.error("Invalid OpenHAB controller");
+            return;
+        }
         var itemName = config.itemname;
         var topic = config.topic;
-
-        if (itemName != undefined) {
-            itemName = itemName.trim();
-        }
 
         // node.log('OpenHABIn2, config: ' + JSON.stringify(config));
 
@@ -336,7 +339,7 @@ module.exports = function (RED) {
             var oldValue = event.payload.oldValue;
 
             //only process state values not equal to NULL
-            if (newState != null && newState != undefined && newState.toUpperCase() != OH_NULL) {
+            if (shouldSendState(newState)) {
 
                 // update node's context variable && update node's visual status
                 node.context().set("currentState", newState);
@@ -372,7 +375,7 @@ module.exports = function (RED) {
             }
 
             // we never emit null/NULL values
-            if (newState != null && newState != undefined && newState.toUpperCase() == OH_NULL) {
+            if (newState.toUpperCase() == OH_NULL) {
                 return false;
             }
             var changedfrom = config.changedfrom;
@@ -415,7 +418,7 @@ module.exports = function (RED) {
                     node.refreshNodeStatus();
 
                     // only send the state when it is not OH_NULL
-                    if (config.initialstate && currentState != null && currentState != undefined && currentState.toUpperCase() != OH_NULL) {
+                    if (config.initialstate && shouldSendState(currentState)) {
                         // inject the state in the node-red flow
                         node.send(msg);
                     }
@@ -435,7 +438,9 @@ module.exports = function (RED) {
         }
 
         //Wait 1 seconds after startup before fetching initial value
-        setTimeout(getInitial, 1000);
+        if (itemName != null && itemName != undefined) {
+            setTimeout(getInitial, 1000);
+        }
 
         /* ===== Node-Red events ===== */
         this.on("input", function (msg) {
@@ -447,7 +452,6 @@ module.exports = function (RED) {
             node.log('close');
             openhabController.removeListener(itemName + '/RawEvent', node.processRawEvent);
         });
-
     }
     
     RED.nodes.registerType("openhab2-in2", OpenHABIn2);
@@ -463,6 +467,10 @@ module.exports = function (RED) {
         this.name = config.name;
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
+        if (openhabController == null) {
+            node.error("Invalid OpenHAB controller");
+            return;
+        }
 
         this.refreshNodeStatus = function () {
             var commError = node.context().get("CommunicationError");
@@ -559,6 +567,10 @@ module.exports = function (RED) {
         this.name = config.name;
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
+        if (openhabController == null) {
+            node.error("Invalid OpenHAB controller");
+            return;
+        }
 
         // node.log('new OpenHABOut, config: ' + JSON.stringify(config));
 
@@ -660,12 +672,16 @@ module.exports = function (RED) {
         this.name = config.name;
         var node = this;
         var topic = config.topic;
-        var openhabController = RED.nodes.getNode(config.controller);        
+        var openhabController = RED.nodes.getNode(config.controller);
+        if (openhabController == null) {
+            node.error("Invalid OpenHAB controller");
+            return;
+        }
 
         this.refreshNodeStatus = function () {
             var currentState = node.context().get("currentState");
 
-            if (currentState == null || currentState == undefined || (currentState != null && currentState != undefined && currentState.trim().length == 0) || (currentState != null && currentState != undefined && currentState.toUpperCase() == OH_NULL)) {
+            if (!shouldSendState(currentState)) {
                 node.status({
                     fill: "gray",
                     shape: "ring",
@@ -741,7 +757,7 @@ module.exports = function (RED) {
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
         if (openhabController == null) {
-            node.error("Invalid controller");
+            node.error("Invalid OpenHAB controller");
             return;
         }
         var config2 = openhabController.getConfig()
