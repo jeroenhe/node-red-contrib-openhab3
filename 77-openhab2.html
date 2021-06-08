@@ -292,34 +292,34 @@
         <li><b>Host :</b> Specify the hostname or ip address</li>
         <li><b>Port :</b> (Optionally) Specify the ip port</li>
         <li><b>Path :</b> (Optionally) Specify the additional base path</li>
-        <li><b>Username :</b> (Optionally) Specify the username to authenticate. This is for authenticating to an reverse proxy, not for authenticating with OpenHAB itself, as OpenHAB <a href="https://www.openhab.org/docs/installation/security.html#authentication-and-access-control" target="_blank"><i>does not (yet) support restricting access through HTTP(S) for certain users - there is no authentication in place, nor is there a limitation of functionality or information that different users can access.</i></a></li>
+        <li><b>Username :</b> (Optionally) Specify the username to authenticate. This is for authenticating to an reverse proxy, not for authenticating with openHAB itself, as openHAB <a href="https://www.openhab.org/docs/installation/security.html#authentication-and-access-control" target="_blank"><i>"does not (yet) support restricting access through HTTP(S) for certain users - there is no authentication in place, nor is there a limitation of functionality or information that different users can access."</i></a></li>
         <li><b>Password :</b> (Optionally) Specify the password to authenticate</li>
         <li><b>OpenHAB version :</b> "v1 and v2" or "v3".</li>
-        <li><b>OAuth2 Bearer token :</b> An OAuth2 token created in OpenHAB 3, according to the <a href="https://www.openhab.org/docs/configuration/apitokens.html" target="_blank">documentation</a>, with the important note that the token should be filled in NOT for the <code>Username</code> or <code>Password</code> field, but only the <code>OAuth2 Bearer token</code> field. A token looks like this: <code>oh.nodered.CgpQImIqacvFxVPC46JUHonnrPJANXaXDhskg7xN0nfaXAW8VSzB5nqighewykwYjf6FCFsGMxR3m4vzidQ</code></li>
+        <li><b>OAuth2 Bearer token :</b> An OAuth2 token created in openHAB 3, according to the <a href="https://www.openhab.org/docs/configuration/apitokens.html" target="_blank">documentation</a>, with the important note that the token should be filled NOT for the <code>Username</code> or <code>Password</code> field, but <strong>only the</strong> <code>OAuth2 Bearer token</code> <strong>field!</strong> A token looks like this: <code>oh.nodered.CgpQ...</code></li>
     </ul>
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-in2">
-    <p>Subscribes to state changes of a selected openHAB Item. Optionally sends the actual state value at startup.</p>
+    <p>Subscribes to state changes for the selected openHAB Item.</p>
     <p></p>
     <b>Configuration</b>
     <ul>
         <li><b>Name :</b> Optionally specify a name</li>
         <li><b>Controller :</b> Select the openHAB controller</li>
         <li><b>Item :</b>Select the Item to monitor</li>
-        <li><b>Topic :</b> .topic set in messagespan class="property-type">string</span></dt>
+        <li><b>Topic :</b> Set .topic for the outgoing message</li>
         <li><b>Send initial :</b>Send message at node startup (type 'InitialStateEvent')</li>
         <li><b>When updated :</b>Send message when node state updates (type 'ItemStateEvent')</li>
         <li><b>When command :</b>Send message when node state receives a command (type 'ItemCommandEvent')</li>
         <li><b>When changed :</b>Send message when node state changes (type 'ItemStateChangedEvent' or 'GroupItemStateChangedEvent')</li>
-        <li><b>From :</b>Old state value. Ignored when left empty. Leave empty for reacting to ItemCommandEvent types.</li>
-        <li><b>To :</b>New state value. Ignored when left empty.</li>
+        <li><b>From :</b>Old state value that should match before outputting a message. Ignored when left empty. Leave this field empty when the above "When command" is checked.</li>
+        <li><b>To :</b>New state value that should match before outputting a message. Ignored when left empty.</li>
         </ul>
     <p></p>
 
-    <b>Messages injected in NodeRED flows (1 channel)</b>
+    <b>Messages injected in NodeRED flows (1 output channel)</b>
     <ul>
-        <li>Channel 1 :
+        <li>Channel 1:
             <ul>
                 <li><code>msg.item</code> : the item's itemname (not the label)</li>
                 <li><code>msg.topic</code> : the item's topic as specified</li>
@@ -328,30 +328,37 @@
                 <li><code>msg.oldValue</code> : the previous state of the selected item</li>
                </ul>
         </li>
-        </ul>
+    </ul>
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-get2">
-    <p>Gets an openHAB Item on an input message.</p>
+    <p>Gets an openHAB Item' state on an input message.</p>
     <p></p>
     <b>Configuration</b>
     <ul>
         <li><b>Name :</b> Optionally specify a name</li>
         <li><b>Controller :</b> Select the openHAB controller</li>
         <li><b>Item :</b> Optionally select the Item to address. If specified, it overrides the item specified in the incoming message.</li>
-        <li><b>Topic :</b> .topic set in messagespan class="property-type">string</span></dt>    
+        <li><b>Topic :</b> Set .topic for the outgoing message</li>
     </ul>
     <p></p>
-
-    <b>Messages injected in NodeRED flows (1 channel)</b>
-    The input message with addition of :
+    <b>Messages accepted by NodeRED flows (1 input channel)</b>
     <ul>
-        <li><code>msg.item</code> : the item's itemname (not the label)</li>
-        <li><code>msg.topic</code> : the item's topic as specified</li>
-        <li><code>msg.event</code> : "ActualState"</li>
-        <li><code>msg.payload</code> : the current state of the selected item</li>
-        <li><code>msg.payload_in</code> : copy of incoming message's payload</li>
-      </ul>
+        <li><code>msg.item</code> optionally the Item to address</li>
+    </ul>
+    <p></p>
+    <b>Messages injected in NodeRED flows (1 output channel)</b>
+    <ul>
+        <li>Channel 1:
+        <p>Outputs the received input message with addition of: <p>
+        <ul>
+            <li><code>msg.item</code> : the item's itemname (not the label)</li>
+            <li><code>msg.topic</code> : the item's topic as specified</li>
+            <li><code>msg.event</code> : "ActualState"</li>
+            <li><code>msg.payload</code> : the current state of the selected item</li>
+            <li><code>msg.payload_in</code> : copy of incoming message payload</li>
+        </ul>
+    </ul>
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-monitor2">
@@ -363,35 +370,28 @@
         <li><b>Controller :</b> Select the openHAB controller</li>
         </ul>
     <p></p>
-    <b>Messages accepted by NodeRED flows</b>
-    <ul>
-        <li><code>msg.item</code> optionally the Item to address</li>
-       </ul>
 
-    <b>Messages injected in NodeRED flows (3 channels)</b>
-
+    <b>Messages injected in NodeRED flows (3 output channels)</b>
     <ul>
-        <li>Channel 1 :
+        <li>Channel 1:
             <ul>
                 <li><code>msg.topic</code> : "ConnectionStatus"</li>
                 <li><code>msg.payload</code> : connection status ('ON' or 'OFF')</li>
                </ul>
         </li>
-        <li>Channel 2 :
+        <li>Channel 2:
             <ul>
                 <li><code>msg.topic</code> : "ConnectionError"</li>
                 <li><code>msg.payload</code> : error message</li>
                </ul>
         </li>
-        <li>Channel 3 :
+        <li>Channel 3:
             <ul>
                 <li><code>msg.topic</code> : "RawEvent"</li>
                 <li><code>msg.payload</code> : raw (unprocessed) event for all items</li>
                </ul>
         </li>
-
-        </ul>
-
+    </ul>
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-out2">
@@ -405,28 +405,26 @@
         <li><b>Topic :</b> Optionally select "ItemCommand" or "ItemUpdate". If specified, it overrides the topic specified in the incoming message.</li>
         <li><b>Payload :</b> Optionally specify the command or update value to send to the selected item. If specified, it overrides the value specified in the incoming message.</li>
         <li><b>Only when changed :</b> Optionally check this if you want to write the value if it changed in comparison to the actual value.</li>
-        </ul>
+    </ul>
     <p></p>
-    <b>Messages accepted by NodeRED flows</b>
+    <b>Messages accepted by NodeRED flows (1 input channel)</b>
     <ul>
         <li><code>msg.item</code> optionally the Item to address</li>
         <li><code>msg.topic</code> optionally "ItemCommand", "ItemUpdate"</li>
         <li><code>msg.payload</code> optionally the fixed command or update value to send to the selected item</li>
-        </ul>
+    </ul>
 </script>
 
-
-<script type="text/x-red" data-help-name="openhab2-events">
+<script type="text/x-red" data-help-name="openhab2-events2">
     <p>Watches the event bus.</p>
     <p></p>
     <b>Configuration</b>
     <ul>
         <li><b>Name :</b> Optionally specify a name</li>
         <li><b>Controller :</b> Select the openHAB controller</li>
-        </ul>
+    </ul>
     <p></p>
 </script>
-
 
 <script type="text/javascript">
     RED.nodes.registerType('openhab2-controller2', {

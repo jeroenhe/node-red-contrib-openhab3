@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.8 | Update the node-documentation shown in Node-RED |
 | 1.3.7 | Fix/'work around' for NPE in `77-openhab2.js:396:31` |
 | 1.3.6 | Add support for OAuth2 token with OH3 (issue #7) |
 | 1.3.5 | Fix openhab2-events2 node to also work with OpenHAB v3 (issue #6) |
