@@ -663,9 +663,9 @@ module.exports = function (RED) {
 
     /**
      * ====== openhab2-get2 ===================
-     * Gets the item data when
-     * messages received via node-red flows
-     * =======================================
+     * Actively retrieves the actual item state from openHAB
+     * and sends it via the output.
+     * ========================================
      */
     function OpenHABGet2(config) {
         RED.nodes.createNode(this, config);
