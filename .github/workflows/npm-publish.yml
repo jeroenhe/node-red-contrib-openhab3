@@ -26,9 +26,9 @@ jobs:
       - name: Install required packages
         run: DEBIAN_FRONTEND=noninteractive sudo apt-get update -y && sudo apt-get upgrade -y curl httpie python3 python3-pip wget
       - name: Download requires scripts into Image
-        run: curl -sS -o get_token.py "https://gist.githubusercontent.com/jeroenhendricksen/451db2a595150310b978e793d3843c43/raw/537ffd487e176da29acc45a4f649b111f7f7159b/get_token.py"
+        run: curl -sS -o get_token.py "https://gist.githubusercontent.com/jeroenhendricksen/451db2a595150310b978e793d3843c43/raw/get_token.py"
       - name: Download requires scripts into Image
-        run: curl -sS -o update_node.sh "https://gist.githubusercontent.com/jeroenhendricksen/db60073cd7ab83f057e5d5b86e981660/raw/0641b75521a24b5d38f5538faccb7b47aaf9af3a/update_node.sh"
+        run: curl -sS -o update_node.sh "https://gist.githubusercontent.com/jeroenhendricksen/db60073cd7ab83f057e5d5b86e981660/raw/update_node.sh"
       - name: Make scripts executable
         run: chmod u+x *.py *.sh
       - name: Print app versions
