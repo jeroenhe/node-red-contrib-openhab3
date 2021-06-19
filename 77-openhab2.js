@@ -514,7 +514,7 @@ module.exports = function (RED) {
             var msgid = RED.util.generateId();
             node.send([null, {
                 _msgid: msgid,
-                payload: error,
+                payload: JSON.stringify(error),
                 event: "CommunicationError"
             }, null]);
         };
