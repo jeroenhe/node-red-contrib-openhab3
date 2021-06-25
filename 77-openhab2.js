@@ -711,15 +711,25 @@ module.exports = function (RED) {
                     });
 
                     var currentState = JSON.parse(body).state;
-
+                    var type = JSON.parse(body).type;
+                    var itemLabel = JSON.parse(body).label;
                     //update msg
                     msg.item = item;
+                    msg.label = itemLabel;
                     msg.topic = topic;
                     msg.event = "ActualValue";
                     msg.payload_in = msg.payload;
                     msg.payload = currentState;
                     msg.oldValue = null;
 
+                    if(type == "Group"){
+                        let grpMembers = {};
+                        var membArr = JSON.parse(body).members;
+                        membArr.forEach(val => {
+                            grpMembers = { ...grpMembers, [val.name]: val };
+                        });
+                        msg.group = grpMembers;
+                    }
                     // update node's context variable
                     node.context().set("currentState", currentState);
 
