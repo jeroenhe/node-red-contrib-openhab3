@@ -487,8 +487,9 @@ module.exports = function (RED) {
 
             // update node's context variable
             node.context().set("CommunicationStatus", status);
-            if (status == "ON")
+            if (status == "ON") {
                 node.context().set("CommunicationError", "");
+            }
 
             // update node's visual status
             node.refreshNodeStatus();
@@ -514,7 +515,7 @@ module.exports = function (RED) {
             var msgid = RED.util.generateId();
             node.send([null, {
                 _msgid: msgid,
-                payload: JSON.stringify(error),
+                payload: error,
                 event: "CommunicationError"
             }, null]);
         };
@@ -840,7 +841,6 @@ module.exports = function (RED) {
                     // no clue what the error situation is
                 }
             };
-
         }
 
         // give the system a few seconds

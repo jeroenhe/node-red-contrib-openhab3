@@ -14,16 +14,17 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
-| 1.3.9 | Fix error reporting bug for `CommunicationError` |
-| 1.3.8 | Update the node-documentation shown in Node-RED |
-| 1.3.7 | Fix/'work around' for NPE in `77-openhab2.js:396:31` |
-| 1.3.6 | Add support for OAuth2 token with OH3 (issue #7) |
-| 1.3.5 | Fix openhab2-events2 node to also work with OpenHAB v3 (issue #6) |
-| 1.3.4 | Upgrade this module to be built and tested with Node.js v12 |
-| 1.3.3 | Add support for GroupItemStateChangedEvent event |
-| 1.3.2 | Remove (useless) nodes picture; Update README |
-| 1.3.1 | Update nodes picture in this README |
-| 1.3.0 | Renamed all nodes to be unique from the original package |
+| 1.3.10 | Revert fix error reporting bug for `CommunicationError` |
+| 1.3.9  | Fix error reporting bug for `CommunicationError` |
+| 1.3.8  | Update the node-documentation shown in Node-RED |
+| 1.3.7  | Fix/'work around' for NPE in `77-openhab2.js:396:31` |
+| 1.3.6  | Add support for OAuth2 token with OH3 (issue #7) |
+| 1.3.5  | Fix openhab2-events2 node to also work with OpenHAB v3 (issue #6)  |
+| 1.3.4  | Upgrade this module to be built and tested with Node.js v12 |
+| 1.3.3  | Add support for GroupItemStateChangedEvent event |
+| 1.3.2  | Remove (useless) nodes picture; Update README |
+| 1.3.1  | Update nodes picture in this README |
+| 1.3.0  | Renamed all nodes to be unique from the original package |
 
 ## Nodes
 
