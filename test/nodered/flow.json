@@ -2053,6 +2053,254 @@
         "wires": []
     },
     {
+        "id": "7c55afb6.259b3",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "get",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 710,
+        "y": 900,
+        "wires": [
+            [
+                "a3059df4.b0534"
+            ]
+        ]
+    },
+    {
+        "id": "a3059df4.b0534",
+        "type": "openhab2-get2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "badf3377.cd963",
+        "itemname": "GChildGroup",
+        "topic": "",
+        "x": 890,
+        "y": 900,
+        "wires": [
+            [
+                "c2c08a3b.5eef68"
+            ]
+        ]
+    },
+    {
+        "id": "c2c08a3b.5eef68",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v3 get GChildGroup",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "1eb97a7e.d0aa36",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "get",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 710,
+        "y": 960,
+        "wires": [
+            [
+                "284ef5ea.d9652a"
+            ]
+        ]
+    },
+    {
+        "id": "284ef5ea.d9652a",
+        "type": "openhab2-get2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "badf3377.cd963",
+        "itemname": "TestStringNoGroup",
+        "topic": "",
+        "x": 910,
+        "y": 960,
+        "wires": [
+            [
+                "39bd981f.5a5c58"
+            ]
+        ]
+    },
+    {
+        "id": "39bd981f.5a5c58",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v3 get TestStringNoGroup",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "eb3e94de.9d2ab8",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "get",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 710,
+        "y": 420,
+        "wires": [
+            [
+                "cd136423.9c3418"
+            ]
+        ]
+    },
+    {
+        "id": "cd136423.9c3418",
+        "type": "openhab2-get2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "203623fa.cd824c",
+        "itemname": "GChildGroup",
+        "topic": "",
+        "x": 890,
+        "y": 420,
+        "wires": [
+            [
+                "37d5ae24.b8c642"
+            ]
+        ]
+    },
+    {
+        "id": "37d5ae24.b8c642",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v2 get GChildGroup",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1120,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "74a6f71d.4bd9e8",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "get",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 710,
+        "y": 480,
+        "wires": [
+            [
+                "cf794d18.44f1b"
+            ]
+        ]
+    },
+    {
+        "id": "cf794d18.44f1b",
+        "type": "openhab2-get2",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "controller": "203623fa.cd824c",
+        "itemname": "TestStringNoGroup",
+        "topic": "",
+        "x": 910,
+        "y": 480,
+        "wires": [
+            [
+                "61ab8db5.872944"
+            ]
+        ]
+    },
+    {
+        "id": "61ab8db5.872944",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "v2 get TestStringNoGroup",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 480,
+        "wires": []
+    },
+    {
         "id": "203623fa.cd824c",
         "type": "openhab2-controller2",
         "name": "openhab2",

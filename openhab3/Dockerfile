@@ -1,5 +1,5 @@
 # https://hub.docker.com/r/openhab/openhab/tags
-FROM openhab/openhab:3.0.2-debian
+FROM openhab/openhab:3.1.0-debian
 
 # Add post userdata/ creation scripts
 RUN mkdir /etc/cont-init.d
