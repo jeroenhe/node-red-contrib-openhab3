@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.11 | Return all group members for get2-node |
 | 1.3.10 | Revert fix error reporting bug for `CommunicationError` |
 | 1.3.9  | Fix error reporting bug for `CommunicationError` |
 | 1.3.8  | Update the node-documentation shown in Node-RED |
@@ -43,13 +44,15 @@ After a little while, you can visit:
 - [Node-RED](http://localhost:1880)
 - [OpenHAB v2](http://localhost:8080)
 - [OpenHAB v3](http://localhost:8081)
+- [OpenHAB v3 (with authentication)](http://localhost:8082)
 
 When in the Node-RED UI, you can import [flow.json](test/nodered/flow.json) via the `Import` option, which contains some example tests for each of the nodes, per OpenHAB version, running simultaneously.
 
 You can verify the server sides event connections to be working as well. They are used by the plugin to receive any updates from OpenHAB:
 
-- [OpenHAB 2](http://localhost:8080/rest/events?topics=smarthome/items)
-- [OpenHAB 3](http://localhost:8081/rest/events?topics=openhab/items)
+- [OpenHAB v2](http://localhost:8080/rest/events?topics=smarthome/items)
+- [OpenHAB v3](http://localhost:8081/rest/events?topics=openhab/items)
+- [OpenHAB v3 (with authentication)](http://localhost:8082/rest/events?topics=openhab/items)
 
 When finished, you can reset the test-setup from scratch (this also removes volumes):
 
