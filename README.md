@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.12 | Spread load a little at start-up |
 | 1.3.11 | Return all group members for get2-node |
 | 1.3.10 | Revert fix error reporting bug for `CommunicationError` |
 | 1.3.9  | Fix error reporting bug for `CommunicationError` |

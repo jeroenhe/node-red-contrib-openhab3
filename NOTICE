@@ -8,6 +8,6 @@ According to https://tldrlegal.com/license/apache-license-2.0-%28apache-2.0%29, 
 
 *Changes*
 
-- Work with OpenHAB v1/v2 *and* v3.
+- Work with OpenHAB v2 *and* v3.
 - All nodes were postfixed with a `2` to prevent collision with the original module, so they can be installed alongside each other.
 - Other changes are documented in [README.md](README.md)

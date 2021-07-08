@@ -21,9 +21,9 @@
 var EventSource = require('@joeybaker/eventsource');
 var request = require('request');
 
-var OH_NULL = "NULL";
-var V2_EVENTSOURCE_URL_PART = "smarthome";
-var V3_EVENTSOURCE_URL_PART = "openhab";
+var OH_NULL = 'NULL';
+var V2_EVENTSOURCE_URL_PART = 'smarthome';
+var V3_EVENTSOURCE_URL_PART = 'openhab';
 
 
 function getConnectionString(config) {
@@ -32,22 +32,22 @@ function getConnectionString(config) {
     if (config.protocol)
         url = config.protocol;
     else
-        url = "http";
+        url = 'http';
 
-    url += "://";
+    url += '://';
 
     // Only set username and password inside the url when BOTH username and
     // password are provided and non-empty.
     if ((config.username != undefined) && (config.username.trim().length != 0) && 
         (config.password != undefined) && (config.password.length != 0)) {
             url += encodeURIComponent(config.username.trim());
-            url += ":" + encodeURIComponent(config.password);
-            url += "@";
+            url += ':' + encodeURIComponent(config.password);
+            url += '@';
     }
     url += config.host;
 
     if ((config.port != undefined) && (config.port.trim().length != 0)) {
-        url += ":" + config.port.trim();
+        url += ':' + config.port.trim();
     }
 
     if ((config.path != undefined) && (config.path.trim().length != 0)) {
@@ -56,14 +56,14 @@ function getConnectionString(config) {
         path = path.replace(/^[\/]+/, '');
         path = path.replace(/[\/]+$/, '');
 
-        url += "/" + path;
+        url += '/' + path;
     }
     return url;
 }
 
 function trimString(string, length) {
     return string.length > length ?
-        string.substring(0, length - 3) + "..." :
+        string.substring(0, length - 3) + '...' :
         string;
 }
 
@@ -79,6 +79,13 @@ function getAuthenticationHeader(config) {
 
 function shouldSendState(state) {
     return state != null && state != undefined && state.toUpperCase() != OH_NULL;
+}
+
+function getRandomInt(lower, upper) {
+    if (lower > upper || lower < 0 || upper < 1) {
+        return 0;
+    }
+    return parseInt(Math.random() * (upper - lower)) + lower;
 }
 
 module.exports = function (RED) {
@@ -114,14 +121,14 @@ module.exports = function (RED) {
 
         // this controller node handles all communication with the configured openhab server
         function getStateOfItems(config) {
-            // node.log("getStateOfItems : config = " + JSON.stringify(config));
+            //node.log("getStateOfItems : config = " + JSON.stringify(config));
 
             var url = getConnectionString(config) + "/rest/items";
             var options = getAuthenticationHeader(config)
             request.get(url, options, function (error, response, body) {
                 // handle communication errors
                 if (error) {
-                    node.warn("request error '" + trimString(JSON.stringify(response), 50) + "' on '" + url + "'");
+                    node.warn('request error ' + trimString(JSON.stringify(response), 50) + ' on ' + url);
                     node.emit('CommunicationError', error);
                 } else if (response.statusCode == 503) {
                     // openhab not fully ready .... retry after 5 seconds
@@ -131,17 +138,17 @@ module.exports = function (RED) {
                         getStateOfItems(config);
                     }, 5000);
                 } else if (response.statusCode != 200) {
-                    node.warn("response error '" + trimString(JSON.stringify(response), 50) + "' on '" + url + "'");
+                    node.warn('response error ' + trimString(JSON.stringify(response), 50) + ' on ' + url);
                     node.emit('CommunicationError', response);
                 } else {
                     // update the registered nodes with item state
-                    node.emit('CommunicationStatus', "ON");
+                    node.emit('CommunicationStatus', 'ON');
 
                     var items = JSON.parse(body);
 
                     items.forEach(function (item) {
-                        node.emit(item.name + "/StateEvent", {
-                            type: "ItemStateEvent",
+                        node.emit(item.name + '/StateEvent', {
+                            type: 'ItemStateEvent',
                             state: item.state
                         });
                     });
@@ -152,14 +159,13 @@ module.exports = function (RED) {
         function startEventSource() {
 
             // register for all item events
-            var eventsource_url = config.ohversion == "v3" ? "/rest/events?topics=openhab/items" : "/rest/events?topics=smarthome/items";
+            var eventsource_url = config.ohversion == 'v3' ? '/rest/events?topics=openhab/items' : '/rest/events?topics=smarthome/items';
 
             // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(getConnectionString(config) + eventsource_url, {});
 
             // handle the 'onopen' event
-            node.es.onopen = function (event) {
-
+            node.es.onopen = function () {
                 // get the current state of all items
                 getStateOfItems(config);
             };
@@ -172,28 +178,27 @@ module.exports = function (RED) {
                     msg = JSON.parse(msg.data);
                     msg.payload = JSON.parse(msg.payload);
 
-                    var url = V2_EVENTSOURCE_URL_PART + "/items/";
-                    if (config.ohversion === "v3") {
-                        url = V3_EVENTSOURCE_URL_PART + "/items/";
+                    var url = V2_EVENTSOURCE_URL_PART + '/items/';
+                    if (config.ohversion === 'v3') {
+                        url = V3_EVENTSOURCE_URL_PART + '/items/';
                     }
                     // node.log('config.ohversion: ' + config.ohversion + ' url: ' + url);
                     const itemStart = (url).length;
                     var item = msg.topic.substring(itemStart, msg.topic.indexOf('/', itemStart));
 
-                    node.emit(item + "/RawEvent", msg);
-                    node.emit("RawEvent", msg);
+                    node.emit(item + '/RawEvent', msg);
+                    node.emit('RawEvent', msg);
 
-                    if ((msg.type == "ItemStateEvent") || (msg.type == "ItemStateChangedEvent") || (msg.type == "GroupItemStateChangedEvent"))
-                        node.emit(item + "/StateEvent", {
+                    if ((msg.type == 'ItemStateEvent') || (msg.type == 'ItemStateChangedEvent') || (msg.type == 'GroupItemStateChangedEvent'))
+                        node.emit(item + '/StateEvent', {
                             type: msg.type,
                             state: msg.payload.value
                         });
 
                 } catch (e) {
                     // report an unexpected error
-                    node.error("Unexpected Error : " + e)
+                    node.error('Unexpected Error : ' + e)
                 }
-
             };
 
             // handle the 'onerror' event
@@ -205,45 +210,45 @@ module.exports = function (RED) {
                 node.emit('CommunicationError', JSON.stringify(err));
 
                 if (err.status) {
-                    if ((err.status == 503) || (err.status == "503") || (err.status == 404) || (err.status == "404"))
+                    var errorStatus = parseInt(err.status)
+                    var baseErrorStatus = Math.floor(errorStatus / 100)
+                    if (baseErrorStatus == 4 || baseErrorStatus == 5) {
                         // the EventSource object has given up retrying ... retry reconnecting after 10 seconds
                         node.es.close();
-                    delete node.es;
+                        delete node.es;
 
-                    node.emit('CommunicationStatus', "OFF");
+                        node.emit('CommunicationStatus', 'OFF');
 
-                    setTimeout(function () {
-                        startEventSource();
-                    }, 10000);
+                        setTimeout(function () {
+                            node.warn('Restarting EventSource (after delay)');
+                            startEventSource();
+                        }, 10000);
+                    }
                 } else if (err.type && err.type.code) {
                     // the EventSource object is retrying to reconnect
                 } else {
                     // no clue what the error situation is
                 }
             };
-
         }
 
-        //startEventSource();
-        // give the system a few seconds 
+        // give the system a few random seconds before starting to process the event stream
         setTimeout(function () {
             startEventSource();
-        }, 5000);
+        }, getRandomInt(1000, 5000));
 
         this.control = function (itemname, topic, payload, okCb, errCb) {
             var url;
+            var headers = {
+                "Content-type": "text/plain"
+            };
+            var method = request.get;
 
             if (topic === "ItemUpdate") {
                 url = getConnectionString(config) + "/rest/items/" + itemname + "/state";
-                headers = {
-                    "Content-type": "text/plain"
-                };
                 method = request.put;
             } else if (topic === "ItemCommand") {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
-                headers = {
-                    "Content-type": "text/plain"
-                };
                 method = request.post;
             } else {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
@@ -271,14 +276,14 @@ module.exports = function (RED) {
         this.on("close", function () {
             node.log('close');
             node.es.close();
+            delete node.es;
             node.emit('CommunicationStatus', "OFF");
         });
-
     }
     RED.nodes.registerType("openhab2-controller2", OpenHABControllerNode);
 
     // start a web service for enabling the node configuration ui to query for available openHAB items
-    RED.httpNode.get("/openhab2/items", function (req, res, next) {
+    RED.httpNode.get('/openhab2/items', function (req, res) {
         var config = req.query;
         var url = getConnectionString(config) + '/rest/items';
         var options = getAuthenticationHeader(config);
@@ -323,7 +328,7 @@ module.exports = function (RED) {
                     text: "state: " + currentState
                 });
             } else {
-                statusText = "state: " + currentState;
+                var statusText = "state: " + currentState;
                 node.status({
                     fill: "green",
                     shape: "dot",
@@ -437,17 +442,12 @@ module.exports = function (RED) {
             openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
         }
 
-        //Wait 1 seconds after startup before fetching initial value
+        //Wait 0..5 seconds after startup before fetching initial value
         if (itemName != null && itemName != undefined) {
-            setTimeout(getInitial, 1000);
+            setTimeout(getInitial, getRandomInt(1000, 5000));
         }
 
         /* ===== Node-Red events ===== */
-        this.on("input", function (msg) {
-            if (msg != null) {
-
-            };
-        });
         this.on("close", function () {
             node.log('close');
             openhabController.removeListener(itemName + '/RawEvent', node.processRawEvent);
@@ -539,11 +539,6 @@ module.exports = function (RED) {
         node.refreshNodeStatus();
 
         /* ===== Node-Red events ===== */
-        this.on("input", function (msg) {
-            if (msg != null) {
-
-            };
-        });
         this.on("close", function () {
             node.log('close');
             openhabController.removeListener('CommunicationStatus', node.processCommStatus);
@@ -577,7 +572,7 @@ module.exports = function (RED) {
 
         function saveValue(item, topic, payload) {
             openhabController.control(item, topic, payload,
-                function (body) {
+                function () {
                     // no body expected for a command or update
                     node.status({
                         fill: "green",
@@ -731,7 +726,6 @@ module.exports = function (RED) {
 
                     // update node's visual status
                     node.refreshNodeStatus();
-                    msg.payload = currentState
                     node.send(msg);
                 },
                 function (err) {
@@ -783,7 +777,7 @@ module.exports = function (RED) {
             });
 
             // handle the 'onopen' event
-            node.es.onopen = function (event) {
+            node.es.onopen = function () {
                 node.status({
                     fill: "green",
                     shape: "dot",
@@ -810,7 +804,6 @@ module.exports = function (RED) {
                         text: "Unexpected Error : " + e
                     });
                 }
-
             };
 
             // handle the 'onerror' event
@@ -826,20 +819,24 @@ module.exports = function (RED) {
                 });
 
                 if (err.status) {
-                    if ((err.status == 503) || (err.status == "503") || (err.status == 404) || (err.status == "404"))
+                    var errorStatus = parseInt(err.status)
+                    var baseErrorStatus = Math.floor(errorStatus / 100)
+                    if (baseErrorStatus == 4 || baseErrorStatus == 5) {
                         // the EventSource object has given up retrying ... retry reconnecting after 10 seconds
                         node.es.close();
-                    delete node.es;
+                        delete node.es;
 
-                    node.status({
-                        fill: "red",
-                        shape: "dot",
-                        text: 'CommunicationStatus OFF'
-                    });
+                        node.status({
+                            fill: "red",
+                            shape: "dot",
+                            text: 'CommunicationStatus OFF'
+                        });
 
-                    setTimeout(function () {
-                        startEventSource();
-                    }, 10000);
+                        setTimeout(function () {
+                            node.warn('Restarting EventSource (after delay)');
+                            startEventSource();
+                        }, 10000);
+                    }
                 } else if (err.type && err.type.code) {
                     // the EventSource object is retrying to reconnect
                 } else {
@@ -851,19 +848,18 @@ module.exports = function (RED) {
         // give the system a few seconds
         setTimeout(function () {
             startEventSource();
-        }, 5000);
+        }, getRandomInt(1000, 5000));
 
         this.on("close", function () {
             node.log('close');
             node.es.close();
+            delete node.es;
             node.status({
                 fill: "red",
                 shape: "dot",
                 text: 'CommunicationStatus OFF'
             });
-
         });
-
     }
 
     RED.nodes.registerType("openhab2-events2", OpenHABEvents);
