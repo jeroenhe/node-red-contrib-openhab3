@@ -7,7 +7,7 @@ Group:Number:AVG            GTemperatures  "All Room Temperatures [%.1f °C]" //
 
 Contact TestContact "Contact" (GTest)
 Dimmer TestDimmer "Dimmer" (GTest)
-Switch TestSwitch "Schakelaar" (GTest)
+Switch TestSwitch "Schakelaar" (GChildGroup)
 String TestString "String" (GTest, GTest2)
 
 String TestStringNoGroup "String without a Group"

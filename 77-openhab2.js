@@ -709,17 +709,27 @@ module.exports = function (RED) {
                     var currentState = JSON.parse(body).state;
                     var type = JSON.parse(body).type;
                     var itemLabel = JSON.parse(body).label;
-                    var groupNames = JSON.parse(body).groupNames;
-                    //update msg
+                    var groups = JSON.parse(body).groupNames;
+      
+                    // When we are dealing with an item of type "Group", we will also expose
+                    // the members it contains via a .members property.
+                    if (type == "Group") {
+                        let grpMembers = {};
+                        var membArr = JSON.parse(body).members;
+                        membArr.forEach(val => {
+                            groupNames = { ...grpMembers, [val.name]: val };
+                        });
+                        msg.members = groupNames;
+                    }
+
                     msg.item = item;
                     msg.label = itemLabel;
                     msg.topic = topic;
                     msg.event = "ActualValue";
                     msg.payload_in = msg.payload;
                     msg.payload = currentState;
-                    msg.oldValue = null;
                     msg.type = type;
-                    msg.groups = groupNames;
+                    msg.groups = groups;
 
                     // update node's context variable
                     node.context().set("currentState", currentState);
