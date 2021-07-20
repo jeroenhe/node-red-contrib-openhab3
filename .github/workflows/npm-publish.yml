@@ -24,7 +24,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'ci skip')"
     steps:
       - name: Install required packages
-        run: DEBIAN_FRONTEND=noninteractive sudo apt-get update -y && sudo apt-get upgrade -y curl httpie python3 python3-pip wget
+        run: DEBIAN_FRONTEND=noninteractive sudo apt-get update -y && sudo apt-get install -y curl httpie python3 python3-pip wget
       - name: Download requires scripts into Image
         run: curl -sS -o get_token.py "https://gist.githubusercontent.com/jeroenhendricksen/451db2a595150310b978e793d3843c43/raw/get_token.py"
       - name: Download requires scripts into Image
