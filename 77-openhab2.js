@@ -717,9 +717,9 @@ module.exports = function (RED) {
                         let grpMembers = {};
                         var membArr = JSON.parse(body).members;
                         membArr.forEach(val => {
-                            groupNames = { ...grpMembers, [val.name]: val };
+                            grpMembers = { ...grpMembers, [val.name]: val };
                         });
-                        msg.members = groupNames;
+                        msg.members = grpMembers;
                     }
 
                     msg.item = item;

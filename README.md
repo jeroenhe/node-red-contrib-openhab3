@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.14 | Fix for group members for groups |
 | 1.3.13 | Also return group members for groups |
 | 1.3.12 | Spread load a little at start-up |
 | 1.3.11 | Return all group members for get2-node |
