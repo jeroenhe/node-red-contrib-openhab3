@@ -1,10 +1,10 @@
 {
   "name": "node-red-contrib-openhab3",
-  "version": "1.3.14",
+  "version": "1.3.15",
   "description": "OpenHAB (v2/v3) home automation for node-red, based upon node-red-contrib-openhab2 package",
   "dependencies": {
     "@joeybaker/eventsource": "latest",
-    "bootstrap-multiselect": "^0.9.13",
+    "bootstrap-multiselect": "^1.1.0",
     "request": "latest"
   },
   "author": "Jeroen Hendricksen",
@@ -24,7 +24,7 @@
     "lint": "eslint ./*.js"
   },
   "devDependencies": {
-    "eslint": "^4.12.1"
+    "eslint": "^8.0.0"
   },
   "repository": {
     "type": "git",

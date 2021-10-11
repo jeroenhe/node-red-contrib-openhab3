@@ -724,7 +724,10 @@ module.exports = function (RED) {
 
                     msg.item = item;
                     msg.label = itemLabel;
-                    msg.topic = topic;
+                    //only override the topic when it was not set from the config
+                    if (topic) {
+                        msg.topic = topic;
+                    }
                     msg.event = "ActualValue";
                     msg.payload_in = msg.payload;
                     msg.payload = currentState;
