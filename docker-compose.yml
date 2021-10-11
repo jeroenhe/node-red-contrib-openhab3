@@ -15,7 +15,7 @@ services:
         target: /data
 
   openhab2:
-    image: openhab/openhab:2.5.10-debian
+    image: openhab/openhab:2.5.12-debian
     networks: [ "nodered" ]
     ports:
       - "8080:8080"
