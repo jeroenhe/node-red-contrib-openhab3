@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-openhab3",
-  "version": "1.3.15",
+  "version": "1.3.16",
   "description": "OpenHAB (v2/v3) home automation for node-red, based upon node-red-contrib-openhab2 package",
   "dependencies": {
     "@joeybaker/eventsource": "latest",
@@ -24,7 +24,8 @@
     "lint": "eslint ./*.js"
   },
   "devDependencies": {
-    "eslint": "^8.0.0"
+    "eslint": "^8.0.0",
+    "jshint": "^2.13.1"
   },
   "repository": {
     "type": "git",
