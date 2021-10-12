@@ -6,6 +6,15 @@ on:
       - "master"
 
 jobs:
+  npm-run-jshint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: npm run jshint
+      
   publish:
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, 'ci skip')"
