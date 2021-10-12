@@ -300,7 +300,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-in2">
-    <p>Subscribes to state changes for the selected openHAB Item.</p>
+    <p>Subscribes to state changes for the selected openHAB Item. Items or Groups with a value of NULL are not sent to the output channel.</p>
     <p></p>
     <b>Configuration</b>
     <ul>
@@ -332,7 +332,7 @@
 </script>
 
 <script type="text/x-red" data-help-name="openhab2-get2">
-    <p>Gets an openHAB Item' state on an input message.</p>
+    <p>Gets an openHAB Item' state on an input message. Items or Groups with a value of NULL are not sent to the output channel.</p>
     <p></p>
     <b>Configuration</b>
     <ul>
@@ -427,6 +427,20 @@
         <li><b>Controller :</b> Select the openHAB controller</li>
     </ul>
     <p></p>
+    <b>Sample message (1 output channel)</b>
+    <code>
+    {
+        "topic": "openhab/items/TestString/statechanged",
+        "payload": {
+            "type": "String",
+            "value": "A",
+            "oldType": "String",
+            "oldValue": "B"
+        },
+        "type": "ItemStateChangedEvent",
+        "_msgid": "c437e8981c45b326"
+    }
+    </code>
 </script>
 
 <script type="text/javascript">
