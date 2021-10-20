@@ -76,6 +76,12 @@ function getAuthenticationHeader(config) {
     return options;
 }
 
+// Special function for https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/21
+function shouldSendStateForGet2(state, type) {
+    return (state != null && state != undefined && state.toUpperCase() != OH_NULL) || 
+        (state != null && state != undefined && state.toUpperCase() == OH_NULL && type == 'Group');
+}
+
 function shouldSendState(state) {
     return state != null && state != undefined && state.toUpperCase() != OH_NULL;
 }
@@ -750,8 +756,9 @@ module.exports = function (RED) {
                     // update node's visual status
                     node.refreshNodeStatus();
 
-                    // only send a message when the state is not OH_NULL
-                    if (shouldSendState(currentState)) {
+                    // only send a message when the state is not OH_NULL, or when the 
+                    // type is a group
+                    if (shouldSendStateForGet2(currentState, type)) {
                         node.send(msg);
                     }
                 },
