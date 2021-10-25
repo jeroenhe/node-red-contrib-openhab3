@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.18 | Add option for sending NULL-values for get2-node (#22) |
 | 1.3.17 | Fix issue #21 |
 | 1.3.16 | get2 node only sends state when not NULL |
 | 1.3.15 | Pass on existing topic for get2 node when not set from config |
