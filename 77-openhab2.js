@@ -76,10 +76,9 @@ function getAuthenticationHeader(config) {
     return options;
 }
 
-// Special function for https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/21
-function shouldSendStateForGet2(state, type) {
-    return (state != null && state != undefined && state.toUpperCase() != OH_NULL) || 
-        (state != null && state != undefined && state.toUpperCase() == OH_NULL && type == 'Group');
+// Special function for https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/22
+function shouldSendStateForGet2(sendnull, state) {
+    return ((state != null && state != undefined) && (sendnull || state.toUpperCase() != OH_NULL));
 }
 
 function shouldSendState(state) {
@@ -692,7 +691,7 @@ module.exports = function (RED) {
         this.refreshNodeStatus = function () {
             var currentState = node.context().get("currentState");
 
-            if (!shouldSendState(currentState)) {
+            if (!shouldSendStateForGet2(config.sendnull, currentState)) {
                 node.status({
                     fill: "gray",
                     shape: "ring",
@@ -756,9 +755,9 @@ module.exports = function (RED) {
                     // update node's visual status
                     node.refreshNodeStatus();
 
-                    // only send a message when the state is not OH_NULL, or when the 
-                    // type is a group
-                    if (shouldSendStateForGet2(currentState, type)) {
+                    // only send a message when the state is not OH_NULL, or when the
+                    // sendnull config option is true.
+                    if (shouldSendStateForGet2(config.sendnull, currentState)) {
                         node.send(msg);
                     }
                 },
