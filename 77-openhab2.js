@@ -18,7 +18,7 @@
 
 */
 
-var EventSource = require('@joeybaker/eventsource');
+var EventSource = require('eventsource');
 var request = require('request');
 
 var OH_NULL = 'NULL';
@@ -60,6 +60,11 @@ function getConnectionString(config) {
     return url;
 }
 
+function extractItemName(url, topic) {
+    var itemStart = url.length;
+    return topic.substring(itemStart, topic.indexOf('/', itemStart));
+}
+
 function trimString(string, length) {
     return string.length > length ?
         string.substring(0, length - 3) + '...' :
@@ -74,6 +79,14 @@ function getAuthenticationHeader(config) {
         };
     }
     return options;
+}
+
+function getEventSourceAuthHeader(config) {
+    if (config != undefined && config.token != undefined && config.token.length != 0) {
+        var eventSourceInitDict = { headers: {'Authorization': 'Bearer ' + config.token} };
+        return eventSourceInitDict;
+    }
+    return {};
 }
 
 // Special function for https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/22
@@ -170,33 +183,42 @@ module.exports = function (RED) {
 
         function startEventSource() {
 
-            // register for all item events
+            // register for all item events (including Thing addition and removal events)
             var eventsource_url = config.ohversion == 'v3' ? '/rest/events?topics=openhab/items' : '/rest/events?topics=smarthome/items';
-
+            var sseUrl = getConnectionString(config) + eventsource_url;
+            var options = getEventSourceAuthHeader(config);
             // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
-            node.es = new EventSource(getConnectionString(config) + eventsource_url, {});
+            node.es = new EventSource(sseUrl, options);
 
             // handle the 'onopen' event
             node.es.onopen = function () {
+                console.log("OpenHABControllerNode " + config.name + " opened connection to " + sseUrl);
                 // get the current state of all items
                 getStateOfItems(config);
             };
 
             // handle the 'onmessage' event
             node.es.onmessage = function (msg) {
-                // node.log(msg.data);
                 try {
+                    // Only process SSE-events with type 'message'
+                    if (msg.type != 'message') {
+                        return;
+                    }
+
                     // update the node status with the Item's new state
                     msg = JSON.parse(msg.data);
-                    msg.payload = JSON.parse(msg.payload);
+                    if (msg.payload && (msg.payload.constructor == String)) {
+                        msg.payload = JSON.parse(msg.payload);
+                    } else {
+                        console.log('Error: ignoring invalid SSE-event: ' + msg.data);
+                        return;
+                    }
 
                     var url = V2_EVENTSOURCE_URL_PART + '/items/';
                     if (config.ohversion === 'v3') {
                         url = V3_EVENTSOURCE_URL_PART + '/items/';
                     }
-                    // node.log('config.ohversion: ' + config.ohversion + ' url: ' + url);
-                    var itemStart = (url).length;
-                    var item = msg.topic.substring(itemStart, msg.topic.indexOf('/', itemStart));
+                    var item = extractItemName(url, msg.topic);
 
                     // https://nodered.org/docs/api/modules/v/1.3/@node-red_util_events.html
                     // emit a message to any in2 node for the item
@@ -204,14 +226,6 @@ module.exports = function (RED) {
 
                     // emit a message to the controller node
                     node.emit('RawEvent', msg);
-
-                    // // emit a message to any in2 node for the item
-                    // if ((msg.type == 'ItemStateEvent') || (msg.type == 'ItemStateChangedEvent') || (msg.type == 'GroupItemStateChangedEvent')) {
-                    //     node.emit(item + '/StateEvent', {
-                    //         type: msg.type,
-                    //         state: msg.payload.value
-                    //     });
-                    // }
 
                 } catch (e) {
                     // report an unexpected error
@@ -226,7 +240,7 @@ module.exports = function (RED) {
                 }
 
                 node.warn('ERROR ' + stringifyAsJson(err, 50));
-                node.emit('CommunicationError', stringifyAsJson(err, 50));
+                node.emit('CommunicationError', err);
 
                 if (err.status) {
                     var errorStatus = parseInt(err.status);
@@ -237,9 +251,9 @@ module.exports = function (RED) {
                         delete node.es;
 
                         node.emit('CommunicationStatus', 'OFF');
+                        node.warn('Restarting EventSource (after delay)');
 
                         setTimeout(function () {
-                            node.warn('Restarting EventSource (after delay)');
                             startEventSource();
                         }, 10000);
                     }
@@ -629,7 +643,7 @@ module.exports = function (RED) {
                                 saveValue(item, topic, payload);
                                 node.status({
                                     fill: "green",
-                                    shape: "ring",
+                                    shape: "dot",
                                     text: "state changed from '" + currentState + " ' to '" + payload + "')"
                                 });
                             } else {
@@ -800,17 +814,20 @@ module.exports = function (RED) {
 
             // register for all item events
             var eventsource_url = config2.ohversion == "v3" ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*" : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
+            var sseUrl = getConnectionString(config2) + eventsource_url;
+            var options = getEventSourceAuthHeader(config);
             // node.log('config.ohversion: ' + config2.ohversion + ' eventsource_url: ' + eventsource_url);
-            node.es = new EventSource(getConnectionString(config2) + eventsource_url, {});
+            node.es = new EventSource(sseUrl, options);
 
             node.status({
-                fill: "green",
+                fill: "gray",
                 shape: "ring",
                 text: " "
             });
 
             // handle the 'onopen' event
             node.es.onopen = function () {
+                console.log("OpenHABEvents opened connection to " + sseUrl);
                 node.status({
                     fill: "green",
                     shape: "dot",
@@ -820,20 +837,28 @@ module.exports = function (RED) {
 
             // handle the 'onmessage' event
             node.es.onmessage = function (msg) {
-                // node.log(msg.data);
                 try {
+                    // Only process SSE-events with type 'message'
+                    if (msg.type != 'message') {
+                        return;
+                    }
+
                     // update the node status with the Item's new state
                     msg = JSON.parse(msg.data);
                     if (msg.payload && (msg.payload.constructor == String)) {
                         msg.payload = JSON.parse(msg.payload);
+                    } else {
+                        console.log('Error: ignoring invalid SSE-event: ' + msg.data);
+                        return;
                     }
+
                     node.send(msg);
                 } catch (e) {
                     // report an unexpected error
                     node.error("Unexpected Error : " + e);
                     node.status({
                         fill: "red",
-                        shape: "dot",
+                        shape: "ring",
                         text: "Unexpected Error : " + e
                     });
                 }
@@ -847,7 +872,7 @@ module.exports = function (RED) {
                 node.warn('ERROR ' + stringifyAsJson(err, 50));
                 node.status({
                     fill: "red",
-                    shape: "dot",
+                    shape: "ring",
                     text: 'CommunicationError ' + stringifyAsJson(err, 50)
                 });
 
@@ -861,12 +886,12 @@ module.exports = function (RED) {
 
                         node.status({
                             fill: "red",
-                            shape: "dot",
+                            shape: "ring",
                             text: 'CommunicationStatus OFF'
                         });
-
+                        
+                        node.warn('Restarting EventSource (after delay)');
                         setTimeout(function () {
-                            node.warn('Restarting EventSource (after delay)');
                             startEventSource();
                         }, 10000);
                     }
@@ -885,7 +910,7 @@ module.exports = function (RED) {
             delete node.es;
             node.status({
                 fill: "red",
-                shape: "dot",
+                shape: "ring",
                 text: 'CommunicationStatus OFF'
             });
         });
