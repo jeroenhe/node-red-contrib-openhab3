@@ -313,7 +313,7 @@
         <li><b>Controller :</b> Select the openHAB controller</li>
         <li><b>Item :</b>Select the Item to monitor</li>
         <li><b>Topic :</b> Set .topic for the outgoing message</li>
-        <li><b>Send initial :</b>Send message at node startup (type 'InitialStateEvent')</li>
+        <li><b>Send initial :</b>Send message at node and/or the connected controller (openhab2-controller2) startup (type 'InitialStateEvent')</li>
         <li><b>When updated :</b>Send message when node state updates (type 'ItemStateEvent')</li>
         <li><b>When command :</b>Send message when node state receives a command (type 'ItemCommandEvent')</li>
         <li><b>When changed :</b>Send message when node state changes (type 'ItemStateChangedEvent' or 'GroupItemStateChangedEvent')</li>
@@ -390,7 +390,7 @@
         <li>Channel 2:
             <ul>
                 <li><code>msg.topic</code> : "ConnectionError"</li>
-                <li><code>msg.payload</code> : error message</li>
+                <li><code>msg.payload</code> : error message(s)</li>
                </ul>
         </li>
         <li>Channel 3:

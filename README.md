@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.20 | Replace request package with axios (#3) |
 | 1.3.19 | Use official eventsource package |
 | 1.3.18 | Add option for sending NULL-values for get2-node (#22) |
 | 1.3.17 | Fix issue #21 |

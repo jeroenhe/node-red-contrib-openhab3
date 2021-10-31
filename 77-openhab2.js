@@ -19,7 +19,10 @@
 */
 
 var EventSource = require('eventsource');
-var request = require('request');
+const axios = require('axios').default;
+const ax = axios.create({
+    timeout: 5000
+});
 
 var OH_NULL = 'NULL';
 var V2_EVENTSOURCE_URL_PART = 'smarthome';
@@ -81,14 +84,6 @@ function getAuthenticationHeader(config) {
     return options;
 }
 
-function getEventSourceAuthHeader(config) {
-    if (config != undefined && config.token != undefined && config.token.length != 0) {
-        var eventSourceInitDict = { headers: {'Authorization': 'Bearer ' + config.token} };
-        return eventSourceInitDict;
-    }
-    return {};
-}
-
 // Special function for https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/22
 function shouldSendStateForGet2(sendnull, state) {
     return ((state != null && state != undefined) && (sendnull || state.toUpperCase() != OH_NULL));
@@ -145,40 +140,53 @@ module.exports = function (RED) {
         // node.log("OpenHABControllerNode config: " + JSON.stringify(config));
 
         // this controller node handles all communication with the configured openhab server
-        function getStateOfItems(config) {
+        function getInitialStateOfItems(config) {
             //node.log("getStateOfItems : config = " + JSON.stringify(config));
 
             var url = getConnectionString(config) + "/rest/items";
             var options = getAuthenticationHeader(config);
-            request.get(url, options, function (error, response, body) {
-                // handle communication errors
-                if (error) {
-                    node.warn('request error ' + stringifyAsJson(response, 50) + ' on ' + url);
-                    node.emit('CommunicationError', error);
-                } else if (response.statusCode == 503) {
-                    // openhab not fully ready .... retry after 5 seconds
-                    node.warn('response status 503 on ' + url + ' ... retry later');
-                    node.emit('CommunicationError', response);
-                    setTimeout(function () {
-                        getStateOfItems(config);
-                    }, 5000);
-                } else if (response.statusCode != 200) {
-                    node.warn('response error ' + stringifyAsJson(response, 50) + ' on ' + url);
-                    node.emit('CommunicationError', response);
-                } else {
-                    // update the registered nodes with item state
-                    node.emit('CommunicationStatus', 'ON');
-
-                    var items = JSON.parse(body);
-
-                    items.forEach(function (item) {
-                        node.emit(item.name + '/StateEvent', {
-                            type: 'ItemStateEvent',
-                            state: item.state
+            // https://axios-http.com/docs/example
+            ax.get(url, options)
+                .then(response => {
+                    if (response.data && response.data.length > 0) {
+                        node.emit('CommunicationStatus', 'ON');
+                        node.log("Connection established. Emitting " + response.data.length + " InitialEvents");
+                        response.data.forEach(function (item) {
+                            node.emit(item.name + '/InitialEvent', item);
                         });
-                    });
-                }
-            });
+                    } else {
+                        // OpenHAB is only ready when there is at least one item present. Only then
+                        // can we retrieve all initial states.
+                        node.log("Number of OpenHAB items is 0. Rescheduling InitialStateEvent...");
+                        setTimeout(function () {
+                            getInitialStateOfItems(config);
+                        }, 10000);
+                    }
+                })
+                .catch(error => {
+                    if (error.response) { 
+                        // The request was made and the server responded with a status code
+                        // that falls out of the range of 2xx
+                        // console.log(error.response.data);
+                        // console.log(error.response.status);
+                        // console.log(error.response.headers);
+                        var errorMessage = 'request error response status ' + error.response.status + ' on ' + url;
+                        node.warn(errorMessage);
+                        node.emit('CommunicationError', errorMessage);
+                        setTimeout(function () {
+                            getInitialStateOfItems(config);
+                        }, 10000);
+                    } else {
+                        // Something happened in setting up the request that triggered an Error
+                        // console.log(JSON.stringify(error));
+                        var errorMessage2 = 'request error: ' + stringifyAsJson(error.message, 50) + ' on ' + url;
+                        node.warn(errorMessage2);
+                        node.emit('CommunicationError', errorMessage2);
+                        setTimeout(function () {
+                            getInitialStateOfItems(config);
+                        }, 10000);
+                    }
+                });
         }
 
         function startEventSource() {
@@ -186,15 +194,15 @@ module.exports = function (RED) {
             // register for all item events (including Thing addition and removal events)
             var eventsource_url = config.ohversion == 'v3' ? '/rest/events?topics=openhab/items' : '/rest/events?topics=smarthome/items';
             var sseUrl = getConnectionString(config) + eventsource_url;
-            var options = getEventSourceAuthHeader(config);
+            var options = getAuthenticationHeader(config);
             // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(sseUrl, options);
 
             // handle the 'onopen' event
             node.es.onopen = function () {
-                console.log("OpenHABControllerNode " + config.name + " opened connection to " + sseUrl);
+                node.log("Opened connection to " + sseUrl);
                 // get the current state of all items
-                getStateOfItems(config);
+                getInitialStateOfItems(config);
             };
 
             // handle the 'onmessage' event
@@ -209,24 +217,20 @@ module.exports = function (RED) {
                     msg = JSON.parse(msg.data);
                     if (msg.payload && (msg.payload.constructor == String)) {
                         msg.payload = JSON.parse(msg.payload);
-                    } else {
-                        console.log('Error: ignoring invalid SSE-event: ' + msg.data);
-                        return;
+
+                        var url = V2_EVENTSOURCE_URL_PART + '/items/';
+                        if (config.ohversion === 'v3') {
+                            url = V3_EVENTSOURCE_URL_PART + '/items/';
+                        }
+                        var item = extractItemName(url, msg.topic);
+
+                        // https://nodered.org/docs/api/modules/v/1.3/@node-red_util_events.html
+                        // emit a message to any in2 node for the item
+                        node.emit(item + '/RawEvent', msg);
+
+                        // emit a message to the controller node
+                        node.emit('RawEvent', msg);
                     }
-
-                    var url = V2_EVENTSOURCE_URL_PART + '/items/';
-                    if (config.ohversion === 'v3') {
-                        url = V3_EVENTSOURCE_URL_PART + '/items/';
-                    }
-                    var item = extractItemName(url, msg.topic);
-
-                    // https://nodered.org/docs/api/modules/v/1.3/@node-red_util_events.html
-                    // emit a message to any in2 node for the item
-                    node.emit(item + '/RawEvent', msg);
-
-                    // emit a message to the controller node
-                    node.emit('RawEvent', msg);
-
                 } catch (e) {
                     // report an unexpected error
                     node.error('Unexpected Error : ' + e);
@@ -239,7 +243,7 @@ module.exports = function (RED) {
                     return; // ignore
                 }
 
-                node.warn('ERROR ' + stringifyAsJson(err, 50));
+                node.warn('ERROR ' + stringifyAsJson(err, 150));
                 node.emit('CommunicationError', err);
 
                 if (err.status) {
@@ -272,34 +276,49 @@ module.exports = function (RED) {
             var headers = {
                 "Content-type": "text/plain"
             };
-            var method = request.get;
+            var method = 'get';
+            var payloadString = null;
+            if (payload) {
+                payloadString = String(payload);
+            }
 
             if (topic === "ItemUpdate") {
                 url = getConnectionString(config) + "/rest/items/" + itemname + "/state";
-                method = request.put;
+                method = 'put';
             } else if (topic === "ItemCommand") {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
-                method = request.post;
+                method = 'post';
             } else {
                 url = getConnectionString(config) + "/rest/items/" + itemname;
-                headers = {};
-                method = request.get;
+                //headers = {};
+                headers = {
+                    "Content-type": "application/json"
+                };
+                method = 'get';
             }
 
-            method({
+            // Axios cheat sheet: https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
+            ax({
+                method: method,
                 url: url,
-                body: String(payload),
+                data: payloadString,
                 headers: headers
-            }, function (error, response, body) {
-                if (error) {
-                    node.emit('CommunicationError', error);
-                    errCb("request error '" + stringifyAsJson(error, 50) + "' on '" + url + "'");
-                } else if (Math.floor(response.statusCode / 100) != 2) {
-                    node.emit('CommunicationError', response);
-                    errCb("response error '" + stringifyAsJson(response, 50) + "' on '" + url + "'");
+              })
+            .then(response => {
+                // console.log(response.data);
+                // console.log(response.statusText + ": " + response.status + " sending " + method + "-request with body '" + payload + "' to " + url + " returned response: " + response.data);
+                // console.log(JSON.stringify(response.data));
+                okCb(response.data);
+            })
+            .catch(error => {
+                var errorMsg = "";
+                if (error.response) {
+                    errorMsg = "Error HTTP status " + error.response.status + " sending " + method + "-request with body '" + payload + "' to " + url;
                 } else {
-                    okCb(body);
+                    errorMsg = "Error: '" + error.message + "' sending " + method + "-request with body '" + payload + "' to " + url;
                 }
+                node.emit('CommunicationError', errorMsg);
+                errCb(errorMsg);
             });
         };
 
@@ -317,15 +336,17 @@ module.exports = function (RED) {
         var config = req.query;
         var url = getConnectionString(config) + '/rest/items';
         var options = getAuthenticationHeader(config);
-        request.get(url, options, function (error, response, body) {
-            if (error) {
-                res.send("request error '" + stringifyAsJson(error, 50) + "' on '" + url + "'");
-            } else if (response.statusCode != 200) {
-                res.send("response error '" + stringifyAsJson(response, 50) + "' on '" + url + "'");
-            } else {
-                res.send(body);
-            }
-        });
+        ax.get(url, options)
+            .then(response => {
+                res.send(response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    res.send("request error http status: " + error.response.status + " for url " + url);
+                } else {
+                    res.send("request error: " + error.message + " for url " + url);
+                }
+            });
     });
 
     /**
@@ -367,6 +388,24 @@ module.exports = function (RED) {
             }
         };
 
+        this.processInitialEvent = function (event) {
+            // console.log("Node for itemName " + itemName + " retrieved InitialEvent: " + JSON.stringify(event));
+            //"link":"http://openhab3-oauth2:8080/rest/items/TestString","state":"NULL","editable":false,"type":"String","name":"TestString","label":"String","tags":[],"groupNames":["GTest","GTest2"]}
+            
+            var currentState = event.state;
+            // update node's context variable && update node's visual status
+            node.context().set("currentState", currentState);
+            node.refreshNodeStatus();
+
+            // console.log("Node for itemName " + itemName + " config.initialstate: " + config.initialstate + " currentState: " + currentState);
+            // only send the state when it is not OH_NULL and initialstate was selected from config.
+            if (config.initialstate && shouldSendState(currentState)) {
+                // inject the state in the node-red flow
+                // console.log("Node for itemName " + itemName + " sendMessage() ");
+                sendMessage(itemName, topic, 'InitialStateEvent', currentState, null);
+            }
+        };
+
         this.processRawEvent = function (event) {
             // inject the state in the node-red flow
             var eventType = event.type;
@@ -387,7 +426,7 @@ module.exports = function (RED) {
             }
         };
 
-        //start with an unitialized state
+        //start with an uninitialized state
         node.context().set('currentState', '');
         node.refreshNodeStatus();
 
@@ -433,18 +472,7 @@ module.exports = function (RED) {
             //Actively get the initial item state
             openhabController.control(itemName, null, null,
                 function (body) {
-                    //gather variables
-                    var msg = {};
-                    var msgid = RED.util.generateId();
-                    var currentState = JSON.parse(body).state;
-
-                    //create new message to inject
-                    msg._msgid = msgid;
-                    msg.item = itemName;
-                    msg.topic = topic;
-                    msg.event = "InitialStateEvent";
-                    msg.payload = currentState;
-                    msg.oldValue = null;
+                    var currentState = body.state;
 
                     // update node's context variable
                     node.context().set("currentState", currentState);
@@ -455,21 +483,24 @@ module.exports = function (RED) {
                     // only send the state when it is not OH_NULL and initialstate was selected from config.
                     if (config.initialstate && shouldSendState(currentState)) {
                         // inject the state in the node-red flow
-                        node.send(msg);
+                        sendMessage(itemName, topic, 'InitialStateEvent', currentState, null);
                     }
                 },
                 function (err) {
                     node.status({
                         fill: "red",
                         shape: "ring",
-                        text: err
+                        text: 'Error retrieving InitialStateEvent: ' + err
                     });
-                    node.warn(err);
+                    if (config.initialstate) {
+                        node.warn(err);
+                    }
                 }
             );
 
-            //Start listening to events
+            //Start listening to events, but only once for the node' lifetime
             openhabController.addListener(itemName + '/RawEvent', node.processRawEvent);
+            openhabController.addListener(itemName + '/InitialEvent', node.processInitialEvent);
         }
 
         //Wait 0 to 5 seconds after startup before fetching initial value
@@ -480,6 +511,7 @@ module.exports = function (RED) {
         /* ===== Node-Red events ===== */
         this.on("close", function () {
             node.log('close');
+            openhabController.removeListener(itemName + '/InitialEvent', node.processInitialEvent);
             openhabController.removeListener(itemName + '/RawEvent', node.processRawEvent);
         });
     }
@@ -564,7 +596,7 @@ module.exports = function (RED) {
         openhabController.addListener('CommunicationError', node.processCommError);
         openhabController.addListener('RawEvent', node.processRawEvent);
         node.context().set('CommunicationError', "");
-        node.context().set('CommunicationStatus', "?");
+        node.context().set('CommunicationStatus', "OFF");
         node.refreshNodeStatus();
 
         /* ===== Node-Red events ===== */
@@ -637,7 +669,7 @@ module.exports = function (RED) {
                     openhabController.control(item, null, null,
                         function (body) {
                             //gather variables
-                            var currentState = JSON.parse(body).state;
+                            var currentState = body.state;
 
                             if (currentState != undefined && currentState != null && payload != undefined && payload != null && currentState != payload) {
                                 saveValue(item, topic, payload);
@@ -727,7 +759,7 @@ module.exports = function (RED) {
 
             openhabController.control(item, null, null,
                 function (body) {
-                    "use esversion: 6'";
+                    // "use esversion: 6'";
                     // no body expected for a command or update
                     node.status({
                         fill: "green",
@@ -735,16 +767,18 @@ module.exports = function (RED) {
                         text: " "
                     });
 
-                    var currentState = JSON.parse(body).state;
-                    var type = JSON.parse(body).type;
-                    var itemLabel = JSON.parse(body).label;
-                    var groups = JSON.parse(body).groupNames;
+                    //var jsonBody = body;
+                    var jsonBody = body;
+                    var currentState = jsonBody.state;
+                    var type = jsonBody.type;
+                    var itemLabel = jsonBody.label;
+                    var groups = jsonBody.groupNames;
 
                     // When we are dealing with an item of type "Group", we will also expose
                     // the members it contains via a .members property.
                     if (type == "Group") {
                         let grpMembers = {};
-                        var membArr = JSON.parse(body).members;
+                        var membArr = body.members;
                         membArr.forEach(val => {
                             grpMembers = { ...grpMembers, [val.name]: val };
                         });
@@ -815,7 +849,7 @@ module.exports = function (RED) {
             // register for all item events
             var eventsource_url = config2.ohversion == "v3" ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*" : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
             var sseUrl = getConnectionString(config2) + eventsource_url;
-            var options = getEventSourceAuthHeader(config);
+            var options = getAuthenticationHeader(config);
             // node.log('config.ohversion: ' + config2.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(sseUrl, options);
 
@@ -827,7 +861,7 @@ module.exports = function (RED) {
 
             // handle the 'onopen' event
             node.es.onopen = function () {
-                console.log("OpenHABEvents opened connection to " + sseUrl);
+                node.log("Opened connection to " + sseUrl);
                 node.status({
                     fill: "green",
                     shape: "dot",
@@ -847,12 +881,8 @@ module.exports = function (RED) {
                     msg = JSON.parse(msg.data);
                     if (msg.payload && (msg.payload.constructor == String)) {
                         msg.payload = JSON.parse(msg.payload);
-                    } else {
-                        console.log('Error: ignoring invalid SSE-event: ' + msg.data);
-                        return;
+                        node.send(msg);
                     }
-
-                    node.send(msg);
                 } catch (e) {
                     // report an unexpected error
                     node.error("Unexpected Error : " + e);
@@ -869,7 +899,7 @@ module.exports = function (RED) {
                 if (err.type && (JSON.stringify(err.type) === '{}'))
                     return; // ignore
 
-                node.warn('ERROR ' + stringifyAsJson(err, 50));
+                node.warn('ERROR ' + stringifyAsJson(err, 150));
                 node.status({
                     fill: "red",
                     shape: "ring",
