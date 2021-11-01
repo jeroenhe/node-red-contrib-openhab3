@@ -150,7 +150,7 @@ module.exports = function (RED) {
                 .then(response => {
                     if (response.data && response.data.length > 0) {
                         node.emit('CommunicationStatus', 'ON');
-                        node.log("Connection established. Emitting " + response.data.length + " InitialEvents");
+                        node.log("Connection established. Emitting " + response.data.length + " InitialEvents.");
                         response.data.forEach(function (item) {
                             node.emit(item.name + '/InitialEvent', item);
                         });
@@ -264,6 +264,9 @@ module.exports = function (RED) {
                 }
             };
         }
+
+        // Initialize with OFF
+        node.emit('CommunicationStatus', 'OFF');
 
         // give the system a few random seconds before starting to process the event stream
         setTimeout(function () {
