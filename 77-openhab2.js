@@ -663,6 +663,9 @@ module.exports = function (RED) {
             if (payload != undefined) {
                 // execute the appropriate http POST to send the command to openHAB
                 // and update the node's status according to the http response
+                
+                // Convert the payload to a String before sending, as any conversion will take place by OpenHAB.
+                var payloadString = String(payload);
 
                 if (onlywhenchanged) {
                     //Actively get the initial item state
@@ -671,8 +674,9 @@ module.exports = function (RED) {
                             //gather variables
                             var currentState = body.state;
 
-                            if (currentState != undefined && currentState != null && payload != undefined && payload != null && currentState != payload) {
-                                saveValue(item, topic, payload);
+                            if (currentState != undefined && currentState != null && payloadString != null && currentState != payloadString) {
+                                
+                                saveValue(item, topic, payloadString);
                                 node.status({
                                     fill: "green",
                                     shape: "dot",
@@ -696,15 +700,14 @@ module.exports = function (RED) {
                         }
                     );
                 } else {
-                    saveValue(item, topic, payload);
+                    saveValue(item, topic, payloadString);
                 }
-
             } else {
                 // no payload specified !
                 node.status({
                     fill: "red",
                     shape: "ring",
-                    text: "no payload specified"
+                    text: "No payload specified"
                 });
                 node.warn('onInput: no payload specified');
             }

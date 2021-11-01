@@ -222,7 +222,7 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 780,
+        "x": 1500,
         "y": 120,
         "wires": [
             [
@@ -243,7 +243,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1080,
+        "x": 1800,
         "y": 120,
         "wires": []
     },
@@ -261,7 +261,7 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 780,
+        "x": 1500,
         "y": 180,
         "wires": [
             [
@@ -282,7 +282,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1080,
+        "x": 1800,
         "y": 180,
         "wires": []
     },
@@ -300,7 +300,7 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 800,
+        "x": 1520,
         "y": 240,
         "wires": [
             [
@@ -321,7 +321,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1100,
+        "x": 1820,
         "y": 240,
         "wires": []
     },
@@ -339,7 +339,7 @@
         "whenchanged": true,
         "changedfrom": "",
         "changedto": "",
-        "x": 810,
+        "x": 1530,
         "y": 300,
         "wires": [
             [
@@ -360,7 +360,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1110,
+        "x": 1830,
         "y": 300,
         "wires": []
     },
@@ -607,7 +607,7 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 780,
+        "x": 1440,
         "y": 720,
         "wires": [
             [
@@ -628,7 +628,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1080,
+        "x": 1740,
         "y": 720,
         "wires": []
     },
@@ -646,7 +646,7 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 780,
+        "x": 1440,
         "y": 780,
         "wires": [
             [
@@ -667,7 +667,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1080,
+        "x": 1740,
         "y": 780,
         "wires": []
     },
@@ -685,7 +685,7 @@
         "whenchanged": false,
         "changedfrom": "",
         "changedto": "",
-        "x": 800,
+        "x": 1460,
         "y": 840,
         "wires": [
             [
@@ -706,7 +706,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1100,
+        "x": 1760,
         "y": 840,
         "wires": []
     },
@@ -724,7 +724,7 @@
         "whenchanged": true,
         "changedfrom": "",
         "changedto": "",
-        "x": 810,
+        "x": 1470,
         "y": 900,
         "wires": [
             [
@@ -745,7 +745,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1110,
+        "x": 1770,
         "y": 900,
         "wires": []
     },
@@ -893,8 +893,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 750,
-        "y": 980,
+        "x": 730,
+        "y": 1000,
         "wires": [
             [
                 "26df0428acfdcf08"
@@ -910,8 +910,8 @@
         "itemname": "TestString",
         "topic": "",
         "sendnull": false,
-        "x": 920,
-        "y": 980,
+        "x": 900,
+        "y": 1000,
         "wires": [
             [
                 "386269c01f71482a"
@@ -931,8 +931,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1150,
-        "y": 980,
+        "x": 1130,
+        "y": 1000,
         "wires": []
     },
     {
@@ -1047,7 +1047,7 @@
         "onceDelay": 0.1,
         "topic": "",
         "payload": "18.5",
-        "payloadType": "num",
+        "payloadType": "str",
         "x": 170,
         "y": 1380,
         "wires": [
@@ -2035,6 +2035,7 @@
         "controller": "55854cb92be97ddf",
         "itemname": "TestString",
         "topic": "",
+        "sendnull": true,
         "x": 900,
         "y": 2360,
         "wires": [
@@ -2081,8 +2082,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 750,
-        "y": 1100,
+        "x": 730,
+        "y": 1120,
         "wires": [
             [
                 "dfa57adaf40db3be"
@@ -2097,8 +2098,8 @@
         "controller": "f62752b86ed9d96b",
         "itemname": "GChildGroup",
         "topic": "",
-        "x": 930,
-        "y": 1100,
+        "x": 910,
+        "y": 1120,
         "wires": [
             [
                 "1b1ed872d50fb7a3"
@@ -2118,8 +2119,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1200,
-        "y": 1100,
+        "x": 1180,
+        "y": 1120,
         "wires": []
     },
     {
@@ -2143,8 +2144,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 750,
-        "y": 1220,
+        "x": 730,
+        "y": 1240,
         "wires": [
             [
                 "245af2d4b8591bd2"
@@ -2159,8 +2160,8 @@
         "controller": "f62752b86ed9d96b",
         "itemname": "TestStringNoGroup",
         "topic": "",
-        "x": 950,
-        "y": 1220,
+        "x": 930,
+        "y": 1240,
         "wires": [
             [
                 "cbc6685695a62e98"
@@ -2180,8 +2181,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1170,
-        "y": 1220,
+        "x": 1150,
+        "y": 1240,
         "wires": []
     },
     {
@@ -2392,8 +2393,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 750,
-        "y": 1040,
+        "x": 730,
+        "y": 1060,
         "wires": [
             [
                 "bbff7bd387aac52f"
@@ -2409,8 +2410,8 @@
         "itemname": "TestString",
         "topic": "",
         "sendnull": true,
-        "x": 920,
-        "y": 1040,
+        "x": 900,
+        "y": 1060,
         "wires": [
             [
                 "4a53ffc1da475c8e"
@@ -2430,8 +2431,8 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1140,
-        "y": 1040,
+        "x": 1120,
+        "y": 1060,
         "wires": []
     },
     {
@@ -2518,8 +2519,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 750,
-        "y": 1160,
+        "x": 730,
+        "y": 1180,
         "wires": [
             [
                 "86b5db2a54fc995c"
@@ -2535,8 +2536,8 @@
         "itemname": "GChildGroup",
         "topic": "",
         "sendnull": true,
-        "x": 930,
-        "y": 1160,
+        "x": 910,
+        "y": 1180,
         "wires": [
             [
                 "be0412da3e3172a8"
@@ -2556,9 +2557,776 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1190,
-        "y": 1160,
+        "x": 1170,
+        "y": 1180,
         "wires": []
+    },
+    {
+        "id": "75bef3a9b88fefbb",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "0",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 1530,
+        "y": 1000,
+        "wires": [
+            [
+                "fb84f3a9cf78e86d"
+            ]
+        ]
+    },
+    {
+        "id": "b7419d2dde3bce69",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 1530,
+        "y": 1080,
+        "wires": [
+            [
+                "fb84f3a9cf78e86d"
+            ]
+        ]
+    },
+    {
+        "id": "fb84f3a9cf78e86d",
+        "type": "openhab2-out2",
+        "z": "e10b91cd96562f0a",
+        "name": "TestTemperature2",
+        "controller": "f62752b86ed9d96b",
+        "itemname": "TestTemperature2",
+        "topic": "ItemUpdate",
+        "payload": "",
+        "onlywhenchanged": false,
+        "x": 1750,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "6d4b78b9fec1bf41",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "0 (string)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "str",
+        "x": 1540,
+        "y": 1040,
+        "wires": [
+            [
+                "fb84f3a9cf78e86d"
+            ]
+        ]
+    },
+    {
+        "id": "226b9f678993e324",
+        "type": "comment",
+        "z": "e10b91cd96562f0a",
+        "name": "Test for sending Number values",
+        "info": "\n",
+        "x": 1790,
+        "y": 1000,
+        "wires": []
+    },
+    {
+        "id": "15d20365e0db5439",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "0",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 1530,
+        "y": 1200,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "2216ed9d5d697229",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "100 (string)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "100",
+        "payloadType": "str",
+        "x": 1540,
+        "y": 1280,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "08b5535a3f137323",
+        "type": "openhab2-out2",
+        "z": "e10b91cd96562f0a",
+        "name": "",
+        "controller": "f62752b86ed9d96b",
+        "itemname": "TestDimmer",
+        "topic": "ItemCommand",
+        "payload": "",
+        "onlywhenchanged": false,
+        "x": 1750,
+        "y": 1300,
+        "wires": []
+    },
+    {
+        "id": "8fd52259ec1c844b",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "0 (string)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "str",
+        "x": 1540,
+        "y": 1240,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "d7bbf60fc3a36107",
+        "type": "comment",
+        "z": "e10b91cd96562f0a",
+        "name": "Test Dimmer type",
+        "info": "\n",
+        "x": 1760,
+        "y": 1260,
+        "wires": []
+    },
+    {
+        "id": "39c648f5cbb8df11",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "100",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "100",
+        "payloadType": "num",
+        "x": 1530,
+        "y": 1320,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "15c8860cb8b3fb69",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "ON",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "ON",
+        "payloadType": "str",
+        "x": 1530,
+        "y": 1360,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "9cf59465daeb7f6c",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "OFF",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "OFF",
+        "payloadType": "str",
+        "x": 1530,
+        "y": 1400,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "1d5ec5aea5deabeb",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "INCREASE",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "INCREASE",
+        "payloadType": "str",
+        "x": 1540,
+        "y": 1440,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "e78ef9d1f109b432",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "DECREASE",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "DECREASE",
+        "payloadType": "str",
+        "x": 1550,
+        "y": 1480,
+        "wires": [
+            [
+                "08b5535a3f137323"
+            ]
+        ]
+    },
+    {
+        "id": "d33918bc6cad5152",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v3 TestDimmer updates",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1790,
+        "y": 1540,
+        "wires": []
+    },
+    {
+        "id": "4952903ff791d01a",
+        "type": "openhab2-in2",
+        "z": "e10b91cd96562f0a",
+        "name": "updates for TestDimmer",
+        "controller": "f62752b86ed9d96b",
+        "itemname": "TestDimmer",
+        "topic": "",
+        "initialstate": false,
+        "whenupdated": true,
+        "whencommand": true,
+        "whenchanged": false,
+        "changedfrom": "",
+        "changedto": "",
+        "x": 1550,
+        "y": 1540,
+        "wires": [
+            [
+                "d33918bc6cad5152"
+            ]
+        ]
+    },
+    {
+        "id": "286ad045bc53b18e",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 680,
+        "y": 720,
+        "wires": [
+            [
+                "ab533fae639aba50"
+            ]
+        ]
+    },
+    {
+        "id": "ee0328c96c28f91f",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 680,
+        "y": 860,
+        "wires": [
+            [
+                "39ca1e86bd41b3d8"
+            ]
+        ]
+    },
+    {
+        "id": "ab533fae639aba50",
+        "type": "openhab2-out2",
+        "z": "e10b91cd96562f0a",
+        "name": "ItemUpdate to TestString (only when changed)",
+        "controller": "f62752b86ed9d96b",
+        "itemname": "TestString",
+        "topic": "ItemUpdate",
+        "payload": "",
+        "onlywhenchanged": true,
+        "x": 980,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "39ca1e86bd41b3d8",
+        "type": "openhab2-out2",
+        "z": "e10b91cd96562f0a",
+        "name": "ItemCommand to TestString (only when changed)",
+        "controller": "f62752b86ed9d96b",
+        "itemname": "TestString",
+        "topic": "ItemCommand",
+        "payload": "",
+        "onlywhenchanged": true,
+        "x": 990,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "f9aa126a4ece7320",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "A",
+        "payloadType": "str",
+        "x": 690,
+        "y": 900,
+        "wires": [
+            [
+                "39ca1e86bd41b3d8"
+            ]
+        ]
+    },
+    {
+        "id": "bedbb48cc451be4e",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "B",
+        "payloadType": "str",
+        "x": 690,
+        "y": 940,
+        "wires": [
+            [
+                "39ca1e86bd41b3d8"
+            ]
+        ]
+    },
+    {
+        "id": "a1dcbc22a64522bd",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "A",
+        "payloadType": "str",
+        "x": 690,
+        "y": 760,
+        "wires": [
+            [
+                "ab533fae639aba50"
+            ]
+        ]
+    },
+    {
+        "id": "d90da20588e2be75",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "B",
+        "payloadType": "str",
+        "x": 690,
+        "y": 800,
+        "wires": [
+            [
+                "ab533fae639aba50"
+            ]
+        ]
+    },
+    {
+        "id": "0b0c8faa121c2803",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "0",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "num",
+        "x": 2030,
+        "y": 1000,
+        "wires": [
+            [
+                "7f6b221bdb83a8c3"
+            ]
+        ]
+    },
+    {
+        "id": "23f94be1747ff12d",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "1",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "num",
+        "x": 2030,
+        "y": 1080,
+        "wires": [
+            [
+                "7f6b221bdb83a8c3"
+            ]
+        ]
+    },
+    {
+        "id": "7f6b221bdb83a8c3",
+        "type": "openhab2-out2",
+        "z": "e10b91cd96562f0a",
+        "name": "TestTemperature2 (only when changed)",
+        "controller": "f62752b86ed9d96b",
+        "itemname": "TestTemperature2",
+        "topic": "ItemUpdate",
+        "payload": "",
+        "onlywhenchanged": true,
+        "x": 2320,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "8087c9529b938fb3",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "0 (string)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "0",
+        "payloadType": "str",
+        "x": 2040,
+        "y": 1040,
+        "wires": [
+            [
+                "7f6b221bdb83a8c3"
+            ]
+        ]
+    },
+    {
+        "id": "6e0ec45fbd9fcd80",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "1 (string)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "str",
+        "x": 1540,
+        "y": 1120,
+        "wires": [
+            [
+                "fb84f3a9cf78e86d"
+            ]
+        ]
+    },
+    {
+        "id": "e0deaef0aea0eedc",
+        "type": "inject",
+        "z": "e10b91cd96562f0a",
+        "name": "1 (string)",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "1",
+        "payloadType": "str",
+        "x": 2040,
+        "y": 1120,
+        "wires": [
+            [
+                "7f6b221bdb83a8c3"
+            ]
+        ]
     },
     {
         "id": "35ee9a2558667a1f",
