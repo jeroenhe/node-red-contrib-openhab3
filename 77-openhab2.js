@@ -157,7 +157,7 @@ module.exports = function (RED) {
                     } else {
                         // OpenHAB is only ready when there is at least one item present. Only then
                         // can we retrieve all initial states.
-                        node.log("Number of OpenHAB items is 0. Rescheduling InitialStateEvent...");
+                        node.log("Number of openHAB items is 0. Rescheduling InitialStateEvent...");
                         setTimeout(function () {
                             getInitialStateOfItems(config);
                         }, 10000);
@@ -361,7 +361,7 @@ module.exports = function (RED) {
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
         if (openhabController == null) {
-            node.error("Invalid OpenHAB controller");
+            node.error("Invalid openHAB controller");
             return;
         }
         var itemName = config.itemname;
@@ -530,7 +530,7 @@ module.exports = function (RED) {
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
         if (openhabController == null) {
-            node.error("Invalid OpenHAB controller");
+            node.error("Invalid openHAB controller");
             return;
         }
 
@@ -624,7 +624,7 @@ module.exports = function (RED) {
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
         if (openhabController == null) {
-            node.error("Invalid OpenHAB controller");
+            node.error("Invalid openHAB controller");
             return;
         }
 
@@ -733,7 +733,7 @@ module.exports = function (RED) {
         var topic = config.topic;
         var openhabController = RED.nodes.getNode(config.controller);
         if (openhabController == null) {
-            node.error("Invalid OpenHAB controller");
+            node.error("Invalid openHAB controller");
             return;
         }
 
@@ -841,7 +841,7 @@ module.exports = function (RED) {
         var node = this;
         var openhabController = RED.nodes.getNode(config.controller);
         if (openhabController == null) {
-            node.error("Invalid OpenHAB controller");
+            node.error("Invalid openHAB controller");
             return;
         }
         var config2 = openhabController.getConfig();

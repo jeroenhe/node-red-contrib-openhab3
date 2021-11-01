@@ -4,7 +4,7 @@
 
 ## Description
 
-Nodes facilitating the automation of [OpenHAB](https://www.openhab.org) items with Node-RED. This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions and changes I find useful. This plugin is useful if you want to add rules using the power of Node-RED, instead of the OpenHAB built-in rules.
+Nodes facilitating the automation of [openHAB](https://www.openhab.org) items with Node-RED. This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions and changes I find useful. This plugin is useful if you want to add rules using the power of Node-RED, instead of the OpenHAB built-in rules. The plugin provides you with nodes in Node-RED that can (when explicitly called via an input message) get and update the state of Items and Groups defined in openHAB. It also provides an openhab2-in2 node that will immediately output message(s) when the relevant Item or Group state is updated or changed.
 
 ## Installation
 
@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.22 | Update docs; Use correct spelling for openHAB |
 | 1.3.21 | Always send payload as a string via out2 node |
 | 1.3.20 | Replace request package with axios (#3) |
 | 1.3.19 | Use official eventsource package |
@@ -41,7 +42,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 See [77-openhab2.html](77-openhab2.html) for info on the provided nodes. This is best viewed from Node-RED, adding a node and viewing its corresponding Help page.
 
-## Testing the plugin
+## Testing the plugin (for development purposes)
 
 Prerequisites for running this test environment are docker and docker-compose. It allows you to test this plugin for development purposes.
 Docker is used to start a clean Node-RED, OpenHAB v2 and OpenHAB v3 environment, with this plugin installed into Node-RED before the service is started (inside the container).

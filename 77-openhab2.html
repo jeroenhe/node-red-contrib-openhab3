@@ -50,7 +50,7 @@
         <input type="password" id="node-config-input-password">
     </div>
     <div class="form-row">
-        <label for="node-config-input-ohversion"><i class="fa fa-unlock-alt"></i> OpenHAB version</label>
+        <label for="node-config-input-ohversion"><i class="fa fa-unlock-alt"></i>openHAB version</label>
         <select id="node-config-input-ohversion" name="node-config-input-ohversion" style="width: 250px;">
             <option value="v2">v1 and v2</option>
             <option value="v3">v3</option>
@@ -114,7 +114,7 @@
         <input type="text" id="node-input-topic" name="node-input-topic" style="width: 250px;">
     </div>
     <div class="form-tips">
-        An 'InitialStateEvent'-typed message (when selected below) will be send whenever this node is (re-)initialised, but also whenever the controller reconnects to the OpenHAB server.
+        An 'InitialStateEvent'-typed message (when selected below) will be send whenever this node is (re-)initialised, but also whenever the controller reconnects to the openHAB server.
     </div>
     <div class="form-row">
         <label for="node-input-initialstate"><i class="fa fa-crosshairs"></i> Send initial<br/>(<code>InitialStateEvent</code>)</label>
@@ -302,7 +302,7 @@
         <li><b>Path :</b> (Optionally) Specify the additional base path</li>
         <li><b>Username :</b> (Optionally) Specify the username to authenticate. This is for authenticating to an reverse proxy, not for authenticating with openHAB itself, as openHAB <a href="https://www.openhab.org/docs/installation/security.html#authentication-and-access-control" target="_blank"><i>"does not (yet) support restricting access through HTTP(S) for certain users - there is no authentication in place, nor is there a limitation of functionality or information that different users can access."</i></a></li>
         <li><b>Password :</b> (Optionally) Specify the password to authenticate</li>
-        <li><b>OpenHAB version :</b> "v1 and v2" or "v3".</li>
+        <li><b>openHAB version :</b> "v1 and v2" or "v3".</li>
         <li><b>OAuth2 Bearer token :</b> An OAuth2 token created in openHAB 3, according to the <a href="https://www.openhab.org/docs/configuration/apitokens.html" target="_blank">documentation</a>, with the important note that the token should be filled NOT for the <code>Username</code> or <code>Password</code> field, but <strong>only the</strong> <code>OAuth2 Bearer token</code> <strong>field!</strong> A token looks like this: <code>oh.nodered.CgpQ...</code></li>
     </ul>
 </script>
