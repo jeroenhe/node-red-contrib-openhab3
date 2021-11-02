@@ -164,13 +164,13 @@ module.exports = function (RED) {
                     }
                 })
                 .catch(error => {
-                    if (error.response) { 
+                    if (error.response) {
                         // The request was made and the server responded with a status code
                         // that falls out of the range of 2xx
                         // console.log(error.response.data);
                         // console.log(error.response.status);
                         // console.log(error.response.headers);
-                        var errorMessage = 'request error response status ' + error.response.status + ' on ' + url;
+                        var errorMessage = 'Request error response status ' + error.response.status + ' on ' + url;
                         node.warn(errorMessage);
                         node.emit('CommunicationError', errorMessage);
                         setTimeout(function () {
@@ -178,8 +178,7 @@ module.exports = function (RED) {
                         }, 10000);
                     } else {
                         // Something happened in setting up the request that triggered an Error
-                        // console.log(JSON.stringify(error));
-                        var errorMessage2 = 'request error: ' + stringifyAsJson(error.message, 50) + ' on ' + url;
+                        var errorMessage2 = 'Request error: ' + stringifyAsJson(error.message, 50) + ' on ' + url;
                         node.warn(errorMessage2);
                         node.emit('CommunicationError', errorMessage2);
                         setTimeout(function () {
@@ -243,7 +242,8 @@ module.exports = function (RED) {
                     return; // ignore
                 }
 
-                node.warn('ERROR ' + stringifyAsJson(err, 150));
+                node.warn('Error: ' + stringifyAsJson(err, 150));
+                node.emit('CommunicationStatus', 'OFF');
                 node.emit('CommunicationError', err);
 
                 if (err.status) {
@@ -254,7 +254,6 @@ module.exports = function (RED) {
                         node.es.close();
                         delete node.es;
 
-                        node.emit('CommunicationStatus', 'OFF');
                         node.warn('Restarting EventSource (after delay)');
 
                         setTimeout(function () {
@@ -345,9 +344,9 @@ module.exports = function (RED) {
             })
             .catch(error => {
                 if (error.response) {
-                    res.send("request error http status: " + error.response.status + " for url " + url);
+                    res.send("Request error http status: " + error.response.status + " for url " + url);
                 } else {
-                    res.send("request error: " + error.message + " for url " + url);
+                    res.send("Request error: " + error.message + " for url " + url);
                 }
             });
     });
@@ -531,6 +530,7 @@ module.exports = function (RED) {
         RED.nodes.createNode(this, config);
         this.name = config.name;
         var node = this;
+        var nrOfErrors = 0;
         var openhabController = RED.nodes.getNode(config.controller);
         if (openhabController == null) {
             node.error("Invalid openHAB controller");
@@ -538,13 +538,13 @@ module.exports = function (RED) {
         }
 
         this.refreshNodeStatus = function () {
-            var commError = node.context().get('CommunicationError');
             var commStatus = node.context().get('CommunicationStatus');
+            var commError = node.context().get('CommunicationError');
 
             node.status({
-                fill: (commError.length == 0) ? "green" : "red",
+                fill: (commStatus == "ON") ? "green" : "red",
                 shape: (commStatus == "ON") ? "dot" : "ring",
-                text: (commError.length > 0) ? commError : commStatus
+                text: (commError.length > 0) ? ("# " + nrOfErrors + ": " + trimString(commError, 40)) : commStatus
             });
         };
 
@@ -552,7 +552,10 @@ module.exports = function (RED) {
 
             // update node's context variable
             node.context().set('CommunicationStatus', status);
-            if (status == "ON") {
+
+            // reset any error status after (re-)connecting
+            if (status == 'ON') {
+                nrOfErrors = 0;
                 node.context().set('CommunicationError', '');
             }
 
@@ -569,6 +572,9 @@ module.exports = function (RED) {
         };
 
         this.processCommError = function (error) {
+
+            // Update the number of errors
+            nrOfErrors += 1;
 
             // update node's context variable
             node.context().set('CommunicationError', error);
@@ -598,8 +604,7 @@ module.exports = function (RED) {
         openhabController.addListener('CommunicationStatus', node.processCommStatus);
         openhabController.addListener('CommunicationError', node.processCommError);
         openhabController.addListener('RawEvent', node.processRawEvent);
-        node.context().set('CommunicationError', "");
-        node.context().set('CommunicationStatus', "OFF");
+        node.context().set('CommunicationStatus', 'OFF');
         node.refreshNodeStatus();
 
         /* ===== Node-Red events ===== */
@@ -871,7 +876,7 @@ module.exports = function (RED) {
                 node.status({
                     fill: "green",
                     shape: "dot",
-                    text: " "
+                    text: ""
                 });
             };
 
@@ -905,11 +910,11 @@ module.exports = function (RED) {
                 if (err.type && (JSON.stringify(err.type) === '{}'))
                     return; // ignore
 
-                node.warn('ERROR ' + stringifyAsJson(err, 150));
+                node.warn('Error: ' + stringifyAsJson(err, 150));
                 node.status({
                     fill: "red",
                     shape: "ring",
-                    text: 'CommunicationError ' + stringifyAsJson(err, 50)
+                    text: 'Error: ' + stringifyAsJson(err, 50)
                 });
 
                 if (err.status) {
@@ -923,7 +928,7 @@ module.exports = function (RED) {
                         node.status({
                             fill: "red",
                             shape: "ring",
-                            text: 'CommunicationStatus OFF'
+                            text: 'OFF'
                         });
                         
                         node.warn('Restarting EventSource (after delay)');

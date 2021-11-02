@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.24 | Show proper status for monitor node |
 | 1.3.23 | Improve CommunicationStatus event status |
 | 1.3.22 | Update docs; Use correct spelling for openHAB |
 | 1.3.21 | Always send payload as a string via out2 node |
