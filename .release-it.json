@@ -1,6 +1,6 @@
 {
   "git": {
-    "commitMessage": "chore: release v${version}"
+    "commitMessage": "Release v${version} to npm"
   },
   "github": {
     "release": false
