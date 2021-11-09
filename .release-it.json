@@ -1,6 +1,6 @@
 {
   "git": {
-    "commitMessage": "Release v${version} to npm"
+    "commitMessage": "Release v${version} to npmjs.com"
   },
   "github": {
     "release": true

@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.26 | Improve release procedure |
 | 1.3.25 | Fix for 'TypeError: Cannot read property 'length' of undefined' in monitor node |
 | 1.3.24 | Show proper status for monitor node |
 | 1.3.23 | Improve CommunicationStatus event status |
