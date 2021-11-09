@@ -24,9 +24,9 @@ const ax = axios.create({
     timeout: 5000
 });
 
-var OH_NULL = 'NULL';
-var V2_EVENTSOURCE_URL_PART = 'smarthome';
-var V3_EVENTSOURCE_URL_PART = 'openhab';
+const OH_NULL = 'NULL';
+const V2_EVENTSOURCE_URL_PART = 'smarthome';
+const V3_EVENTSOURCE_URL_PART = 'openhab';
 
 
 function getConnectionString(config) {
@@ -40,19 +40,19 @@ function getConnectionString(config) {
 
     // Only set username and password inside the url when BOTH username and
     // password are provided and non-empty.
-    if ((config.username != undefined) && (config.username.trim().length != 0) &&
-        (config.password != undefined) && (config.password.length != 0)) {
+    if (config.username != null && config.username.trim().length != 0 &&
+         config.password != null && config.password.length != 0) {
         url += encodeURIComponent(config.username.trim());
         url += ':' + encodeURIComponent(config.password);
         url += '@';
     }
     url += config.host;
 
-    if ((config.port != undefined) && (config.port.trim().length != 0)) {
+    if ((config.port != null) && (config.port.trim().length != 0)) {
         url += ':' + config.port.trim();
     }
 
-    if ((config.path != undefined) && (config.path.trim().length != 0)) {
+    if ((config.path != null) && (config.path.trim().length != 0)) {
         var path = config.path.trim();
 
         path = path.replace(/^[\/]+/, '');
@@ -76,7 +76,7 @@ function trimString(string, length) {
 
 function getAuthenticationHeader(config) {
     var options = {};
-    if (config != undefined && config.token != undefined && config.token.length != 0) {
+    if (config.token != null && typeof(config.token) === 'string' && config.token.length != 0) {
         options.headers = {
             Authorization: 'Bearer ' + config.token
         };
@@ -86,11 +86,11 @@ function getAuthenticationHeader(config) {
 
 // Special function for https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/22
 function shouldSendStateForGet2(sendnull, state) {
-    return ((state != null && state != undefined) && (sendnull || state.toUpperCase() != OH_NULL));
+    return sendnull || shouldSendState(state);
 }
 
 function shouldSendState(state) {
-    return state != null && state != undefined && state.toUpperCase() != OH_NULL;
+    return state != null && state.toUpperCase() != OH_NULL;
 }
 
 function getRandomInt(lower, upper) {
@@ -148,7 +148,7 @@ module.exports = function (RED) {
             // https://axios-http.com/docs/example
             ax.get(url, options)
                 .then(response => {
-                    if (response.data && response.data.length > 0) {
+                    if (response.data != null && response.data.length > 0) {
                         node.emit('CommunicationStatus', 'ON');
                         node.log("Connection established. Emitting " + response.data.length + " InitialEvents.");
                         response.data.forEach(function (item) {
@@ -214,7 +214,7 @@ module.exports = function (RED) {
 
                     // update the node status with the Item's new state
                     msg = JSON.parse(msg.data);
-                    if (msg.payload && (msg.payload.constructor == String)) {
+                    if (msg.payload && msg.payload.constructor == String) {
                         msg.payload = JSON.parse(msg.payload);
 
                         var url = V2_EVENTSOURCE_URL_PART + '/items/';
@@ -374,7 +374,7 @@ module.exports = function (RED) {
         this.refreshNodeStatus = function () {
             var currentState = node.context().get("currentState");
 
-            if (currentState == null || currentState == undefined || (currentState != null && currentState != undefined && currentState.trim().length == 0) || (currentState != null && currentState != undefined && currentState.toUpperCase() == OH_NULL)) {
+            if (currentState == null || typeof(currentState) !== 'string' || currentState.trim().length == 0 || currentState.toUpperCase() == OH_NULL) {
                 node.status({
                     fill: "gray",
                     shape: "ring",
@@ -458,8 +458,8 @@ module.exports = function (RED) {
             var changedto = config.changedto;
 
             if ((eventType == "ItemStateChangedEvent" || eventType == "GroupItemStateChangedEvent") && config.whenchanged &&
-                (changedfrom == null || changedfrom == undefined || changedfrom.trim().length == 0 || (oldValue != null && oldValue != undefined && oldValue.toUpperCase() == changedfrom.toUpperCase())) &&
-                (changedto == null || changedto == undefined || changedto.trim().length == 0 || (newState != null && newState != undefined && newState.toUpperCase() == changedto.toUpperCase()))) {
+                (changedfrom == null || changedfrom.trim().length == 0 || (oldValue != null && oldValue.toUpperCase() == changedfrom.toUpperCase())) &&
+                (changedto == null || changedto.trim().length == 0 || (newState != null && newState.toUpperCase() == changedto.toUpperCase()))) {
                 return true;
             } else if (eventType == "ItemCommandEvent" && config.whencommand) {
                 return true;
@@ -506,7 +506,7 @@ module.exports = function (RED) {
         }
 
         //Wait 0 to 5 seconds after startup before fetching initial value
-        if (itemName != null && itemName != undefined) {
+        if (itemName != null) {
             setTimeout(getInitial, getRandomInt(1000, 5000));
         }
 
@@ -544,7 +544,7 @@ module.exports = function (RED) {
             node.status({
                 fill: (commStatus == "ON") ? "green" : "red",
                 shape: (commStatus == "ON") ? "dot" : "ring",
-                text: (commError.length > 0) ? ("# " + nrOfErrors + ": " + trimString(commError, 40)) : commStatus
+                text: (commError != null && typeof(commError) === 'string' && commError.length > 0) ? ("# " + nrOfErrors + ": " + trimString(commError, 40)) : commStatus
             });
         };
 
@@ -668,7 +668,7 @@ module.exports = function (RED) {
             var payload = (config.payload && (config.payload.length != 0)) ? config.payload : msg.payload;
             var onlywhenchanged = config.onlywhenchanged;
 
-            if (payload != undefined) {
+            if (payload != null) {
                 // execute the appropriate http POST to send the command to openHAB
                 // and update the node's status according to the http response
                 
@@ -682,8 +682,7 @@ module.exports = function (RED) {
                             //gather variables
                             var currentState = body.state;
 
-                            if (currentState != undefined && currentState != null && payloadString != null && currentState != payloadString) {
-                                
+                            if (currentState != null && payloadString != null && currentState != payloadString) {
                                 saveValue(item, topic, payloadString);
                                 node.status({
                                     fill: "green",

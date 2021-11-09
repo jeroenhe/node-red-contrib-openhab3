@@ -22,11 +22,13 @@
     "docker": "./run.sh",
     "ngrok": "ngrok http 127.0.0.1:1880",
     "lint": "eslint ./*.js",
-    "jshint": "jshint --reporter=jslint --verbose 77-openhab2.js"
+    "jshint": "jshint --reporter=jslint --verbose 77-openhab2.js",
+    "release": "release-it"
   },
   "devDependencies": {
     "eslint": "^8.0.0",
-    "jshint": "^2.13.1"
+    "jshint": "^2.13.1",
+    "release-it": "^14.11.6"
   },
   "repository": {
     "type": "git",
