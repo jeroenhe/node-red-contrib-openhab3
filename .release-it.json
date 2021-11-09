@@ -3,6 +3,6 @@
     "commitMessage": "Release v${version} to npm"
   },
   "github": {
-    "release": false
+    "release": true
   }
 }
