@@ -542,7 +542,7 @@
                     token: cntrlConfig.token,
                 }
                 //console.log("config = " + JSON.stringify(config));
-                $.getJSON("/openhab2/items", config)
+                $.getJSON("/openhab3/items", config)
                     .done(function (data) {
 
                         itemSelectionEl.children().remove();

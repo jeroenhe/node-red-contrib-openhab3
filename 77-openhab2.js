@@ -74,7 +74,7 @@ function trimString(string, length) {
         string;
 }
 
-function getAuthenticationHeader(config) {
+function getAuthorizationHeader(config) {
     var options = {};
     if (config.token != null && typeof(config.token) === 'string' && config.token.length != 0) {
         options.headers = {
@@ -144,7 +144,7 @@ module.exports = function (RED) {
             //node.log("getStateOfItems : config = " + JSON.stringify(config));
 
             var url = getConnectionString(config) + "/rest/items";
-            var options = getAuthenticationHeader(config);
+            var options = getAuthorizationHeader(config);
             // https://axios-http.com/docs/example
             ax.get(url, options)
                 .then(response => {
@@ -193,7 +193,7 @@ module.exports = function (RED) {
             // register for all item events (including Thing addition and removal events)
             var eventsource_url = config.ohversion == 'v3' ? '/rest/events?topics=openhab/items' : '/rest/events?topics=smarthome/items';
             var sseUrl = getConnectionString(config) + eventsource_url;
-            var options = getAuthenticationHeader(config);
+            var options = getAuthorizationHeader(config);
             // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(sseUrl, options);
 
@@ -241,8 +241,8 @@ module.exports = function (RED) {
                 if (err.type && (JSON.stringify(err.type) === '{}')) {
                     return; // ignore
                 }
-
                 node.warn('Error: ' + stringifyAsJson(err, 150));
+                node.debug('Error for url "' + sseUrl + '" with headers: ' + stringifyAsJson(options, 150) + ': ' + stringifyAsJson(err, 150));
                 node.emit('CommunicationStatus', 'OFF');
                 node.emit('CommunicationError', err);
 
@@ -334,10 +334,11 @@ module.exports = function (RED) {
     RED.nodes.registerType("openhab2-controller2", OpenHABControllerNode);
 
     // start a web service for enabling the node configuration ui to query for available openHAB items
-    RED.httpNode.get('/openhab2/items', function (req, res) {
+    RED.httpNode.get('/openhab3/items', function (req, res) {
         var config = req.query;
         var url = getConnectionString(config) + '/rest/items';
-        var options = getAuthenticationHeader(config);
+        var options = getAuthorizationHeader(config);
+        // console.log("Request to /openhab3/items with config " + JSON.stringify(config));
         ax.get(url, options)
             .then(response => {
                 res.send(response.data);
@@ -859,7 +860,7 @@ module.exports = function (RED) {
             // register for all item events
             var eventsource_url = config2.ohversion == "v3" ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*" : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
             var sseUrl = getConnectionString(config2) + eventsource_url;
-            var options = getAuthenticationHeader(config);
+            var options = getAuthorizationHeader(config);
             // node.log('config.ohversion: ' + config2.ohversion + ' eventsource_url: ' + eventsource_url);
             node.es = new EventSource(sseUrl, options);
 
@@ -908,12 +909,12 @@ module.exports = function (RED) {
             node.es.onerror = function (err) {
                 if (err.type && (JSON.stringify(err.type) === '{}'))
                     return; // ignore
-
                 node.warn('Error: ' + stringifyAsJson(err, 150));
+                node.debug('Error for url "' + sseUrl + '" with headers: ' + stringifyAsJson(options, 150) + ': ' + stringifyAsJson(err, 150));
                 node.status({
                     fill: "red",
                     shape: "ring",
-                    text: 'Error: ' + stringifyAsJson(err, 50)
+                    text: 'Error for url "' + sseUrl + '": ' + stringifyAsJson(err, 50)
                 });
 
                 if (err.status) {
