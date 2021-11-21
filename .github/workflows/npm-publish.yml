@@ -3,7 +3,7 @@ name: Publish NPM package
 on:
   push:
     tags:
-      - v*.*.*
+      - '*.*.*'
 
 jobs:
   npm_run_jshint:
