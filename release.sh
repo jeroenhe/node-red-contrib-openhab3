@@ -9,4 +9,4 @@
 #    update to README.md as well.
 # 2. Run this script and choose the release # the same as done in README.md
 
-release-it --only-version
+release-it --only-version $@
