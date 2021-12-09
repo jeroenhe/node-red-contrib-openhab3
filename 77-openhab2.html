@@ -542,7 +542,10 @@
                     token: cntrlConfig.token,
                 }
                 //console.log("config = " + JSON.stringify(config));
-                $.getJSON("/openhab3/items", config)
+                // Use relative path, so we support installations where the Node-RED webroot might not be the default (being "/")
+                // For some Node-Red installations, the relative webroot is changed from "/" to "/endpoint" using the 
+                // httpRoot: '/endpoint' setting. This could break the request below if it were not a relative one.
+                $.getJSON("openhab3/items", config)
                     .done(function (data) {
 
                         itemSelectionEl.children().remove();
