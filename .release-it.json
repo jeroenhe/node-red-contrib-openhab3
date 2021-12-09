@@ -3,7 +3,6 @@
     "commitMessage": "Release v${version} to npmjs.com"
   },
   "github": {
-    "release": true,
-    "github.tokenRef": "REPO_RELEASE_IT_CODE"
+    "release": false
   }
 }
