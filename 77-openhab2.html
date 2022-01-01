@@ -542,10 +542,11 @@
                     token: cntrlConfig.token,
                 }
                 //console.log("config = " + JSON.stringify(config));
-                // Use relative path, so we support installations where the Node-RED webroot might not be the default (being "/")
                 // For some Node-Red installations, the relative webroot is changed from "/" to "/endpoint" using the 
-                // httpRoot: '/endpoint' setting. This could break the request below if it were not a relative one.
-                $.getJSON("openhab3/items", config)
+                // httpRoot: '/endpoint' setting (in the settings.json on disk). This could break the request below, 
+                // so we lookup the `httpNodeRoot` setting to construct the callback url.
+                // More info: https://discourse.nodered.org/t/http-endpoint-guidelines/2309/4
+                $.getJSON(RED.settings.httpNodeRoot + "openhab3/items", config)
                     .done(function (data) {
 
                         itemSelectionEl.children().remove();

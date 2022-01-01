@@ -33,6 +33,8 @@ services:
       - CRYPTO_POLICY=unlimited
       - USER_ID=9001
       - GROUP_ID=9001
+      # https://community.openhab.org/t/log4shell-security-vulnerability-endangers-systems-worldwide/130314/2
+      - "JAVA_OPTS=-Dlog4j2.formatMsgNoLookups=true"
 
   openhab3:
     build: openhab3/
