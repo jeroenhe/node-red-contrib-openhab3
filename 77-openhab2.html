@@ -322,9 +322,8 @@
         <li><b>When changed :</b>Send message when node state changes (type 'ItemStateChangedEvent' or 'GroupItemStateChangedEvent')</li>
         <li><b>From :</b>Old state value that should match before outputting a message. Ignored when left empty. Leave this field empty when the above "When command" is checked.</li>
         <li><b>To :</b>New state value that should match before outputting a message. Ignored when left empty.</li>
-        </ul>
+    </ul>
     <p></p>
-
     <b>Messages injected in NodeRED flows (1 output channel)</b>
     <ul>
         <li>Channel 1:
@@ -334,7 +333,7 @@
                 <li><code>msg.event</code> : InitialStateEvent | ItemStateEvent | ItemCommandEvent | ItemStateChangedEvent | GroupItemStateChangedEvent</li>
                 <li><code>msg.payload</code> : the current state of the selected item</li>
                 <li><code>msg.oldValue</code> : the previous state of the selected item</li>
-               </ul>
+            </ul>
         </li>
     </ul>
 </script>
@@ -358,17 +357,18 @@
     <b>Messages injected in NodeRED flows (1 output channel)</b>
     <ul>
         <li>Channel 1:
-        <p>Outputs the received input message with addition of: <p>
-        <ul>
-            <li><code>msg.item</code> : the item's itemname (not the label)</li>
-            <li><code>msg.topic</code> : the item's topic as specified</li>
-            <li><code>msg.event</code> : will be set to "ActualState"</li>
-            <li><code>msg.payload</code> : the current state of the selected item</li>
-            <li><code>msg.payload_in</code> : copy of incoming message payload</li>
-            <li><code>msg.type</code> : returns the type of the item (like <code>String</code> or <code>Group</code>)</li>
-            <li><code>msg.groups</code> : contains the list of group(s) the item belongs to. If the item does not belong to any group, the list will be empty.</li>
-            <li><code>msg.members</code> : when msg.type is <code>Group</code>, this will contain a list of all members that are part of this group</li>
-        </ul>
+            <p>Outputs the received input message with addition of: <p>
+            <ul>
+                <li><code>msg.item</code> : the item's itemname (not the label)</li>
+                <li><code>msg.topic</code> : the item's topic as specified</li>
+                <li><code>msg.event</code> : will be set to "ActualState"</li>
+                <li><code>msg.payload</code> : the current state of the selected item</li>
+                <li><code>msg.payload_in</code> : copy of incoming message payload</li>
+                <li><code>msg.type</code> : returns the type of the item (like <code>String</code> or <code>Group</code>)</li>
+                <li><code>msg.groups</code> : contains the list of group(s) the item belongs to. If the item does not belong to any group, the list will be empty.</li>
+                <li><code>msg.members</code> : when msg.type is <code>Group</code>, this will contain a list of all members that are part of this group</li>
+            </ul>
+        </li>
     </ul>
 </script>
 
@@ -376,31 +376,30 @@
     <p>Monitors the openhab2-controller2 node.</p>
     <p></p>
     <b>Configuration</b>
-    <ul>
-        <li><b>Name :</b> Optionally specify a name</li>
-        <li><b>Controller :</b> Select the openHAB controller</li>
+        <ul>
+            <li><b>Name :</b> Optionally specify a name</li>
+            <li><b>Controller :</b> Select the openHAB controller</li>
         </ul>
     <p></p>
-
     <b>Messages injected in NodeRED flows (3 output channels)</b>
     <ul>
         <li>Channel 1:
             <ul>
                 <li><code>msg.topic</code> : "ConnectionStatus"</li>
                 <li><code>msg.payload</code> : connection status ('ON' or 'OFF')</li>
-               </ul>
+            </ul>
         </li>
         <li>Channel 2:
             <ul>
                 <li><code>msg.topic</code> : "ConnectionError"</li>
                 <li><code>msg.payload</code> : error message(s)</li>
-               </ul>
+            </ul>
         </li>
         <li>Channel 3:
             <ul>
                 <li><code>msg.topic</code> : "RawEvent"</li>
                 <li><code>msg.payload</code> : raw (unprocessed) event for all items</li>
-               </ul>
+            </ul>
         </li>
     </ul>
 </script>
@@ -415,7 +414,7 @@
         <li><b>Item :</b> Optionally select the Item to address. If specified, it overrides the item specified in the incoming message.</li>
         <li><b>Topic :</b> Optionally select "ItemCommand" or "ItemUpdate". If specified, it overrides the topic specified in the incoming message.</li>
         <li><b>Payload :</b> Optionally specify the command or update value to send to the selected item. If specified, it overrides the value specified in the incoming message.</li>
-        <li><b>Only when changed :</b> Optionally check this if you want to write the value if it changed in comparison to the actual value.</li>
+        <li><b>Only when changed :</b> Optionally check this if you want to ouput the value if it changed in comparison to the actual (current) value.</li>
     </ul>
     <p></p>
     <b>Messages accepted by NodeRED flows (1 input channel)</b>
@@ -423,6 +422,13 @@
         <li><code>msg.item</code> optionally the Item to address</li>
         <li><code>msg.topic</code> optionally "ItemCommand", "ItemUpdate"</li>
         <li><code>msg.payload</code> optionally the fixed command or update value to send to the selected item</li>
+    </ul>
+    <p></p>
+    <b>Messages injected in NodeRED flows (1 output channel)</b>
+    <ul>
+        <li>Channel 1:
+            <p>Outputs the received input message in case it was delivered to openhab successfully. In case the 'Only when changed' settings is checked, a message will only be sent when there was an actual change to the value.<p>
+        </li>
     </ul>
 </script>
 
@@ -750,7 +756,7 @@
             },
         },
         inputs: 1,
-        outputs: 0,
+        outputs: 1,
         icon: "node-red-contrib-openhab2.png",
         paletteLabel: "openhab2-out2",
         label: function () {

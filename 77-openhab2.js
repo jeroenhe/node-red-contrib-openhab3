@@ -690,6 +690,7 @@ module.exports = function (RED) {
                                     shape: "dot",
                                     text: "state changed from '" + currentState + " ' to '" + payload + "')"
                                 });
+                                node.send(msg);
                             } else {
                                 node.status({
                                     fill: "gray",
@@ -709,6 +710,7 @@ module.exports = function (RED) {
                     );
                 } else {
                     saveValue(item, topic, payloadString);
+                    node.send(msg);
                 }
             } else {
                 // no payload specified !
