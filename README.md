@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.31 | Update NodeJS packages.
 | 1.3.30 | Use 'httpNodeRoot'-setting for "get items list" call.
 | 1.3.29 | Add support for the "get items list" call to a Node-RED instance running under another webroot (not /) |
 | 1.3.28 | Test an automated release (no actual changes) |
