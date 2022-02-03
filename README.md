@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.34 | Scorecard only finds examples in examples dir
 | 1.3.33 | Improve scorecard
 | 1.3.32 | openhab2-out2 node outputs message when one was actually sent (#26)
 | 1.3.31 | Update NodeJS packages.
