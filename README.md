@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.38 | No actual change, except testing a change to Github actions
 | 1.3.37 | Update packages
 | 1.3.36 | Update many packages
 | 1.3.35 | Update all packages (for Scorecard)
