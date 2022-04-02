@@ -15,6 +15,7 @@ fi
 # Howto release a change to NPM:
 # 1. Make sure changes end up on the main branch on the server. Include an
 #    update to README.md as well.
-# 2. Run this script and choose the release # the same as done in README.md
+# 2. Run this script and choose the release # the same as done in README.md. Also add an otp token to authorized releasing it:
+# --otp=000000
 
 release-it --only-version $@
