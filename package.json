@@ -25,7 +25,8 @@
   "scripts": {
     "docker": "./run.sh",
     "ngrok": "ngrok http 127.0.0.1:1880",
-    "lint": "eslint ./*.js --fix",
+    "lint": "eslint ./*.js",
+    "lint-fix": "eslint ./*.js --fix",
     "jshint": "jshint --reporter=jslint --verbose 77-openhab2.js",
     "release": "release-it"
   },
