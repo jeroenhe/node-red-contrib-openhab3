@@ -6,7 +6,7 @@ on:
       - '*.*.*'
 
 jobs:
-  npm_run_jshint:
+  npm_run_linter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
