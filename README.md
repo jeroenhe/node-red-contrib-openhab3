@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.41 | Update eventsource package to 2.0.2
 | 1.3.40 | No actual change, test improved npm security
 | 1.3.39 | No actual change, improve release process
 | 1.3.38 | No actual change, except testing a change to Github actions
