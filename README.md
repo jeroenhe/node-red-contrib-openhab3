@@ -1,4 +1,4 @@
-![https://img.shields.io/npm/v/node-red-contrib-openhab3.svg?style=flat-square alt="NPM package version"](https://github.com/jeroenhendricksen/node-red-contrib-openhab3.git) ![https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat-square alt="GitHub license"](https://raw.githubusercontent.com/jeroenhendricksen/node-red-contrib-huemagic/master/LICENSE) [![Publish NPM package](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml/badge.svg?branch=master)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml) ![NPM downloads](https://img.shields.io/npm/dm/node-red-contrib-openhab3)
+![https://img.shields.io/npm/v/node-red-contrib-openhab3.svg?style=flat-square](https://github.com/jeroenhendricksen/node-red-contrib-openhab3.git) ![https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat-square](https://raw.githubusercontent.com/jeroenhendricksen/node-red-contrib-huemagic/master/LICENSE) [![Publish NPM package](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml/badge.svg?branch=master)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml) ![NPM downloads](https://img.shields.io/npm/dm/node-red-contrib-openhab3)
 
 # node-red-contrib-openhab3
 
@@ -14,6 +14,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.43 | Add badges to README (fix)
 | 1.3.42 | Add badges to README
 | 1.3.41 | Update eventsource package to 2.0.2
 | 1.3.40 | No actual change, test improved npm security
