@@ -16,6 +16,6 @@ fi
 # 1. Make sure changes end up on the main branch on the server. Include an
 #    update to README.md as well.
 # 2. Run this script and choose the release # the same as done in README.md. Also add an otp token to authorized releasing it:
-# --npm.otp=000000
+# --npm.otp=000000 (or was it --otp=000000 ?)
 
-release-it --only-version "$@"
+npx release-it --only-version "$@"
