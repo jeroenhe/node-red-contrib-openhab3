@@ -17,6 +17,8 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.45 | Add badges to README (fix)
+| 1.3.44 | Add badges to README (fix)
 | 1.3.43 | Add badges to README (fix)
 | 1.3.42 | Add badges to README
 | 1.3.41 | Update eventsource package to 2.0.2
