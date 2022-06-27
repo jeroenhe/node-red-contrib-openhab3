@@ -1,4 +1,7 @@
-rel [![Publish NPM package](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml/badge.svg?branch=master)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml) ![NPM downloads](https://img.shields.io/npm/dm/node-red-contrib-openhab3)
+[![NPM Version](https://img.shields.io/npm/v/node-red-contrib-openhab3.svg?style=flat-square)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3)
+[![Apache 2 license](https://img.shields.io/badge/license-Apache%202-blue.svg?style=flat-square)](https://raw.githubusercontent.com/jeroenhendricksen/node-red-contrib-openhab3/master/LICENSE)
+[![Publish NPM package](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml/badge.svg?branch=master)](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/actions/workflows/npm-publish.yml)
+![NPM downloads](https://img.shields.io/npm/dm/node-red-contrib-openhab3)
 
 # node-red-contrib-openhab3
 
@@ -14,6 +17,10 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.3.45 | Add badges to README (fix)
+| 1.3.44 | Add badges to README (fix)
+| 1.3.43 | Add badges to README (fix)
+| 1.3.42 | Add badges to README
 | 1.3.41 | Update eventsource package to 2.0.2
 | 1.3.40 | No actual change, test improved npm security
 | 1.3.39 | No actual change, improve release process
