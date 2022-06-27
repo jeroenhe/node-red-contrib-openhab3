@@ -306,6 +306,8 @@ module.exports = function (RED) {
       var url;
       var headers = {
         "Content-type": "text/plain",
+        // accept header required since OH 3.3:
+        "Accept": "application/json",
       };
       var method = "get";
       var payloadString = null;
