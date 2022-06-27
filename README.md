@@ -17,7 +17,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
-| 1.3.46 | Add support for OpenHAB 3.3
+| 1.4.0  | Add support for OpenHAB 3.3
 | 1.3.45 | Add badges to README (fix)
 | 1.3.44 | Add badges to README (fix)
 | 1.3.43 | Add badges to README (fix)
