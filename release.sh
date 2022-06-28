@@ -4,7 +4,7 @@
 # ToDo: test the new version in available from the README.md, ensuring
 # the change was documented.
 
-if [ -n "$1" ]; then
+if [ -z "$1" ]; then
     echo "You need to provide --npm.otp=xxxxxx"
     exit 1
 fi

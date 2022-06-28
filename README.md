@@ -17,6 +17,7 @@ Install this package `node-red-contrib-openhab3` via the `Manage palette` menu o
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.5.0  | Drop support for OpenHAB v2 with regards to the (internal) tests
 | 1.4.0  | Add support for OpenHAB 3.3
 | 1.3.45 | Add badges to README (fix)
 | 1.3.44 | Add badges to README (fix)
@@ -80,7 +81,6 @@ Docker is used to start a clean Node-RED, OpenHAB v2 and OpenHAB v3 environment,
 After a little while, you can visit:
 
 - [Node-RED](http://localhost:1880)
-- [OpenHAB v2.5](http://localhost:8080)
 - [OpenHAB v3.2](http://localhost:8081)
 - [OpenHAB v3.2 (with authentication)](http://localhost:8082)
 - [OpenHAB v3.3](http://localhost:8083)
@@ -89,7 +89,6 @@ When in the Node-RED UI, you can import [flow.json](test/nodered/flow.json) via 
 
 You can verify the server sides event connections to be working as well. They are used by the plugin to receive any updates from OpenHAB:
 
-- [OpenHAB v2.5](http://localhost:8080/rest/events?topics=smarthome/items)
 - [OpenHAB v3.2](http://localhost:8081/rest/events?topics=openhab/items)
 - [OpenHAB v3.2 (with authentication)](http://localhost:8082/rest/events?topics=openhab/items)
 - [OpenHAB v3.3](http://localhost:8083/rest/events?topics=openhab/items)

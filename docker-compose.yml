@@ -14,29 +14,7 @@ services:
         source: nodered-data
         target: /data
 
-  openhab2:
-    image: openhab/openhab:2.5.12-debian
-    networks: [ "nodered" ]
-    ports:
-      - "8080:8080"
-    volumes:
-      - type: bind
-        source: ./test/openhab/conf/items
-        target: /openhab/conf/items
-      - type: volume
-        source: openhab2-userdata
-        target: /openhab/userdata
-      - type: volume
-        source: openhab2-addons
-        target: /openhab/addons
-    environment:
-      - CRYPTO_POLICY=unlimited
-      - USER_ID=9001
-      - GROUP_ID=9001
-      # https://community.openhab.org/t/log4shell-security-vulnerability-endangers-systems-worldwide/130314/2
-      - "JAVA_OPTS=-Dlog4j2.formatMsgNoLookups=true"
-
-  openhab3:
+  openhab32:
     build: openhab3.2/
     networks: [ "nodered" ]
     ports:
@@ -52,18 +30,18 @@ services:
         source: ./test/openhab/conf/services
         target: /openhab/conf/services
       - type: volume
-        source: openhab3-userdata
+        source: openhab32-userdata
         target: /openhab/userdata
       - type: volume
-        source: openhab3-addons
+        source: openhab32-addons
         target: /openhab/addons
     environment:
       - CRYPTO_POLICY=unlimited
       - USER_ID=9001
       - GROUP_ID=9001
 
-  openhab3-oauth2:
-    build: openhab3.2/
+  openhab33-oauth2:
+    build: openhab3.3/
     networks: [ "nodered" ]
     ports:
       - "8082:8080"
@@ -72,10 +50,10 @@ services:
         source: ./test/openhab/conf/items
         target: /openhab/conf/items
       - type: volume
-        source: openhab3-oauth2-userdata
+        source: openhab33-oauth2-userdata
         target: /openhab/userdata
       - type: volume
-        source: openhab3-oauth2-addons
+        source: openhab33-oauth2-addons
         target: /openhab/addons
     environment:
       - CRYPTO_POLICY=unlimited
@@ -110,14 +88,12 @@ services:
 
 volumes:
   nodered-data:
-  openhab2-addons:
-  openhab2-userdata:
-  openhab3-addons:
-  openhab3-userdata:
+  openhab32-addons:
+  openhab32-userdata:
   openhab33-addons:
   openhab33-userdata:
-  openhab3-oauth2-addons:
-  openhab3-oauth2-userdata:
+  openhab33-oauth2-addons:
+  openhab33-oauth2-userdata:
 
 networks:
   nodered:
