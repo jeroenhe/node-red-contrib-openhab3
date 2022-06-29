@@ -1,5 +1,12 @@
 [
     {
+        "id": "e10b91cd96562f0a",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
         "id": "3ab271b6bafce2e2",
         "type": "inject",
         "z": "e10b91cd96562f0a",
@@ -612,26 +619,9 @@
         "y": 800,
         "wires": [
             [
-                "70fb0464fab312e6"
+                "ea80f4952bbda2dc"
             ]
         ]
-    },
-    {
-        "id": "70fb0464fab312e6",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v3 InitialStateEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1760,
-        "y": 800,
-        "wires": []
     },
     {
         "id": "56680785f7151570",
@@ -651,26 +641,9 @@
         "y": 860,
         "wires": [
             [
-                "1d0665b9fd93d679"
+                "28d16b434ea433c3"
             ]
         ]
-    },
-    {
-        "id": "1d0665b9fd93d679",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v3 ItemStateEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1760,
-        "y": 860,
-        "wires": []
     },
     {
         "id": "fd1e14a26d80233f",
@@ -690,26 +663,9 @@
         "y": 920,
         "wires": [
             [
-                "6071f8bfc84b41b0"
+                "b9adb6b7a2c8f506"
             ]
         ]
-    },
-    {
-        "id": "6071f8bfc84b41b0",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v3 ItemCommandEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1780,
-        "y": 920,
-        "wires": []
     },
     {
         "id": "0518d2367688e711",
@@ -729,26 +685,9 @@
         "y": 980,
         "wires": [
             [
-                "08428b0ba7a499cc"
+                "b2ad7b746cf6eb80"
             ]
         ]
-    },
-    {
-        "id": "08428b0ba7a499cc",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v3 ItemStateChangedEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1790,
-        "y": 980,
-        "wires": []
     },
     {
         "id": "4b323f1d6c6af4d1",
@@ -770,8 +709,8 @@
         "id": "534960564ed30a8c",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 raw events",
-        "active": false,
+        "name": "v32 raw events",
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -860,8 +799,8 @@
         "id": "b6a6895027a660ee",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 events",
-        "active": false,
+        "name": "v32 events",
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -869,7 +808,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 460,
+        "x": 470,
         "y": 1160,
         "wires": []
     },
@@ -923,7 +862,7 @@
         "id": "386269c01f71482a",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 get TestString (NOT sendnull)",
+        "name": "v32 get TestString (NOT sendnull)",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -932,7 +871,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1150,
+        "x": 1160,
         "y": 1080,
         "wires": []
     },
@@ -1214,7 +1153,7 @@
         "id": "9b735e5735eed2f1",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v2 in2 group temperatures",
+        "name": "v33 in2 group temperatures",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1285,9 +1224,9 @@
         "id": "5d990b0d0b3147aa",
         "type": "comment",
         "z": "e10b91cd96562f0a",
-        "name": "Testing the GroupItemStateChangedEvent",
+        "name": "Testing the GroupItemStateChangedEvent v32 and v33",
         "info": "\nGroup definition is `Group:Number:AVG`.\nGTemperatures should output the average number (the \"temperature\") for all Items part of the GTemperatures group, which are `TestTemperature1` and `TestTemperature2` for this test.\n",
-        "x": 260,
+        "x": 300,
         "y": 1780,
         "wires": []
     },
@@ -1351,7 +1290,7 @@
         "id": "f904f1ba8bd56ed4",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 in2 group temperatures",
+        "name": "v33 in2 group temperatures",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1582,7 +1521,7 @@
         "id": "c8a8e9801bc7addf",
         "type": "comment",
         "z": "e10b91cd96562f0a",
-        "name": "Testing openhab3 OAuth2 authentication",
+        "name": "Testing openhab33 OAuth2 authentication",
         "info": " *  Go to http://localhost:8082\n *  Create a username/password\n *  Go to http://localhost:8082/createApiToken\n *  Create a token and remember it\n *  Enter the OAuthv2 token in the `OAuth2 Bearer token` field in the connection setup screen.\n *  The connection with `openhab3-oauth2` should now work.\n",
         "x": 260,
         "y": 2440,
@@ -1595,7 +1534,7 @@
         "name": "",
         "controller": "55854cb92be97ddf",
         "x": 190,
-        "y": 2500,
+        "y": 2520,
         "wires": [
             [],
             [],
@@ -1618,7 +1557,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 480,
-        "y": 2500,
+        "y": 2520,
         "wires": []
     },
     {
@@ -1629,7 +1568,7 @@
         "controller": "55854cb92be97ddf",
         "itemname": "",
         "x": 190,
-        "y": 2560,
+        "y": 2580,
         "wires": [
             [
                 "68df84142545d898"
@@ -1641,7 +1580,7 @@
         "type": "debug",
         "z": "e10b91cd96562f0a",
         "name": "v33-oauth2 events",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1650,7 +1589,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 470,
-        "y": 2560,
+        "y": 2580,
         "wires": []
     },
     {
@@ -1675,7 +1614,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 180,
-        "y": 2640,
+        "y": 2660,
         "wires": [
             [
                 "be1916d8a6b60608"
@@ -1704,7 +1643,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 180,
-        "y": 2780,
+        "y": 2800,
         "wires": [
             [
                 "2849889482fb1375"
@@ -1722,7 +1661,7 @@
         "payload": "",
         "onlywhenchanged": false,
         "x": 410,
-        "y": 2640,
+        "y": 2660,
         "wires": [
             []
         ]
@@ -1738,7 +1677,7 @@
         "payload": "",
         "onlywhenchanged": false,
         "x": 420,
-        "y": 2780,
+        "y": 2800,
         "wires": [
             []
         ]
@@ -1765,7 +1704,7 @@
         "payload": "A",
         "payloadType": "str",
         "x": 190,
-        "y": 2820,
+        "y": 2840,
         "wires": [
             [
                 "2849889482fb1375"
@@ -1794,7 +1733,7 @@
         "payload": "B",
         "payloadType": "str",
         "x": 190,
-        "y": 2860,
+        "y": 2880,
         "wires": [
             [
                 "2849889482fb1375"
@@ -1823,7 +1762,7 @@
         "payload": "A",
         "payloadType": "str",
         "x": 190,
-        "y": 2680,
+        "y": 2700,
         "wires": [
             [
                 "be1916d8a6b60608"
@@ -1852,7 +1791,7 @@
         "payload": "B",
         "payloadType": "str",
         "x": 190,
-        "y": 2720,
+        "y": 2740,
         "wires": [
             [
                 "be1916d8a6b60608"
@@ -1874,29 +1813,12 @@
         "changedfrom": "",
         "changedto": "",
         "x": 800,
-        "y": 2640,
+        "y": 2660,
         "wires": [
             [
-                "fc2312d6d7584ea8"
+                "afd82590d20e2d14"
             ]
         ]
-    },
-    {
-        "id": "fc2312d6d7584ea8",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v33-oauth2 InitialStateEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1130,
-        "y": 2640,
-        "wires": []
     },
     {
         "id": "74816e601c3de640",
@@ -1913,29 +1835,12 @@
         "changedfrom": "",
         "changedto": "",
         "x": 800,
-        "y": 2700,
+        "y": 2720,
         "wires": [
             [
-                "9d056fdd0f79aec9"
+                "8fe0558b1efdbb17"
             ]
         ]
-    },
-    {
-        "id": "9d056fdd0f79aec9",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v33-oauth2 ItemStateEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1130,
-        "y": 2700,
-        "wires": []
     },
     {
         "id": "98055273fb85f624",
@@ -1952,29 +1857,12 @@
         "changedfrom": "",
         "changedto": "",
         "x": 820,
-        "y": 2760,
+        "y": 2780,
         "wires": [
             [
-                "10132d2da81d42ed"
+                "be5f59d0bbe2c138"
             ]
         ]
-    },
-    {
-        "id": "10132d2da81d42ed",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v33-oauth2 ItemCommandEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1150,
-        "y": 2760,
-        "wires": []
     },
     {
         "id": "bbda77396a0fefac",
@@ -1991,29 +1879,12 @@
         "changedfrom": "",
         "changedto": "",
         "x": 830,
-        "y": 2820,
+        "y": 2840,
         "wires": [
             [
-                "66c0b197a33a9efb"
+                "b351fb856b8e7318"
             ]
         ]
-    },
-    {
-        "id": "66c0b197a33a9efb",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v33-oauth2 ItemStateChangedEvent",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1160,
-        "y": 2820,
-        "wires": []
     },
     {
         "id": "8b08acab9fc0db2c",
@@ -2037,7 +1908,7 @@
         "payload": "",
         "payloadType": "date",
         "x": 750,
-        "y": 2900,
+        "y": 2920,
         "wires": [
             [
                 "aa716e1927256967"
@@ -2054,29 +1925,12 @@
         "topic": "",
         "sendnull": true,
         "x": 920,
-        "y": 2900,
+        "y": 2920,
         "wires": [
             [
-                "ce64bd39960e156b"
+                "d1f796ed80477f90"
             ]
         ]
-    },
-    {
-        "id": "ce64bd39960e156b",
-        "type": "debug",
-        "z": "e10b91cd96562f0a",
-        "name": "v33-oauth2 get TestString",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "true",
-        "targetType": "full",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 1130,
-        "y": 2900,
-        "wires": []
     },
     {
         "id": "1f219d2e5dbf8ab2",
@@ -2127,7 +1981,7 @@
         "id": "1b1ed872d50fb7a3",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 get GChildGroup (NOT sendnull)",
+        "name": "v32 get GChildGroup (NOT sendnull)",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2136,7 +1990,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1200,
+        "x": 1210,
         "y": 1200,
         "wires": []
     },
@@ -2189,7 +2043,7 @@
         "id": "cbc6685695a62e98",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 get TestStringNoGroup",
+        "name": "v32 get TestStringNoGroup",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2198,7 +2052,7 @@
         "targetType": "full",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1170,
+        "x": 1180,
         "y": 1320,
         "wires": []
     },
@@ -2439,7 +2293,7 @@
         "id": "4a53ffc1da475c8e",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 get TestString (sendnull)",
+        "name": "v32 get TestString (sendnull)",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2565,7 +2419,7 @@
         "id": "be0412da3e3172a8",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 get GChildGroup (sendnull)",
+        "name": "v32 get GChildGroup (sendnull)",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -2953,7 +2807,7 @@
         "id": "d33918bc6cad5152",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v3 TestDimmer updates",
+        "name": "v32 TestDimmer updates",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -3354,6 +3208,159 @@
                 "7f6b221bdb83a8c3"
             ]
         ]
+    },
+    {
+        "id": "ea80f4952bbda2dc",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v32 InitialStateEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1780,
+        "y": 800,
+        "wires": []
+    },
+    {
+        "id": "28d16b434ea433c3",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v32 ItemStateEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1770,
+        "y": 860,
+        "wires": []
+    },
+    {
+        "id": "b9adb6b7a2c8f506",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v32 ItemCommandEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1790,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "b2ad7b746cf6eb80",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v32 ItemStateChangedEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1800,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "afd82590d20e2d14",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v33-oauth InitialStateEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 2660,
+        "wires": []
+    },
+    {
+        "id": "8fe0558b1efdbb17",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v33-oauth ItemStateEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 2720,
+        "wires": []
+    },
+    {
+        "id": "be5f59d0bbe2c138",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v33-oauth ItemCommandEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1150,
+        "y": 2780,
+        "wires": []
+    },
+    {
+        "id": "b351fb856b8e7318",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v33-oauth ItemStateChangedEvent",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 2840,
+        "wires": []
+    },
+    {
+        "id": "d1f796ed80477f90",
+        "type": "debug",
+        "z": "e10b91cd96562f0a",
+        "name": "v33-oauth2 get TestString",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1130,
+        "y": 2920,
+        "wires": []
     },
     {
         "id": "35ee9a2558667a1f",

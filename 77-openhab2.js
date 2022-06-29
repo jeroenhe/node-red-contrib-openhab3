@@ -212,11 +212,11 @@ module.exports = function (RED) {
       // register for all item events (including Thing addition and removal events)
       var eventsource_url =
         config.ohversion == "v3"
-          ? "/rest/events?topics=openhab/items"
+          ? "/rest/events" // no longer filter using ?topics= because this breaks since OH 3.3 release version
           : "/rest/events?topics=smarthome/items";
       var sseUrl = getConnectionString(config) + eventsource_url;
       var options = getAuthorizationHeader(config);
-      // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url);
+      // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url + ' options: ' + JSON.stringify(options));
       node.es = new EventSource(sseUrl, options);
 
       // handle the 'onopen' event
@@ -235,6 +235,9 @@ module.exports = function (RED) {
           }
 
           // update the node status with the Item's new state
+          // get the (json) string for the data: part of the message:
+          // event: message
+          // data: {"topic":"openhab/items/TestSwitch/state","payload":"{\"type\":\"OnOff\",\"value\":\"OFF\"}","type":"ItemStateEvent"}
           msg = JSON.parse(msg.data);
           if (msg.payload && msg.payload.constructor == String) {
             msg.payload = JSON.parse(msg.payload);
@@ -247,9 +250,10 @@ module.exports = function (RED) {
 
             // https://nodered.org/docs/api/modules/v/1.3/@node-red_util_events.html
             // emit a message to any in2 node for the item
-            node.emit(item + "/RawEvent", msg);
+            var in2_node_name_event = item + "/RawEvent";
+            node.emit(in2_node_name_event, msg);
 
-            // emit a message to the controller node
+            // emit the raw message to the controller node
             node.emit("RawEvent", msg);
           }
         } catch (e) {
@@ -317,17 +321,17 @@ module.exports = function (RED) {
       if (topic === "ItemUpdate") {
         url =
           getConnectionString(config) + "/rest/items/" + itemname + "/state";
-        method = "put";
+        method = "PUT";
       } else if (topic === "ItemCommand") {
         url = getConnectionString(config) + "/rest/items/" + itemname;
-        method = "post";
+        method = "POST";
       } else {
         url = getConnectionString(config) + "/rest/items/" + itemname;
         //headers = {};
         headers = {
           "Content-type": "application/json",
         };
-        method = "get";
+        method = "GET";
       }
 
       // Axios cheat sheet: https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
@@ -997,7 +1001,7 @@ module.exports = function (RED) {
       // register for all item events
       var eventsource_url =
         config2.ohversion == "v3"
-          ? "/rest/events?topics=" + V3_EVENTSOURCE_URL_PART + "/*/*"
+          ? "/rest/events"
           : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
       var sseUrl = getConnectionString(config2) + eventsource_url;
       var options = getAuthorizationHeader(config);

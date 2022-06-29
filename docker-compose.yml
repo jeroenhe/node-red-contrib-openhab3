@@ -49,6 +49,12 @@ services:
       - type: bind
         source: ./test/openhab/conf/items
         target: /openhab/conf/items
+      - type: bind
+        source: ./test/openhab/conf/persistence
+        target: /openhab/conf/persistence
+      - type: bind
+        source: ./test/openhab/conf/services
+        target: /openhab/conf/services
       - type: volume
         source: openhab33-oauth2-userdata
         target: /openhab/userdata
