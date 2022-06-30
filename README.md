@@ -26,6 +26,7 @@ The `openhab2-in2` and `openhab2-events2` nodes receive updates via a Server-Sen
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.4.3  | Update npm packages
 | 1.4.2  | Announce reduced support for OH 2.x
 | 1.4.1  | Fix SSE events handling for OH 3.3
 | 1.4.0  | Add support for OH 3.3
