@@ -1471,7 +1471,7 @@
         "id": "df842f41edae97bb",
         "type": "debug",
         "z": "e10b91cd96562f0a",
-        "name": "v2 get TestString",
+        "name": "v3 get TestString",
         "active": true,
         "tosidebar": true,
         "console": false,

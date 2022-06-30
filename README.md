@@ -7,16 +7,26 @@
 
 ## Description
 
-Nodes facilitating the automation of [openHAB](https://www.openhab.org) items with Node-RED. This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions and changes I find useful. This plugin is useful if you want to add rules using the power of Node-RED, instead of the OpenHAB built-in rules. The plugin provides you with nodes in Node-RED that can (when explicitly called via an input message) get and update the state of Items and Groups defined in openHAB. It also provides an openhab2-in2 node that will immediately output message(s) when the relevant Item or Group state is updated or changed.
+Nodes facilitating the automation of [openHAB](https://www.openhab.org) items via Node-RED. It is known to supports openHAB versions up until the current latest v3.3 RELEASE. If you are still using this module with openHAB 2.x than please consider upgrading it. Support for v2 could break at any time since version 1.4.0 of this plugin as I'm no longer testing it. I might offer a separate "legacy" v2 module in the future. If you area interested in that, please let me know [here](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/39).
+
+This plugin is useful if you want to add rules using the power of Node-RED, instead of the OpenHAB built-in rules. The plugin provides you with nodes in Node-RED that can (when explicitly called via an input message) get and update the state of Items and Groups defined in openHAB. It also provides an openhab2-in2 node that will immediately output message(s) when the relevant Item or Group state is updated or changed.
+
+This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions and changes I find useful.
 
 ## Installation
 
 Install this package `node-red-contrib-openhab3` via the `Manage palette` menu of your Node-RED instance.
 
+## Technical
+
+The `openhab2-in2` and `openhab2-out2` nodes use GET, POST and PUT requests sent to the [openhab REST API](https://www.openhab.org/docs/configuration/restdocs.html) via the url `http://openhab:port/rest/items/<item>`
+The `openhab2-in2` and `openhab2-events2` nodes receive updates via a Server-Sent Events (SSE) connection that is established once per controller and once per events-node, via the url `http://openhab:port/rest/events`.
+
 ## Changes
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.4.2  | Announce reduced support for OH 2.x
 | 1.4.1  | Fix SSE events handling for OH 3.3
 | 1.4.0  | Add support for OH 3.3
 | 1.3.45 | Add badges to README (fix)
