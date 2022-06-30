@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-openhab3",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "OpenHAB v3 home automation for node-red, based upon node-red-contrib-openhab2 package",
   "dependencies": {
     "axios": "^0",
