@@ -1089,7 +1089,7 @@ module.exports = function (RED) {
             
             // Authentication error 401/403? Then we stop trying
             if (errorStatus == 401 || errorStatus == 403) {
-              node.error("HTTP " + errorStatus + ". Please check OpenHAB controller credentials (token) for " + config.name);
+              node.error("HTTP " + errorStatus + ". Please check OpenHAB controller credentials (token)");
             } else {
               node.warn("HTTP " + errorStatus + ". Restarting EventSource (after delay)");
               setTimeout(function () {
