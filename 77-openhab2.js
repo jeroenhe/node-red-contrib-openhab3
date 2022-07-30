@@ -924,7 +924,7 @@ module.exports = function (RED) {
           node.status({
             fill: "green",
             shape: "dot",
-            text: " ",
+            text: "",
           });
 
           //var jsonBody = body;
@@ -1026,7 +1026,7 @@ module.exports = function (RED) {
         node.status({
           fill: "green",
           shape: "dot",
-          text: "",
+          text: "ON",
         });
       };
 
@@ -1113,7 +1113,7 @@ module.exports = function (RED) {
       node.status({
         fill: "red",
         shape: "ring",
-        text: "CommunicationStatus OFF",
+        text: "OFF",
       });
     });
   }
