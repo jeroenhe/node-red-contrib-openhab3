@@ -286,12 +286,19 @@ module.exports = function (RED) {
             // the EventSource object has given up retrying ... retry reconnecting after 10 seconds
             node.es.close();
             delete node.es;
-            
+
             // Authentication error 401/403? Then we stop trying
             if (errorStatus == 401 || errorStatus == 403) {
-              node.error("HTTP " + errorStatus + ". Please check OpenHAB controller credentials (token) for " + config.name);
+              node.error(
+                "HTTP " +
+                  errorStatus +
+                  ". Please check OpenHAB controller credentials (token) for " +
+                  config.name
+              );
             } else {
-              node.warn("HTTP " + errorStatus + ". Restarting EventSource (after delay)");
+              node.warn(
+                "HTTP " + errorStatus + ". Restarting EventSource (after delay)"
+              );
 
               setTimeout(function () {
                 startEventSource();
@@ -1086,12 +1093,18 @@ module.exports = function (RED) {
               shape: "ring",
               text: "OFF",
             });
-            
+
             // Authentication error 401/403? Then we stop trying
             if (errorStatus == 401 || errorStatus == 403) {
-              node.error("HTTP " + errorStatus + ". Please check OpenHAB controller credentials (token)");
+              node.error(
+                "HTTP " +
+                  errorStatus +
+                  ". Please check OpenHAB controller credentials (token)"
+              );
             } else {
-              node.warn("HTTP " + errorStatus + ". Restarting EventSource (after delay)");
+              node.warn(
+                "HTTP " + errorStatus + ". Restarting EventSource (after delay)"
+              );
               setTimeout(function () {
                 startEventSource();
               }, 10000);
