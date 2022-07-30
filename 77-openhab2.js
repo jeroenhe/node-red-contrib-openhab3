@@ -286,12 +286,17 @@ module.exports = function (RED) {
             // the EventSource object has given up retrying ... retry reconnecting after 10 seconds
             node.es.close();
             delete node.es;
+            
+            // Authentication error 401/403? Then we stop trying
+            if (errorStatus == 401 || errorStatus == 403) {
+              node.error("HTTP " + errorStatus + ". Please check OpenHAB controller credentials (token) for " + config.name);
+            } else {
+              node.warn("HTTP " + errorStatus + ". Restarting EventSource (after delay)");
 
-            node.warn("Restarting EventSource (after delay)");
-
-            setTimeout(function () {
-              startEventSource();
-            }, 10000);
+              setTimeout(function () {
+                startEventSource();
+              }, 10000);
+            }
           }
         }
       };
@@ -305,14 +310,14 @@ module.exports = function (RED) {
       startEventSource();
     }, getRandomInt(1000, 5000));
 
-    // register a method 'control' for getting and modifying Item and Group state.
+    // register a method 'control' for retrieving and modifying Item and Group state.
     this.control = function (itemname, topic, payload, okCb, errCb) {
       var url;
       var headers = {
         "Content-type": "text/plain",
         Accept: "application/json",
       };
-      var method = "get";
+      var method = "GET";
       var payloadString = null;
       if (payload) {
         payloadString = String(payload);
@@ -378,6 +383,7 @@ module.exports = function (RED) {
     this.on("close", function () {
       node.log("close");
       node.es.close();
+      node.log("Closing node.es");
       delete node.es;
       node.emit("CommunicationStatus", "OFF");
     });
@@ -1004,14 +1010,14 @@ module.exports = function (RED) {
           ? "/rest/events"
           : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
       var sseUrl = getConnectionString(config2) + eventsource_url;
-      var options = getAuthorizationHeader(config);
+      var options = getAuthorizationHeader(config2);
       // node.log('config.ohversion: ' + config2.ohversion + ' eventsource_url: ' + eventsource_url);
       node.es = new EventSource(sseUrl, options);
 
       node.status({
         fill: "gray",
         shape: "ring",
-        text: " ",
+        text: "",
       });
 
       // handle the 'onopen' event
@@ -1080,11 +1086,16 @@ module.exports = function (RED) {
               shape: "ring",
               text: "OFF",
             });
-
-            node.warn("Restarting EventSource (after delay)");
-            setTimeout(function () {
-              startEventSource();
-            }, 10000);
+            
+            // Authentication error 401/403? Then we stop trying
+            if (errorStatus == 401 || errorStatus == 403) {
+              node.error("HTTP " + errorStatus + ". Please check OpenHAB controller credentials (token) for " + config.name);
+            } else {
+              node.warn("HTTP " + errorStatus + ". Restarting EventSource (after delay)");
+              setTimeout(function () {
+                startEventSource();
+              }, 10000);
+            }
           }
         }
       };

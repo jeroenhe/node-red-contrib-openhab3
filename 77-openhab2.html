@@ -467,7 +467,8 @@
             },
             protocol: {
                 value: "http",
-                required: true
+                required: true,
+                validate: RED.validators.regex(/http[s]?/)
             },
             host: {
                 value: "localhost",
@@ -491,8 +492,9 @@
                 required: false
             },
             ohversion: {
-                value: "v2",
-                required: true
+                value: "v3",
+                required: true,
+                validate: RED.validators.regex(/v[23]/)
             },
             token: {
                 value: "",
@@ -501,7 +503,7 @@
         },
         paletteLabel: "openhab2-controller2",
         label: function () {
-            return this.name;
+            return this.name || this.host + ":" + this.port;
         },
         oneditprepare: function () {
             $("#node-config-input-ohversion").change(function () {
@@ -691,7 +693,6 @@
         icon: "node-red-contrib-openhab2.png",
         paletteLabel: "openhab2-get2",
         label: function () {
-
             return (this.name || this.itemname || "openhab2 get2");
         },
         oneditprepare: function () {
@@ -719,7 +720,6 @@
         icon: "node-red-contrib-openhab2.png",
         paletteLabel: "openhab2-monitor",
         label: function () {
-
             return (this.name || "openhab2 monitor");
         },
         oneditprepare: function () {}
