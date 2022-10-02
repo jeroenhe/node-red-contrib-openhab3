@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker-compose restart
+docker compose restart
