@@ -1,7 +1,7 @@
 {
   "name": "node-red-contrib-openhab3",
   "version": "1.4.3",
-  "description": "OpenHAB v3 home automation for node-red, based upon node-red-contrib-openhab2 package",
+  "description": "OpenHAB v3 home automation for node-red, forked from node-red-contrib-openhab2 package",
   "dependencies": {
     "axios": "^0",
     "bootstrap-multiselect": "^1",
@@ -10,7 +10,6 @@
   "author": "Jeroen Hendricksen",
   "keywords": [
     "node-red",
-    "openhab2",
     "openhab3"
   ],
   "engines": {
@@ -32,8 +31,8 @@
   },
   "devDependencies": {
     "eslint": "^8",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.1.0",
+    "eslint-config-prettier": "^8",
+    "eslint-plugin-prettier": "^4",
     "jshint": "^2",
     "release-it": "^15"
   },
