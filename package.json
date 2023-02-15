@@ -3,7 +3,7 @@
   "version": "1.4.6",
   "description": "OpenHAB v3 home automation for node-red, forked from node-red-contrib-openhab2 package",
   "dependencies": {
-    "axios": "^0",
+    "axios": "^1",
     "bootstrap-multiselect": "^1",
     "eventsource": "^2"
   },

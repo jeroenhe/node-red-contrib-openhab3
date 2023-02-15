@@ -5,13 +5,17 @@
 
 # node-red-contrib-openhab3
 
+## No longer mainted
+
+As of 2023-02-15 (YYYY-MM-DD), this project is no longer being maintained by me and its up for adoption. If you are interested in maintaining it please let me know. This project comes with an Apache 2 license which would need to be respected.
+
 ## Description
 
-Nodes facilitating the automation of [openHAB](https://www.openhab.org) items via Node-RED. It is known to support openHAB versions up until the current latest v3.3 RELEASE. If you are still using this module with openHAB 2.x than please consider upgrading it. Support for v2 could break at any time since version 1.4.0 of this plugin as I'm no longer testing it. I might offer a separate "legacy" v2 module in the future. If you are interested in that, please let me know [here](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/39).
+This plugin facilitates the automation of [openHAB](https://www.openhab.org) items via Node-RED. It's useful if you want to add automation rules, but not want to use the openHAB built-in rules for that. The plugin provides you with nodes in Node-RED that can (when explicitly called via an input message) get and update the state of Items and Groups defined in openHAB. It also provides an openhab2-in2 node that will immediately output message(s) when the relevant Item or Group state is updated or changed.
 
-This plugin is useful if you want to add rules using the power of Node-RED, instead of the OpenHAB built-in rules. The plugin provides you with nodes in Node-RED that can (when explicitly called via an input message) get and update the state of Items and Groups defined in openHAB. It also provides an openhab2-in2 node that will immediately output message(s) when the relevant Item or Group state is updated or changed.
+This plugin supports openHAB versions up until the current latest stable v3.x RELEASE. If you are still using this module with openHAB 2.x than please consider upgrading it. Support for v2 could break at any time since version 1.4.0 of this plugin as I'm no longer testing it and I will [drop support for it altogether](https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/39) soon.
 
-This is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions and changes I find useful.
+This plugin is a fork from Peter De Mangelaere [node-red-contrib-openhab2 package](https://flows.nodered.org/node/node-red-contrib-openhab2) with additions and changes I find useful.
 
 ## Installation
 
@@ -26,6 +30,8 @@ The `openhab2-in2` and `openhab2-events2` nodes receive updates via a Server-Sen
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.4.8  | Added unmaintained notice
+| 1.4.7  | Update readme
 | 1.4.6  | Update README; Test with Node-RED 3.0.2
 | 1.4.5  | Update npm packages
 | 1.4.4  | Fix bug with eventsource hitting a 401/403
