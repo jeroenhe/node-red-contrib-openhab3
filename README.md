@@ -5,7 +5,7 @@
 
 # node-red-contrib-openhab3
 
-## No longer mainted
+## No longer maintained
 
 As of 2023-02-15 (YYYY-MM-DD), this project is no longer being maintained by me and its up for adoption. If you are interested in maintaining it please let me know. This project comes with an Apache 2 license which would need to be respected.
 
