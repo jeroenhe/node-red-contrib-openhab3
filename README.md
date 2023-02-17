@@ -30,6 +30,7 @@ The `openhab2-in2` and `openhab2-events2` nodes receive updates via a Server-Sen
 
 | Version | Description |
 | --------------- | --------------- |
+| 1.4.9  | Fix typo
 | 1.4.8  | Added unmaintained notice
 | 1.4.7  | Update readme
 | 1.4.6  | Update README; Test with Node-RED 3.0.2
