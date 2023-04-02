@@ -37,18 +37,6 @@ function getConnectionString(config) {
   }
   url += "://";
 
-  // Only set username and password inside the url when BOTH username and
-  // password are provided and non-empty.
-  if (
-    config.username != null &&
-    config.username.trim().length != 0 &&
-    config.password != null &&
-    config.password.length != 0
-  ) {
-    url += encodeURIComponent(config.username.trim());
-    url += ":" + encodeURIComponent(config.password);
-    url += "@";
-  }
   url += config.host;
 
   if (config.port != null && config.port.trim().length != 0) {
@@ -77,18 +65,27 @@ function trimString(string, length) {
     : string;
 }
 
-function getAuthorizationHeader(config) {
-  var options = {};
+function getAuthorizationHeaders(config) {
+  var headers = {};
   if (
     config.token != null &&
     typeof config.token === "string" &&
     config.token.length != 0
   ) {
-    options.headers = {
-      Authorization: "Bearer " + config.token,
-    };
+      headers['X-OPENHAB-TOKEN'] = config.token;
   }
-  return options;
+
+  if (
+    config.username != null &&
+    config.username.trim().length != 0 &&
+    config.password != null &&
+    config.password.length != 0
+  ) {
+    var token = config.username.trim() + ":" + config.password;
+    headers['Authorization'] = "Basic " + Buffer.from(token).toString('base64');
+ }
+
+  return headers;
 }
 
 // Special function for https://github.com/jeroenhendricksen/node-red-contrib-openhab3/issues/22
@@ -148,9 +145,9 @@ module.exports = function (RED) {
     // this controller node handles all communication with the configured openhab server
     function getInitialStateOfItems(config) {
       //node.log("getStateOfItems : config = " + JSON.stringify(config));
-
       var url = getConnectionString(config) + "/rest/items";
-      var options = getAuthorizationHeader(config);
+      var options = {};
+      options['headers'] = getAuthorizationHeaders(config);
       // https://axios-http.com/docs/example
       ax.get(url, options)
         .then((response) => {
@@ -215,7 +212,8 @@ module.exports = function (RED) {
           ? "/rest/events" // no longer filter using ?topics= because this breaks since OH 3.3 release version
           : "/rest/events?topics=smarthome/items";
       var sseUrl = getConnectionString(config) + eventsource_url;
-      var options = getAuthorizationHeader(config);
+      var options = {};
+      options['headers'] = getAuthorizationHeaders(config);
       // node.log('config.ohversion: ' + config.ohversion + ' eventsource_url: ' + eventsource_url + ' options: ' + JSON.stringify(options));
       node.es = new EventSource(sseUrl, options);
 
@@ -326,6 +324,8 @@ module.exports = function (RED) {
       };
       var method = "GET";
       var payloadString = null;
+      var params = {};
+
       if (payload) {
         payloadString = String(payload);
       }
@@ -346,13 +346,18 @@ module.exports = function (RED) {
         method = "GET";
       }
 
+      //attach authorization headers into constructed headers
+      headers = Object.assign({}, headers, getAuthorizationHeaders(config));
+      //the latest OH3.4 return 400 if GET command contains body which should be empty
+      params.method = method;
+      params.url = url;
+      params.headers = headers;
+      if(payloadString != null){
+        params.data = payloadString;
+      }
+
       // Axios cheat sheet: https://kapeli.com/cheat_sheets/Axios.docset/Contents/Resources/Documents/index
-      ax({
-        method: method,
-        url: url,
-        data: payloadString,
-        headers: headers,
-      })
+      ax(params)
         .then((response) => {
           // console.log(response.data);
           // console.log(response.statusText + ": " + response.status + " sending " + method + "-request with body '" + payload + "' to " + url + " returned response: " + response.data);
@@ -401,7 +406,8 @@ module.exports = function (RED) {
   RED.httpNode.get("/openhab3/items", function (req, res) {
     var config = req.query;
     var url = getConnectionString(config) + "/rest/items";
-    var options = getAuthorizationHeader(config);
+    var options = {};
+    options['headers'] = getAuthorizationHeaders(config);
     // console.log("Request to /openhab3/items with config " + JSON.stringify(config));
     ax.get(url, options)
       .then((response) => {
@@ -1017,7 +1023,8 @@ module.exports = function (RED) {
           ? "/rest/events"
           : "/rest/events?topics=" + V2_EVENTSOURCE_URL_PART + "/*/*";
       var sseUrl = getConnectionString(config2) + eventsource_url;
-      var options = getAuthorizationHeader(config2);
+      var options = {};
+      options['headers'] = getAuthorizationHeaders(config2);
       // node.log('config.ohversion: ' + config2.ohversion + ' eventsource_url: ' + eventsource_url);
       node.es = new EventSource(sseUrl, options);
 
